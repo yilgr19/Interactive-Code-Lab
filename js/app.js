@@ -218,6 +218,60 @@
     }
   }
 
+  /** Tema 1.1 siempre abierto; cada siguiente tema exige cuestionario completo del anterior. */
+  function isTopicUnlocked(st, topicId) {
+    var idx = THEORY_IDS.indexOf(topicId);
+    if (idx === -1) return false;
+    if (idx === 0) return true;
+    return !!st.quizRewards[THEORY_IDS[idx - 1]];
+  }
+
+  function getFirstUnlockedTopicId(st) {
+    for (var i = 0; i < THEORY_IDS.length; i++) {
+      if (isTopicUnlocked(st, THEORY_IDS[i])) return THEORY_IDS[i];
+    }
+    return 'algoritmos';
+  }
+
+  function clampLastTheoryTopic(st) {
+    var t = st.lastTheoryTopic;
+    if (!isTopicUnlocked(st, t)) {
+      st.lastTheoryTopic = getFirstUnlockedTopicId(st);
+      saveState(st);
+    }
+  }
+
+  var topicLockHintTimer;
+  function flashTopicLockHint(message) {
+    var el = document.getElementById('topic-lock-hint');
+    if (!el) return;
+    el.textContent = message;
+    el.classList.remove('hidden');
+    clearTimeout(topicLockHintTimer);
+    topicLockHintTimer = setTimeout(function () {
+      el.classList.add('hidden');
+    }, 4800);
+  }
+
+  function renderTopicTabsLockState(st) {
+    document.querySelectorAll('.topic-tab').forEach(function (tab) {
+      var topic = tab.getAttribute('data-topic');
+      if (!topic) return;
+      var unlocked = isTopicUnlocked(st, topic);
+      if (unlocked) {
+        tab.classList.remove('topic-tab--locked');
+        tab.removeAttribute('aria-disabled');
+        tab.removeAttribute('title');
+        tab.removeAttribute('tabindex');
+      } else {
+        tab.classList.add('topic-tab--locked');
+        tab.setAttribute('aria-disabled', 'true');
+        tab.setAttribute('title', 'Completa el cuestionario del tema anterior (todas las respuestas correctas) para desbloquear este tema.');
+        tab.setAttribute('tabindex', '-1');
+      }
+    });
+  }
+
   function allTopicsVisited(state) {
     return THEORY_IDS.every(function (id) {
       return state.topicsVisited[id];
@@ -378,6 +432,7 @@
       box.appendChild(feedback);
       mount.appendChild(box);
     });
+    renderTopicTabsLockState(currentState);
   }
 
   function markTopicVisited(state, topicId) {
@@ -530,6 +585,9 @@
 
   function showTheoryTopic(topicId) {
     if (THEORY_IDS.indexOf(topicId) === -1) topicId = 'algoritmos';
+    if (!isTopicUnlocked(state, topicId)) {
+      topicId = getFirstUnlockedTopicId(state);
+    }
 
     document.querySelectorAll('.topic-theory-panel').forEach(function (panel) {
       panel.classList.add('hidden');
@@ -545,6 +603,7 @@
     state.lastTheoryTopic = topicId;
     markTopicVisited(state, topicId);
     saveState(state);
+    renderTopicTabsLockState(state);
   }
 
   function getActiveModelViewer() {
@@ -582,9 +641,11 @@
   }
 
   var state = loadState();
+  clampLastTheoryTopic(state);
   updatePointsDisplay(state);
   renderBadges(state);
   applyStudentNameToUI();
+  renderTopicTabsLockState(state);
   renderAllTopicQuizzes(state);
 
   if (allTopicsVisited(state)) {
@@ -629,6 +690,12 @@
     tab.addEventListener('click', function () {
       var topic = tab.getAttribute('data-topic');
       if (!topic) return;
+      if (!isTopicUnlocked(state, topic)) {
+        flashTopicLockHint(
+          'Este tema sigue bloqueado. Responde bien las dos preguntas del tema anterior para desbloquearlo.'
+        );
+        return;
+      }
       showTheoryTopic(topic);
     });
   });
