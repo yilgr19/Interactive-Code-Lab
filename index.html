@@ -114,7 +114,7 @@
             <ul class="mt-6 grid gap-3 sm:grid-cols-2">
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">①</span>
-                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis temas</strong> de lógica con modelo 3D/RA propio (diagramas, variables, operadores, condicionales, bucles, arreglos, funciones).</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis temas en tres niveles</strong> (fundamentos → expresiones y bucles → arreglos y funciones), cada uno con modelo 3D/RA.</span>
               </li>
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">②</span>
@@ -136,21 +136,42 @@
             <p class="mt-2 text-xs text-slate-500">
               <strong class="text-slate-400">RA:</strong> carga el 3D primero; en móvil usa <strong class="text-slate-300">Escanear en mi espacio</strong> (Chrome Android / Safari iOS). Los puntos sobre el modelo amplían la explicación.
             </p>
+            <p class="mt-3 rounded-lg border border-lab-border bg-lab-bg/40 px-4 py-3 text-xs text-slate-400 sm:text-sm">
+              <strong class="text-slate-200">Progresión por niveles:</strong> los temas van de <strong class="text-lab-accent">Nivel 1</strong> (ideas base y datos) a <strong class="text-lab-accent">Nivel 3</strong> (colecciones y funciones). Se recomienda seguir el orden dentro de cada nivel.
+            </p>
           </div>
 
-          <div class="flex flex-wrap gap-2 rounded-xl border border-lab-border bg-lab-surface/40 p-3" id="topic-tabs" role="tablist" aria-label="Temas de lógica">
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="algoritmos" aria-selected="true">1 · Diagramas y condicionales</button>
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="variables" aria-selected="false">2 · Variables y tipos</button>
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="operadores" aria-selected="false">3 · Operadores</button>
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="bucles" aria-selected="false">4 · Bucles</button>
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="arreglos" aria-selected="false">5 · Arreglos</button>
-            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="funciones" aria-selected="false">6 · Funciones</button>
+          <div id="topic-tabs" class="rounded-xl border border-lab-border bg-lab-surface/40 p-4 space-y-5" role="tablist" aria-label="Temas de lógica por nivel">
+            <div class="topic-level-group">
+              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 1 · Fundamentos</p>
+              <p class="mb-2 text-xs text-slate-500">Pensar en pasos, condiciones y cómo guarda la computadora datos elementales.</p>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="algoritmos" aria-selected="true">1.1 · Diagramas y condicionales</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="variables" aria-selected="false">1.2 · Variables y tipos</button>
+              </div>
+            </div>
+            <div class="topic-level-group">
+              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 2 · Expresiones y repetición</p>
+              <p class="mb-2 text-xs text-slate-500">Calcular, comparar y repetir instrucciones sin copiar código infinito.</p>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="operadores" aria-selected="false">2.1 · Operadores</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="bucles" aria-selected="false">2.2 · Bucles</button>
+              </div>
+            </div>
+            <div class="topic-level-group">
+              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 3 · Datos múltiples y modularidad</p>
+              <p class="mb-2 text-xs text-slate-500">Varios valores ordenados y trozos de programa reutilizables.</p>
+              <div class="flex flex-wrap gap-2">
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="arreglos" aria-selected="false">3.1 · Arreglos</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="funciones" aria-selected="false">3.2 · Funciones</button>
+              </div>
+            </div>
           </div>
 
           <!-- Panel 1: algoritmos + condicionales -->
           <div id="topic-panel-algoritmos" class="topic-theory-panel space-y-6" data-topic-panel="algoritmos">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">1 · Algoritmos, diagramas de flujo y condicionales</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 1 · 1.1 — Algoritmos, diagramas de flujo y condicionales</h3>
               <p>
                 Imagina una <strong class="text-slate-200">receta de cocina</strong>: hay ingredientes, pasos en orden y un resultado. En computación, eso es un <strong class="text-slate-200">algoritmo</strong>: una lista <em>finita</em> y <em>clara</em> de pasos para que la computadora (o una persona) resuelva un problema sin ambigüedad.
                 No hace falta saber electrónica: solo que la máquina ejecuta instrucciones una tras otra, y a veces debe <strong class="text-slate-200">elegir</strong> entre dos caminos según una condición.
@@ -184,23 +205,24 @@ si no
   escribir "Acceso denegado"
 fin si</pre>
               </div>
-              <h4 class="text-base font-semibold text-slate-200">Leyenda del modelo 3D</h4>
+              <h4 class="text-base font-semibold text-slate-200">Leyenda del modelo 3D (qué ver en RA)</h4>
               <ol class="list-decimal space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
-                <li><strong class="text-cyan-300">Cyan arriba</strong> — inicio / dato que entra al proceso.</li>
-                <li><strong class="text-slate-400">Gris</strong> — el flujo avanza en orden hasta la pregunta.</li>
-                <li><strong class="text-amber-300">Rombo</strong> — la condición (equivalente al <code class="font-mono text-xs">if</code>).</li>
-                <li><strong class="text-emerald-300">Verde</strong> — camino “sí”; <strong class="text-red-300">rojo</strong> — camino “no” (<code class="font-mono text-xs">else</code>).</li>
+                <li><strong class="text-cyan-300">Discos cyan arriba</strong> — <em>bandeja de entrada</em>: aquí “depositas” el dato (ej. edad) antes de decidir.</li>
+                <li><strong class="text-slate-400">Cilindro + cono gris</strong> — el programa <em>baja en orden</em> hasta llegar a la pregunta.</li>
+                <li><strong class="text-amber-300">Rombo grande + punto claro</strong> — la <em>condición</em> (<code class="font-mono text-xs">if</code>): ¿se cumple o no?</li>
+                <li><strong class="text-emerald-300">Bloque verde + marcas claras en V</strong> — camino <strong>SÍ</strong> (rama verdadera). <strong class="text-red-300">Bloque rojo + aspas</strong> — camino <strong>NO</strong> (<code class="font-mono text-xs">else</code>).</li>
               </ol>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="algoritmos"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="algoritmos" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Puntos interactivos sobre el diagrama.</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="algoritmos" src="assets/FlujoLogicoAlgoritmo.glb" alt="Diagrama de flujo con decisión y dos ramas" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 65deg 2.8m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-a1" data-position="0 0.98 0.12" data-normal="0 1 0" aria-label="Inicio"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Inicio · entrada</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-a2" data-position="0 0.66 0.08" data-normal="0 0 1" aria-label="Secuencia"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Flujo secuencial</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-a3" data-position="0 0.34 0.12" data-normal="0 1 0" aria-label="Decisión"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Condición · if</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-a4" data-position="-0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Permitido"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Verdadero</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-a5" data-position="0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Denegado"><span class="lab-hotspot-dot lab-hotspot-dot--red"></span><span class="lab-hotspot-label">Falso · else</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm">Gira el modelo: la historia va <strong class="text-slate-300">de arriba a abajo</strong>. Toca los puntos para repasar cada parte. En RA, coloca la escena en tu mesa y sigue el camino con el dedo.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="algoritmos" src="assets/FlujoLogicoAlgoritmo.glb" alt="Diagrama 3D: bandeja de entrada, flecha, rombo de decisión, rama sí con marca positiva y rama no con aspas" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 62deg 3.1m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-a1" data-position="0 1.02 0.1" data-normal="0 1 0" aria-label="Entrada"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Entrada: aquí llegan tus datos (ej. edad)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a2" data-position="0 0.68 0.1" data-normal="0 1 0" aria-label="Secuencia"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Secuencia: el flujo baja en orden</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a3" data-position="0 0.36 0.14" data-normal="0 1 0" aria-label="Decisión"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Pregunta if: ¿se cumple la condición?</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a4" data-position="-0.68 -0.06 0.16" data-normal="0 1 0" aria-label="Sí"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">SÍ → bloque verde (rama verdadera)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a5" data-position="0.68 -0.06 0.16" data-normal="0 1 0" aria-label="No"><span class="lab-hotspot-dot lab-hotspot-dot--red"></span><span class="lab-hotspot-label">NO → bloque rojo (rama else)</span></button>
               </model-viewer>
             </div>
           </div>
@@ -208,7 +230,7 @@ fin si</pre>
           <!-- Panel 2: variables -->
           <div id="topic-panel-variables" class="topic-theory-panel hidden space-y-6" data-topic-panel="variables">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">2 · Variables, identificadores y tipos de datos</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 1 · 1.2 — Variables, identificadores y tipos de datos</h3>
               <p>
                 La memoria de la computadora guarda millones de valores. Para no referirnos a “el valor que está en la posición 4 847 291”, usamos un <strong class="text-slate-200">nombre simbólico</strong>: eso es una <strong class="text-slate-200">variable</strong>.
                 Piensa en una <strong class="text-slate-200">etiqueta</strong> pegada a una cajita: el nombre es lo que escribes en el código; dentro de la cajita está el valor actual (que puede cambiar con el tiempo).
@@ -223,7 +245,7 @@ fin si</pre>
                 <li><strong class="text-amber-300">Booleano</strong> — solo dos valores lógicos: <code class="font-mono text-xs">true</code> (verdadero) o <code class="font-mono text-xs">false</code> (falso). Sirve para encender/apagar decisiones.</li>
               </ul>
               <p>
-                El modelo 3D muestra <strong class="text-slate-200">tres cajas</strong> de colores: cada una sugiere un tipo distinto (número, texto, booleano). En la práctica, mezclar tipos sin convertir (por ejemplo sumar texto y número como si fueran matemáticas puras) suele dar resultados inesperados; por eso entender el tipo es base de la lógica.
+                El modelo 3D usa <strong class="text-slate-200">tres formas distintas</strong> para que recuerdes los tipos sin memorizar solo colores: <strong class="text-blue-400">cilindro alto con tapa</strong> = número (como una lata medible); <strong class="text-violet-300">lámina ancha y baja con líneas</strong> = texto escrito; <strong class="text-amber-300">palanca sobre un poste</strong> = booleano (encendido/apagado). La base con ranuras sugiere <em>tres huecos en la memoria</em> del programa.
               </p>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Declaración y asignación en JavaScript</p>
@@ -252,13 +274,15 @@ escribir nombre, edad, activo</pre>
                 <p class="mt-2 text-xs text-slate-500">Aquí el tipo se declara primero; en JavaScript el tipo se “infiere” del valor que asignas.</p>
               </div>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="variables"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="variables" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Tres “cajas de memoria” con distinto tipo.</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="variables" src="assets/VariablesTipos.glb" alt="Tres variables de distintos tipos" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 58deg 2.2m" field-of-view="42deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-v1" data-position="-0.48 0.18 0.18" data-normal="0 1 0" aria-label="Número"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Tipo numérico</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-v2" data-position="0 0.18 0.18" data-normal="0 1 0" aria-label="Texto"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Cadena / string</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-v3" data-position="0.48 0.18 0.18" data-normal="0 1 0" aria-label="Booleano"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Booleano</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> izquierda = número, centro = texto, derecha = sí/no. En RA, compara las <em>formas</em>: no son tres cajas iguales a propósito.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="variables" src="assets/VariablesTipos.glb" alt="Memoria con ranuras: cilindro numérico, lámina de texto, interruptor booleano" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="15deg 55deg 2.45m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-v1" data-position="-0.48 0.28 0.12" data-normal="0 1 0" aria-label="Número"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Número: cilindro (cantidad medible)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-v2" data-position="0 0.16 0.14" data-normal="0 1 0" aria-label="Texto"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Texto: hoja plana (cadena)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-v3" data-position="0.48 0.24 0.12" data-normal="0 1 0" aria-label="Booleano"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Booleano: palanca (true/false)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-v4" data-position="0 -0.12 0.2" data-normal="0 1 0" aria-label="Memoria"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Base: tres “huecos” de memoria</span></button>
               </model-viewer>
             </div>
           </div>
@@ -266,7 +290,7 @@ escribir nombre, edad, activo</pre>
           <!-- Panel 3: operadores -->
           <div id="topic-panel-operadores" class="topic-theory-panel hidden space-y-6" data-topic-panel="operadores">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">3 · Operadores y expresiones</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.1 — Operadores y expresiones</h3>
               <p>
                 Una <strong class="text-slate-200">expresión</strong> es una “frase matemática o lógica” en código: combina <strong class="text-slate-200">valores</strong> (números fijos, variables, textos) con <strong class="text-slate-200">operadores</strong> (símbolos que dicen qué hacer) y al evaluarse produce un <strong class="text-slate-200">resultado</strong>.
                 El modelo 3D sugiere: <em>valor A → operación → valor B → resultado</em>.
@@ -314,14 +338,15 @@ si (a &gt; b) y (a mod b = 1) entonces
 fin si</pre>
               </div>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="operadores"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="operadores" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Operando A · operador · operando B · resultado.</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="operadores" src="assets/OperadoresExpresion.glb" alt="Expresión con dos operandos y resultado" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="20deg 62deg 2.35m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-o1" data-position="-0.52 0.12 0.12" data-normal="0 1 0" aria-label="Operando A"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Operando A</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-o2" data-position="0 0.18 0" data-normal="0 1 0" aria-label="Operador"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Operador (+, &gt;, …)</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-o3" data-position="0.52 0.12 0.12" data-normal="0 1 0" aria-label="Operando B"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Operando B</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-o4" data-position="0 0.02 0.32" data-normal="0 0 1" aria-label="Resultado"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Resultado de la expresión</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> dos <em>esferas</em> = valores que participan; en el centro hay un <strong class="text-amber-300">signo + real en 3D</strong> (también representa otros operadores: − × ÷ comparaciones…). Delante, el <strong class="text-lab-accent">podio con dos rayas</strong> = signo “igual” y el <strong>resultado</strong> de la operación.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="operadores" src="assets/OperadoresExpresion.glb" alt="Expresión: esfera A, signo más 3D, esfera B, resultado en podio con igual" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="18deg 58deg 2.55m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-o1" data-position="-0.55 0.14 0.14" data-normal="0 1 0" aria-label="Operando A"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Primer valor (variable o número)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o2" data-position="0 0.14 0.06" data-normal="0 1 0" aria-label="Operador"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Operador: aquí es “+” (puede ser otro)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o3" data-position="0.55 0.14 0.14" data-normal="0 1 0" aria-label="Operando B"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Segundo valor</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o4" data-position="0 0.06 0.46" data-normal="0 0 1" aria-label="Resultado"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Resultado: lo que “sale” de la expresión</span></button>
               </model-viewer>
             </div>
           </div>
@@ -329,10 +354,10 @@ fin si</pre>
           <!-- Panel 4: bucles -->
           <div id="topic-panel-bucles" class="topic-theory-panel hidden space-y-6" data-topic-panel="bucles">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">4 · Estructuras repetitivas (bucles)</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.2 — Estructuras repetitivas (bucles)</h3>
               <p>
                 A veces no quieres escribir la misma instrucción 100 veces. Un <strong class="text-slate-200">bucle</strong> (o <em>loop</em>) indica: “repite este bloque mientras se cumpla una regla” o “repite exactamente N veces”.
-                Cada repetición se llama <strong class="text-slate-200">iteración</strong>. El modelo 3D muestra un <strong class="text-slate-200">centro</strong> (el cuerpo: lo que se repite) y elementos alrededor (las “vueltas”).
+                Cada repetición se llama <strong class="text-slate-200">iteración</strong>. En el modelo 3D, el <strong class="text-slate-200">centro apilado</strong> es el <em>cuerpo del bucle</em> (las instrucciones que se repiten); el <strong class="text-slate-200">anillo grueso</strong> es el camino que “vuelve” al inicio; las <strong class="text-emerald-300">flechas verdes</strong> en círculo indican el <strong>sentido de las vueltas</strong> (una tras otra, en orden).
               </p>
               <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">while</code> — “mientras…”</h4>
               <p>
@@ -378,13 +403,15 @@ para i desde 1 hasta 3 hacer
 fin para</pre>
               </div>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="bucles"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="bucles" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Centro = cuerpo; alrededor = iteraciones.</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="bucles" src="assets/BuclesIteracion.glb" alt="Bucle con cuerpo central e iteraciones" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 52deg 2.65m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-b1" data-position="0 0.22 0" data-normal="0 1 0" aria-label="Cuerpo"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Cuerpo del bucle</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-b2" data-position="0 0.14 0.48" data-normal="0 1 0" aria-label="Iteración"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Una iteración</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-b3" data-position="0.46 0.1 0" data-normal="0 1 0" aria-label="Vuelta"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Siguiente vuelta</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> mira desde arriba: las flechas siguen el círculo como quien da vueltas al reloj — cada flecha es “otra iteración”. El bloque del centro es lo que se ejecuta en cada vuelta.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="bucles" src="assets/BuclesIteracion.glb" alt="Bucle: núcleo apilado, toro como camino de repetición, flechas en círculo" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 48deg 2.85m" field-of-view="36deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-b1" data-position="0 0.2 0" data-normal="0 1 0" aria-label="Cuerpo"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Cuerpo: instrucciones que se repiten</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-b2" data-position="0 0.08 0.52" data-normal="0 1 0" aria-label="Anillo"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Anillo: vuelves al inicio del bucle</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-b3" data-position="0.48 0.16 0" data-normal="0 1 0" aria-label="Flecha"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Flecha: siguiente iteración (siguiente vuelta)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-b4" data-position="-0.48 0.16 0" data-normal="0 1 0" aria-label="Otra vuelta"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">El camino cerrado = mientras la condición siga cumpliéndose</span></button>
               </model-viewer>
             </div>
           </div>
@@ -392,7 +419,7 @@ fin para</pre>
           <!-- Panel 5: arreglos -->
           <div id="topic-panel-arreglos" class="topic-theory-panel hidden space-y-6" data-topic-panel="arreglos">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">5 · Arreglos y listas (colecciones ordenadas)</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 3 · 3.1 — Arreglos y listas (colecciones ordenadas)</h3>
               <p>
                 Una variable normal guarda <strong class="text-slate-200">un</strong> valor. Un <strong class="text-slate-200">arreglo</strong> (array) o lista ordenada guarda <strong class="text-slate-200">varios</strong> valores en fila, cada uno en una “casilla” numerada.
                 A ese número de casilla se le llama <strong class="text-slate-200">índice</strong>. En JavaScript, C, Java, Python y muchos otros, el <strong class="text-amber-300">primer índice es 0</strong>, no 1: la primera casilla es <code class="font-mono text-lab-accent">[0]</code>, la segunda <code class="font-mono text-lab-accent">[1]</code>, etc.
@@ -403,6 +430,7 @@ fin para</pre>
               <h4 class="text-base font-semibold text-slate-200">¿Para qué sirve en lógica?</h4>
               <p>
                 Procesar muchas notas, nombres de una clase, días de la semana, etc., sin crear 50 variables sueltas. Suele combinarse con un <code class="font-mono text-lab-accent">for</code> que recorre cada índice de <code class="font-mono text-xs">0</code> a <code class="font-mono text-xs">length - 1</code>.
+                En el modelo 3D, las casillas suben como <strong class="text-slate-200">escalera</strong>: la más baja es el índice <code class="font-mono text-xs">0</code> y cada una siguiente es el siguiente índice; los <strong class="text-slate-200">postes delanteros</strong> crecen en altura para recordar el orden 0, 1, 2, 3.
               </p>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: crear, leer, modificar, recorrer</p>
@@ -435,14 +463,15 @@ para i desde 0 hasta longitud(notas) - 1 hacer
 fin para</pre>
               </div>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="arreglos"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="arreglos" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Casillas [0] [1] [2] [3].</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="arreglos" src="assets/ArreglosListas.glb" alt="Arreglo de cuatro elementos indexados" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 58deg 2.45m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-r0" data-position="-0.45 0.16 0.15" data-normal="0 1 0" aria-label="Índice 0"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 0</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-r1" data-position="-0.15 0.16 0.15" data-normal="0 1 0" aria-label="Índice 1"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 1</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-r2" data-position="0.15 0.16 0.15" data-normal="0 1 0" aria-label="Índice 2"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Índice 2</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-r3" data-position="0.45 0.16 0.15" data-normal="0 1 0" aria-label="Índice 3"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Índice 3</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> de izquierda a derecha = orden en memoria. La primera casilla (más baja) es <code class="font-mono text-lab-accent">[0]</code>; la última (más alta) es <code class="font-mono text-lab-accent">[3]</code> en este ejemplo de cuatro elementos.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="arreglos" src="assets/ArreglosListas.glb" alt="Arreglo en escalera: casillas 0 a 3 con postes de orden" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="12deg 55deg 2.55m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-r0" data-position="-0.45 -0.02 0.12" data-normal="0 1 0" aria-label="Índice 0"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 0: primera posición (siempre en muchos lenguajes)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r1" data-position="-0.15 0.02 0.12" data-normal="0 1 0" aria-label="Índice 1"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 1: segunda casilla</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r2" data-position="0.15 0.06 0.12" data-normal="0 1 0" aria-label="Índice 2"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Índice 2: tercera casilla</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r3" data-position="0.45 0.1 0.12" data-normal="0 1 0" aria-label="Índice 3"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Índice 3: cuarta casilla (length sería 4)</span></button>
               </model-viewer>
             </div>
           </div>
@@ -450,7 +479,7 @@ fin para</pre>
           <!-- Panel 6: funciones -->
           <div id="topic-panel-funciones" class="topic-theory-panel hidden space-y-6" data-topic-panel="funciones">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">6 · Funciones y modularidad</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 3 · 3.2 — Funciones y modularidad</h3>
               <p>
                 Escribir todo el programa en una sola lista larga es difícil de leer y de corregir. Una <strong class="text-slate-200">función</strong> es un <strong class="text-slate-200">bloque con nombre</strong> que agrupa pasos para una tarea concreta (por ejemplo “calcular el precio con IVA” o “validar la edad”).
                 Puedes <strong class="text-slate-200">llamar</strong> la función varias veces desde distintos sitios sin copiar y pegar el código.
@@ -463,7 +492,7 @@ fin para</pre>
                 <li><strong class="text-slate-200">Retorno (<code class="font-mono text-xs">return</code>)</strong> — opcional: devuelve un valor al lugar donde llamaste la función. Si no hay <code class="font-mono text-xs">return</code>, la función puede servir solo para efectos secundarios (ej. mostrar un mensaje).</li>
               </ul>
               <p>
-                El modelo 3D sugiere: <strong class="text-slate-200">entrada (cono izquierda) → caja proceso (función) → salida (cono derecha)</strong>.
+                El modelo 3D es una <strong class="text-slate-200">mini fábrica</strong>: <strong class="text-blue-300">embudo azul</strong> = datos que entran (argumentos); <strong class="text-slate-300">tubos grises</strong> = pasillo hacia el proceso; <strong class="text-slate-200">caja oscura con “tapa”</strong> = interior de la función (donde ocurre el cálculo, sin que quien llama vea cada paso); <strong class="text-emerald-300">embudo verde</strong> = resultado que sale (<code class="font-mono text-xs">return</code>).
               </p>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: declarar y usar funciones</p>
@@ -513,13 +542,15 @@ total &lt;- sumar(10, 3)
 escribir total</pre>
               </div>
             </div>
+            <div class="topic-quiz-mount" data-topic-quiz="funciones"></div>
             <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
               <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="funciones" role="status">Cargando modelo 3D…</p>
-              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Entrada → proceso (módulo) → salida.</p>
-              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="funciones" src="assets/FuncionesModulos.glb" alt="Función con entrada, módulo y salida" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 68deg 2.35m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
-                <button type="button" class="lab-hotspot" slot="hotspot-f1" data-position="-0.58 0.14 0.1" data-normal="0 1 0" aria-label="Entrada"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Parámetros / entrada</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-f2" data-position="0 0.2 0" data-normal="0 1 0" aria-label="Módulo"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Cuerpo de la función</span></button>
-                <button type="button" class="lab-hotspot" slot="hotspot-f3" data-position="0.58 0.14 0.1" data-normal="0 1 0" aria-label="Salida"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Retorno / salida</span></button>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> sigue el flujo de izquierda a derecha como los datos en un programa: entran por el embudo, pasan por la “caja negra” donde trabajas con operadores y condicionales, y salen transformados.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="funciones" src="assets/FuncionesModulos.glb" alt="Función como fábrica: embudo entrada, tubos, caja proceso con tapa, embudo salida" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="8deg 62deg 2.65m" field-of-view="36deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-f1" data-position="-0.62 0.16 0.08" data-normal="0 1 0" aria-label="Entrada"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Entrada: argumentos (ej. edad, precio)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-f-canal" data-position="-0.35 0.12 0" data-normal="0 1 0" aria-label="Tubo"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Canal: los datos van hacia el proceso</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-f2" data-position="0 0.22 0" data-normal="0 1 0" aria-label="Módulo"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Función: aquí usas variables, if, operadores…</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-f3" data-position="0.62 0.16 0.08" data-normal="0 1 0" aria-label="Salida"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Salida: return (resultado al llamador)</span></button>
               </model-viewer>
             </div>
           </div>

@@ -5,15 +5,142 @@
   'use strict';
 
   var STORAGE_KEY = 'interactiveCodeLab_v1';
+  /* Orden pedagógico por niveles: N1 fund. → N2 expresión/rep. → N3 datos/módulos */
   var THEORY_IDS = ['algoritmos', 'variables', 'operadores', 'bucles', 'arreglos', 'funciones'];
 
   var BADGE_DEFS = [
     { id: 'explorer', label: 'Explorador', desc: 'Abriste el módulo Teoría + RA', icon: '🔭' },
-    { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Visitaste los 6 temas con su modelo 3D', icon: '📚' },
+    { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Completaste los 6 temas (3 niveles) con su modelo 3D', icon: '📚' },
+    { id: 'quiz_master', label: 'Comprensión', desc: 'Acertaste los cuestionarios de los 6 temas', icon: '📝' },
     { id: 'conditional_master', label: 'Lógica condicional', desc: 'Completaste el reto de acceso por edad', icon: '🎯' },
   ];
 
   var POINTS_CHALLENGE = 100;
+  var POINTS_QUIZ_TOPIC = 20;
+
+  /** Dos preguntas por tema; tres opciones; una correcta (clave k). */
+  var QUIZZES = {
+    algoritmos: [
+      {
+        q: 'En un condicional, ¿qué papel cumple el bloque asociado a `else`?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Se ejecuta siempre antes que el `if`.' },
+          { k: 'b', t: 'Se ejecuta cuando la condición del `if` no se cumple.' },
+          { k: 'c', t: 'Solo sirve para comentar el código y no hace nada.' },
+        ],
+      },
+      {
+        q: 'En un diagrama de flujo clásico, ¿qué forma suele usarse para una decisión (sí / no)?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Un rectángulo (solo acciones).' },
+          { k: 'b', t: 'Un rombo.' },
+          { k: 'c', t: 'Un triángulo equilátero.' },
+        ],
+      },
+    ],
+    variables: [
+      {
+        q: '¿Qué hace la línea `let precio = 99;` en JavaScript?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Compara la variable `precio` con 99.' },
+          { k: 'b', t: 'Declara `precio` y guarda el valor numérico 99.' },
+          { k: 'c', t: 'Imprime automáticamente 99 en la pantalla del usuario.' },
+        ],
+      },
+      {
+        q: '¿Cuál de estos valores es de tipo booleano (lógico) en JavaScript?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: '"false" entre comillas dobles.' },
+          { k: 'b', t: 'false sin comillas.' },
+          { k: 'c', t: 'El número 0 como único valor posible.' },
+        ],
+      },
+    ],
+    operadores: [
+      {
+        q: '¿Qué resultado da la expresión `10 === 10` en JavaScript?',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'true (comparación verdadera).' },
+          { k: 'b', t: '20 (suma implícita).' },
+          { k: 'c', t: 'El texto "10".' },
+        ],
+      },
+      {
+        q: 'En `7 % 3`, el operador `%` (módulo) devuelve…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'El cociente entero de la división (2).' },
+          { k: 'b', t: 'El resto después de dividir (1).' },
+          { k: 'c', t: '21 (producto de 7 y 3).' },
+        ],
+      },
+    ],
+    bucles: [
+      {
+        q: 'En un `while`, ¿cuándo deja de repetirse el bloque interior?',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'Cuando la condición del `while` es falsa.' },
+          { k: 'b', t: 'Siempre después de exactamente una ejecución.' },
+          { k: 'c', t: 'Nunca; el `while` no puede terminar.' },
+        ],
+      },
+      {
+        q: 'En un `for` típico, las tres partes entre paréntesis son: inicialización, condición y…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'El nombre del archivo fuente.' },
+          { k: 'b', t: 'La actualización del contador (ej. `i++`).' },
+          { k: 'c', t: 'Un mensaje de error obligatorio.' },
+        ],
+      },
+    ],
+    arreglos: [
+      {
+        q: 'Para `let notas = [10, 20, 30];`, ¿cómo se accede al primer elemento?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'notas[1]' },
+          { k: 'b', t: 'notas[0]' },
+          { k: 'c', t: 'notas.primero' },
+        ],
+      },
+      {
+        q: 'Para ese mismo arreglo de tres elementos, `notas.length` vale…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: '2' },
+          { k: 'b', t: '3' },
+          { k: 'c', t: '30' },
+        ],
+      },
+    ],
+    funciones: [
+      {
+        q: '¿Qué palabra clave se usa en JavaScript para devolver un valor desde una función?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'print' },
+          { k: 'b', t: 'return' },
+          { k: 'c', t: 'break' },
+        ],
+      },
+      {
+        q: 'Al llamar `sumar(4, 5)`, los valores 4 y 5 son los…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Índices del arreglo.' },
+          { k: 'b', t: 'Argumentos (valores que pasas a la función).' },
+          { k: 'c', t: 'Tipos de retorno obligatorios.' },
+        ],
+      },
+    ],
+  };
 
   function migrateTopicsVisited(data) {
     var o = {};
@@ -27,6 +154,14 @@
     } else if (data.theoryVisited) {
       o.algoritmos = true;
     }
+    return o;
+  }
+
+  function migrateQuizRewards(data) {
+    var o = {};
+    THEORY_IDS.forEach(function (id) {
+      o[id] = !!(data.quizRewards && data.quizRewards[id]);
+    });
     return o;
   }
 
@@ -49,6 +184,7 @@
           typeof data.studentName === 'string' && data.studentName.trim()
             ? data.studentName.trim()
             : 'Estudiante',
+        quizRewards: migrateQuizRewards(data),
       };
     } catch (e) {
       return defaultState();
@@ -57,8 +193,10 @@
 
   function defaultState() {
     var tv = {};
+    var qr = {};
     THEORY_IDS.forEach(function (id) {
       tv[id] = false;
+      qr[id] = false;
     });
     return {
       points: 0,
@@ -68,6 +206,7 @@
       topicsVisited: tv,
       lastTheoryTopic: 'algoritmos',
       studentName: 'Estudiante',
+      quizRewards: qr,
     };
   }
 
@@ -91,6 +230,154 @@
     state.badges.push('curriculum_ra');
     saveState(state);
     renderBadges(state);
+  }
+
+  function allQuizzesPassed(state) {
+    return THEORY_IDS.every(function (id) {
+      return state.quizRewards[id];
+    });
+  }
+
+  function maybeAwardQuizMasterBadge(state) {
+    if (!allQuizzesPassed(state)) return;
+    if (state.badges.indexOf('quiz_master') !== -1) return;
+    state.badges.push('quiz_master');
+    saveState(state);
+    renderBadges(state);
+  }
+
+  function quizConfettiSmall() {
+    if (typeof confetti !== 'function') return;
+    confetti({ particleCount: 55, spread: 58, origin: { y: 0.75 }, zIndex: 9999 });
+  }
+
+  function renderAllTopicQuizzes(currentState) {
+    document.querySelectorAll('.topic-quiz-mount').forEach(function (mount) {
+      var topicId = mount.getAttribute('data-topic-quiz');
+      if (!topicId || !QUIZZES[topicId]) return;
+
+      mount.innerHTML = '';
+      var box = document.createElement('div');
+      box.className = 'topic-quiz';
+      box.setAttribute('data-quiz-box', topicId);
+
+      var title = document.createElement('h4');
+      title.textContent = 'Comprueba lo aprendido (opción múltiple)';
+      box.appendChild(title);
+
+      if (currentState.quizRewards[topicId]) {
+        var done = document.createElement('div');
+        done.className = 'quiz-done-badge';
+        done.textContent =
+          'Completado: respondiste bien las dos preguntas. +' + POINTS_QUIZ_TOPIC + ' pts (solo la primera vez).';
+        box.appendChild(done);
+      }
+
+      QUIZZES[topicId].forEach(function (question, qi) {
+        var wrapQ = document.createElement('div');
+        wrapQ.className = 'quiz-question';
+
+        var pq = document.createElement('p');
+        pq.className = 'quiz-q-text';
+        pq.textContent = qi + 1 + '. ' + question.q;
+        wrapQ.appendChild(pq);
+
+        var opts = document.createElement('div');
+        opts.className = 'quiz-options';
+
+        question.opts.forEach(function (opt) {
+          var lab = document.createElement('label');
+          lab.className = 'quiz-option';
+          var inp = document.createElement('input');
+          inp.type = 'radio';
+          inp.name = 'quiz-' + topicId + '-' + qi;
+          inp.value = opt.k;
+          if (currentState.quizRewards[topicId]) {
+            inp.disabled = true;
+            if (opt.k === question.correct) inp.checked = true;
+          }
+          lab.appendChild(inp);
+          var span = document.createElement('span');
+          span.textContent = opt.t;
+          lab.appendChild(span);
+          opts.appendChild(lab);
+        });
+
+        wrapQ.appendChild(opts);
+        box.appendChild(wrapQ);
+      });
+
+      var feedback = document.createElement('p');
+      feedback.className = 'quiz-feedback-msg text-slate-500';
+      feedback.setAttribute('role', 'status');
+
+      if (!currentState.quizRewards[topicId]) {
+        var btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'btn-quiz-check';
+        btn.textContent = 'Comprobar respuestas';
+        btn.addEventListener('click', function () {
+          btn.disabled = true;
+          var allOk = true;
+          var labels = box.querySelectorAll('.quiz-option');
+
+          labels.forEach(function (l) {
+            l.classList.remove('quiz-option--correct', 'quiz-option--wrong');
+          });
+
+          var unanswered = 0;
+          QUIZZES[topicId].forEach(function (question, qi) {
+            var name = 'quiz-' + topicId + '-' + qi;
+            var sel = box.querySelector('input[name="' + name + '"]:checked');
+            var picked = sel ? sel.value : null;
+            if (!picked) unanswered += 1;
+            if (picked !== question.correct) {
+              allOk = false;
+            }
+
+            question.opts.forEach(function (opt) {
+              var r = box.querySelector('input[name="' + name + '"][value="' + opt.k + '"]');
+              var lab = r && r.closest('.quiz-option');
+              if (!lab) return;
+              if (opt.k === question.correct) {
+                lab.classList.add('quiz-option--correct');
+              }
+              if (picked && opt.k === picked && picked !== question.correct) {
+                lab.classList.add('quiz-option--wrong');
+              }
+            });
+          });
+
+          if (allOk) {
+            feedback.className = 'quiz-feedback-msg text-emerald-400 font-medium';
+            feedback.textContent =
+              '¡Muy bien! Demuestras que entiendes las ideas clave de este tema.';
+            currentState.quizRewards[topicId] = true;
+            currentState.points += POINTS_QUIZ_TOPIC;
+            saveState(currentState);
+            updatePointsDisplay(currentState);
+            maybeAwardQuizMasterBadge(currentState);
+            quizConfettiSmall();
+            renderAllTopicQuizzes(currentState);
+          } else {
+            feedback.className = 'quiz-feedback-msg text-amber-400';
+            feedback.textContent =
+              'Algunas respuestas no son correctas. En verde está la opción adecuada; en rojo, la que elegiste si era incorrecta. Vuelve a intentar.';
+            if (unanswered > 0) {
+              feedback.textContent =
+                unanswered === QUIZZES[topicId].length
+                  ? 'Selecciona una opción en cada pregunta y pulsa Comprobar de nuevo.'
+                  : 'Falta marcar una o más preguntas. Completa todas y vuelve a comprobar.';
+            }
+            btn.disabled = false;
+          }
+        });
+        box.appendChild(btn);
+      }
+
+      box.appendChild(feedback);
+      mount.appendChild(box);
+    });
   }
 
   function markTopicVisited(state, topicId) {
@@ -298,9 +585,13 @@
   updatePointsDisplay(state);
   renderBadges(state);
   applyStudentNameToUI();
+  renderAllTopicQuizzes(state);
 
   if (allTopicsVisited(state)) {
     maybeAwardCurriculumBadge(state);
+  }
+  if (allQuizzesPassed(state)) {
+    maybeAwardQuizMasterBadge(state);
   }
 
   var nameInput = document.getElementById('student-name-input');
@@ -329,6 +620,7 @@
           renderBadges(state);
         }
         showTheoryTopic(state.lastTheoryTopic || 'algoritmos');
+        renderAllTopicQuizzes(state);
       }
     });
   });
