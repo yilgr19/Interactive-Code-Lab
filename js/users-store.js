@@ -141,6 +141,38 @@
     return { ok: false, reason: 'user' };
   }
 
+  /**
+   * Borra el progreso del laboratorio del estudiante en este navegador.
+   * También elimina la clave heredada `interactiveCodeLab_v1` para que no se vuelva a importar al recargar.
+   */
+  function clearStudentLabProgress(userId) {
+    if (!userId) return false;
+    try {
+      localStorage.removeItem(getProgressStorageKey(userId));
+      localStorage.removeItem(LEGACY_PROGRESS_KEY);
+      return true;
+    } catch (e) {
+      return false;
+    }
+  }
+
+  /** Borra las claves `interactiveCodeLab_progress_*` de cada estudiante y la progresión heredada `interactiveCodeLab_v1`. */
+  function clearAllStudentsLabProgress() {
+    var users = getUsers();
+    var n = 0;
+    try {
+      for (var i = 0; i < users.length; i++) {
+        if (users[i].role !== 'student') continue;
+        localStorage.removeItem(getProgressStorageKey(users[i].id));
+        n++;
+      }
+      localStorage.removeItem(LEGACY_PROGRESS_KEY);
+      return { ok: true, studentsCleared: n };
+    } catch (e) {
+      return { ok: false, studentsCleared: n, error: e };
+    }
+  }
+
   function migrateLegacyProgressToUser(userId) {
     var key = getProgressStorageKey(userId);
     if (localStorage.getItem(key)) return;
@@ -228,6 +260,8 @@
     initUsers: initUsers,
     authenticate: authenticate,
     migrateLegacyProgressToUser: migrateLegacyProgressToUser,
+    clearStudentLabProgress: clearStudentLabProgress,
+    clearAllStudentsLabProgress: clearAllStudentsLabProgress,
     findUserById: findUserById,
     updateUser: updateUser,
     addUser: addUser,

@@ -2,7 +2,7 @@
   'use strict';
 
   var THEME_STORAGE_KEY = 'interactiveCodeLab_theme';
-  var THEORY_IDS = [
+  var BASE_THEORY_IDS = [
     'algoritmos',
     'variables',
     'entrada_salida',
@@ -14,6 +14,36 @@
     'funciones',
     'pruebas_trazado',
   ];
+
+  var LAST_TOPIC_LABELS = {
+    algoritmos: '1.1 · Algoritmos y condicionales',
+    variables: '1.2 · Variables y tipos',
+    entrada_salida: '1.3 · Entrada, proceso y salida',
+    operadores: '2.1 · Operadores',
+    decisiones_multiples: '2.2 · Decisiones múltiples',
+    cadenas: '2.3 · Cadenas de texto',
+    bucles: '2.4 · Bucles',
+    arreglos: '3.1 · Arreglos',
+    funciones: '3.2 · Funciones',
+    pruebas_trazado: '3.3 · Pruebas y trazado',
+  };
+
+  function allTheoryIds() {
+    if (typeof LabCustomTopics !== 'undefined' && LabCustomTopics.getCustomTopicIdsOrdered) {
+      return BASE_THEORY_IDS.concat(LabCustomTopics.getCustomTopicIdsOrdered());
+    }
+    return BASE_THEORY_IDS.slice();
+  }
+
+  function lastTopicLabel(id) {
+    if (!id || id === '—') return '—';
+    if (LAST_TOPIC_LABELS[id]) return LAST_TOPIC_LABELS[id];
+    if (typeof LabCustomTopics !== 'undefined') {
+      var t = LabCustomTopics.findTopic(id);
+      if (t) return t.tabLabel || t.title;
+    }
+    return id;
+  }
 
   function roleLabel(r) {
     if (r === 'admin') return 'Administrador';
@@ -54,15 +84,16 @@
   }
 
   function summarizeStudentProgress(userId) {
+    var ids = allTheoryIds();
     var key = LabUsers.getProgressStorageKey(userId);
     var raw = localStorage.getItem(key);
     if (!raw) {
-      return { empty: true, points: 0, quizDone: 0, quizTotal: THEORY_IDS.length, badges: 0, lastTopic: '—' };
+      return { empty: true, points: 0, quizDone: 0, quizTotal: ids.length, badges: 0, lastTopic: '—' };
     }
     try {
       var d = JSON.parse(raw);
       var quizDone = 0;
-      THEORY_IDS.forEach(function (id) {
+      ids.forEach(function (id) {
         if (d.quizRewards && d.quizRewards[id]) quizDone++;
       });
       var badges = Array.isArray(d.badges) ? d.badges.length : 0;
@@ -70,12 +101,12 @@
         empty: false,
         points: typeof d.points === 'number' ? d.points : 0,
         quizDone: quizDone,
-        quizTotal: THEORY_IDS.length,
+        quizTotal: ids.length,
         badges: badges,
-        lastTopic: d.lastTheoryTopic || '—',
+        lastTopic: lastTopicLabel(d.lastTheoryTopic || '—'),
       };
     } catch (e) {
-      return { empty: true, points: 0, quizDone: 0, quizTotal: THEORY_IDS.length, badges: 0, lastTopic: '—' };
+      return { empty: true, points: 0, quizDone: 0, quizTotal: ids.length, badges: 0, lastTopic: '—' };
     }
   }
 
@@ -235,6 +266,65 @@
     document.getElementById('btn-new-user').addEventListener('click', function () {
       openModal(null);
     });
+
+    var resetMsg = document.getElementById('admin-reset-progress-msg');
+    function showResetMsg(text, kind) {
+      if (!resetMsg) return;
+      if (!text) {
+        resetMsg.classList.add('hidden');
+        resetMsg.textContent = '';
+        return;
+      }
+      resetMsg.classList.remove('hidden', 'border-emerald-500/30', 'bg-emerald-950/20', 'text-emerald-200');
+      resetMsg.classList.remove('border-red-500/30', 'bg-red-950/20', 'text-red-200');
+      if (kind === 'error') {
+        resetMsg.classList.add('border-red-500/30', 'bg-red-950/20', 'text-red-200');
+      } else {
+        resetMsg.classList.add('border-emerald-500/30', 'bg-emerald-950/20', 'text-emerald-200');
+      }
+      resetMsg.textContent = text;
+    }
+
+    var btnResetAll = document.getElementById('admin-reset-all-progress');
+    if (btnResetAll) {
+      btnResetAll.addEventListener('click', function () {
+        var students = LabUsers.getUsers().filter(function (u) {
+          return u.role === 'student';
+        });
+        if (!students.length) {
+          showResetMsg('No hay cuentas con rol estudiante.', 'error');
+          return;
+        }
+        if (
+          !confirm(
+            '¿Eliminar el progreso del laboratorio de TODOS los estudiantes en este navegador?\n\n' +
+              'Se borrarán puntos, cuestionarios, retos e insignias guardadas por estudiante. Los usuarios y contraseñas no se tocan.\n\n' +
+              'Esta acción no se puede deshacer.'
+          )
+        ) {
+          return;
+        }
+        if (
+          !confirm(
+            'Confirmación final: se afectará a ' +
+              students.length +
+              ' cuenta(s) estudiante. ¿Continuar?'
+          )
+        ) {
+          return;
+        }
+        var res = LabUsers.clearAllStudentsLabProgress();
+        if (!res.ok) {
+          showResetMsg('No se pudo completar el borrado (revisa permisos del almacenamiento).', 'error');
+          return;
+        }
+        showResetMsg(
+          'Progreso reiniciado para ' + res.studentsCleared + ' estudiante(s). La tabla se actualiza a continuación.',
+          'ok'
+        );
+        renderProgress();
+      });
+    }
 
     document.getElementById('admin-modal-cancel').addEventListener('click', closeModal);
     modalBackdrop.addEventListener('click', function (e) {

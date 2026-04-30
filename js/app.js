@@ -19,7 +19,8 @@
    * Orden estricto de lo más básico a lo más avanzado.
    * Cada tema se desbloquea solo tras el cuestionario del tema anterior (1.1 → 1.2 → … → 3.3).
    */
-  var THEORY_IDS = [
+  /** Temario base (orden de desbloqueo). Los temas del docente se concatenan después. */
+  var BASE_THEORY_IDS = [
     'algoritmos',
     'variables',
     'entrada_salida',
@@ -31,6 +32,13 @@
     'funciones',
     'pruebas_trazado',
   ];
+
+  function getTheoryIds() {
+    if (typeof LabCustomTopics !== 'undefined' && LabCustomTopics.getCustomTopicIdsOrdered) {
+      return BASE_THEORY_IDS.concat(LabCustomTopics.getCustomTopicIdsOrdered());
+    }
+    return BASE_THEORY_IDS.slice();
+  }
 
   /** Retos agrupados por nivel; el Nivel n exige mayoría de retos completos del Nivel n−1. */
   var CHALLENGE_IDS_BY_LEVEL = {
@@ -86,8 +94,9 @@
   }
 
   function getNextPendingQuizTopicId(st) {
-    for (var i = 0; i < THEORY_IDS.length; i++) {
-      if (!st.quizRewards[THEORY_IDS[i]]) return THEORY_IDS[i];
+    var ids = getTheoryIds();
+    for (var i = 0; i < ids.length; i++) {
+      if (!st.quizRewards[ids[i]]) return ids[i];
     }
     return null;
   }
@@ -96,6 +105,7 @@
     for (var i = 0; i < THEORY_LEVEL_GROUPS.length; i++) {
       if (THEORY_LEVEL_GROUPS[i].topicIds.indexOf(topicId) !== -1) return THEORY_LEVEL_GROUPS[i].level;
     }
+    if (typeof LabCustomTopics !== 'undefined' && LabCustomTopics.findTopic(topicId)) return 4;
     return 1;
   }
 
@@ -104,7 +114,31 @@
     return ((100 * done) / total).toFixed(1);
   }
 
-  var DASHBOARD_DONUT_COLORS = ['#22d3ee', '#34d399', '#a78bfa'];
+  var DASHBOARD_DONUT_COLORS = ['#22d3ee', '#34d399', '#a78bfa', '#f472b6'];
+
+  function getDashboardLevelGroups() {
+    var groups = THEORY_LEVEL_GROUPS.map(function (g) {
+      return {
+        level: g.level,
+        title: g.title,
+        subtitle: g.subtitle,
+        topicIds: g.topicIds.slice(),
+      };
+    });
+    var customIds =
+      typeof LabCustomTopics !== 'undefined' && LabCustomTopics.getCustomTopicIdsOrdered
+        ? LabCustomTopics.getCustomTopicIdsOrdered()
+        : [];
+    if (customIds.length) {
+      groups.push({
+        level: 4,
+        title: 'Nivel docente · Temas añadidos',
+        subtitle: customIds.length + ' unidad(es) extra',
+        topicIds: customIds,
+      });
+    }
+    return groups;
+  }
 
   function createDashboardDonutSvg(percent, colorStroke) {
     var p = Math.max(0, Math.min(100, percent));
@@ -143,8 +177,9 @@
     var el = document.getElementById('dashboard-you-are-here');
     if (!el) return;
     var nextId = getNextPendingQuizTopicId(st);
-    var totalTheory = THEORY_IDS.length;
-    var doneTheory = countQuizzesDoneInTopicList(st, THEORY_IDS);
+    var idsAll = getTheoryIds();
+    var totalTheory = idsAll.length;
+    var doneTheory = countQuizzesDoneInTopicList(st, idsAll);
     var globalPct = formatPercentExact(doneTheory, totalTheory);
 
     if (!nextId) {
@@ -160,7 +195,7 @@
     }
 
     var lvl = topicIdToTheoryLevel(nextId);
-    var title = TOPIC_TITLE_FOR_LOCK[nextId] || nextId;
+    var title = getTopicDisplayTitle(nextId);
     el.innerHTML =
       '<strong>Tu posición:</strong> el siguiente paso está en el <strong>Nivel ' +
       lvl +
@@ -182,7 +217,7 @@
     renderDashboardYouAreHere(st);
     mount.innerHTML = '';
 
-    THEORY_LEVEL_GROUPS.forEach(function (grp, gi) {
+    getDashboardLevelGroups().forEach(function (grp, gi) {
       var totalTopics = grp.topicIds.length;
       var doneTopics = countQuizzesDoneInTopicList(st, grp.topicIds);
       var pctNum = totalTopics ? (100 * doneTopics) / totalTopics : 0;
@@ -223,20 +258,22 @@
       wrap.appendChild(inner);
       card.appendChild(wrap);
 
-      var retos = document.createElement('p');
-      retos.className = 'mt-3 text-xs text-slate-400';
-      retos.innerHTML =
-        'Retos Nivel ' +
-        grp.level +
-        ': <strong class="text-slate-300">' +
-        chDone +
-        '/' +
-        chTotal +
-        '</strong>' +
-        (chTotal
-          ? ' (<strong class="text-slate-300">' + formatPercentExact(chDone, chTotal) + '%</strong>)'
-          : '');
-      card.appendChild(retos);
+      if (chTotal > 0) {
+        var retos = document.createElement('p');
+        retos.className = 'mt-3 text-xs text-slate-400';
+        retos.innerHTML =
+          'Retos Nivel ' +
+          grp.level +
+          ': <strong class="text-slate-300">' +
+          chDone +
+          '/' +
+          chTotal +
+          '</strong>' +
+          ' (<strong class="text-slate-300">' +
+          formatPercentExact(chDone, chTotal) +
+          '%</strong>)';
+        card.appendChild(retos);
+      }
 
       mount.appendChild(card);
     });
@@ -269,10 +306,22 @@
   var PROGRESS_BADGE_DEFS = [
     { id: 'explorer', label: 'Explorador', desc: 'Abriste el módulo Teoría + RA', icon: '🔭' },
     { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Completaste los 10 temas con modelo 3D/RA', icon: '📚' },
-    { id: 'quiz_master', label: 'Comprensión', desc: 'Acertaste los cuestionarios de los 10 temas', icon: '📝' },
+    {
+      id: 'quiz_master',
+      label: 'Comprensión',
+      desc: 'Acertaste todos los cuestionarios teóricos disponibles (base y del docente)',
+      icon: '📝',
+    },
   ];
 
   var POINTS_QUIZ_TOPIC = 20;
+
+  function getQuizPointsAward(topicId) {
+    if (typeof LabCustomTopics !== 'undefined' && LabCustomTopics.findTopic(topicId)) {
+      return LabCustomTopics.getPointsForTopic(topicId);
+    }
+    return POINTS_QUIZ_TOPIC;
+  }
 
   /**
    * Puntos necesarios para pasar del nivel `levelIndex` al siguiente (1 = primer tramo).
@@ -623,13 +672,23 @@
     ],
   };
 
+  function getQuizList(topicId) {
+    if (QUIZZES[topicId]) return QUIZZES[topicId];
+    if (typeof LabCustomTopics !== 'undefined') {
+      var cq = LabCustomTopics.getQuizForTopic(topicId);
+      if (cq && cq.length) return cq;
+    }
+    return null;
+  }
+
   function migrateTopicsVisited(data) {
+    var ids = getTheoryIds();
     var o = {};
-    THEORY_IDS.forEach(function (id) {
+    ids.forEach(function (id) {
       o[id] = false;
     });
     if (data.topicsVisited && typeof data.topicsVisited === 'object') {
-      THEORY_IDS.forEach(function (id) {
+      ids.forEach(function (id) {
         o[id] = !!data.topicsVisited[id];
       });
     } else if (data.theoryVisited) {
@@ -643,7 +702,7 @@
 
   function migrateQuizRewards(data) {
     var o = {};
-    THEORY_IDS.forEach(function (id) {
+    getTheoryIds().forEach(function (id) {
       o[id] = !!(data.quizRewards && data.quizRewards[id]);
     });
     return o;
@@ -696,7 +755,7 @@
         theoryVisited: !!data.theoryVisited,
         topicsVisited: migrateTopicsVisited(data),
         lastTheoryTopic:
-          typeof data.lastTheoryTopic === 'string' && THEORY_IDS.indexOf(data.lastTheoryTopic) !== -1
+          typeof data.lastTheoryTopic === 'string' && getTheoryIds().indexOf(data.lastTheoryTopic) !== -1
             ? data.lastTheoryTopic
             : 'algoritmos',
         studentName:
@@ -714,7 +773,7 @@
   function defaultState() {
     var tv = {};
     var qr = {};
-    THEORY_IDS.forEach(function (id) {
+    getTheoryIds().forEach(function (id) {
       tv[id] = false;
       qr[id] = false;
     });
@@ -752,15 +811,17 @@
 
   /** Tema 1.1 siempre abierto; cada siguiente tema exige cuestionario completo del anterior. */
   function isTopicUnlocked(st, topicId) {
-    var idx = THEORY_IDS.indexOf(topicId);
+    var ids = getTheoryIds();
+    var idx = ids.indexOf(topicId);
     if (idx === -1) return false;
     if (idx === 0) return true;
-    return !!st.quizRewards[THEORY_IDS[idx - 1]];
+    return !!st.quizRewards[ids[idx - 1]];
   }
 
   function getFirstUnlockedTopicId(st) {
-    for (var i = 0; i < THEORY_IDS.length; i++) {
-      if (isTopicUnlocked(st, THEORY_IDS[i])) return THEORY_IDS[i];
+    var ids = getTheoryIds();
+    for (var i = 0; i < ids.length; i++) {
+      if (isTopicUnlocked(st, ids[i])) return ids[i];
     }
     return 'algoritmos';
   }
@@ -808,7 +869,7 @@
   }
 
   function allTopicsVisited(state) {
-    return THEORY_IDS.every(function (id) {
+    return BASE_THEORY_IDS.every(function (id) {
       return state.topicsVisited[id];
     });
   }
@@ -822,7 +883,7 @@
   }
 
   function allQuizzesPassed(state) {
-    return THEORY_IDS.every(function (id) {
+    return getTheoryIds().every(function (id) {
       return state.quizRewards[id];
     });
   }
@@ -843,15 +904,21 @@
   function renderAllTopicQuizzes(currentState) {
     document.querySelectorAll('.topic-quiz-mount').forEach(function (mount) {
       var topicId = mount.getAttribute('data-topic-quiz');
-      if (!topicId || !QUIZZES[topicId]) return;
+      var quizList = topicId ? getQuizList(topicId) : null;
+      if (!topicId || !quizList) return;
 
       mount.innerHTML = '';
       var box = document.createElement('div');
       box.className = 'topic-quiz';
       box.setAttribute('data-quiz-box', topicId);
 
+      var hasConsoleQ = quizList.some(function (q) {
+        return q.kind === 'console';
+      });
       var title = document.createElement('h4');
-      title.textContent = 'Comprueba lo aprendido (concepto + mini‑código, opción múltiple)';
+      title.textContent = hasConsoleQ
+        ? 'Comprueba lo aprendido (opción múltiple y consola — el código no se ejecuta, solo se comprueba el texto)'
+        : 'Comprueba lo aprendido (concepto + mini‑código, opción múltiple)';
       box.appendChild(title);
 
       if (currentState.quizRewards[topicId]) {
@@ -859,12 +926,12 @@
         done.className = 'quiz-done-badge';
         done.textContent =
           'Completado: acertaste todas las preguntas del tema (incluidas las de código). +' +
-          POINTS_QUIZ_TOPIC +
+          getQuizPointsAward(topicId) +
           ' pts (solo la primera vez).';
         box.appendChild(done);
       }
 
-      QUIZZES[topicId].forEach(function (question, qi) {
+      quizList.forEach(function (question, qi) {
         var wrapQ = document.createElement('div');
         wrapQ.className = 'quiz-question';
 
@@ -873,28 +940,49 @@
         pq.textContent = qi + 1 + '. ' + question.q;
         wrapQ.appendChild(pq);
 
-        var opts = document.createElement('div');
-        opts.className = 'quiz-options';
-
-        question.opts.forEach(function (opt) {
-          var lab = document.createElement('label');
-          lab.className = 'quiz-option';
-          var inp = document.createElement('input');
-          inp.type = 'radio';
-          inp.name = 'quiz-' + topicId + '-' + qi;
-          inp.value = opt.k;
-          if (currentState.quizRewards[topicId]) {
-            inp.disabled = true;
-            if (opt.k === question.correct) inp.checked = true;
+        if (question.kind === 'console') {
+          if (question.hint) {
+            var hintEl = document.createElement('p');
+            hintEl.className = 'text-xs text-slate-500';
+            hintEl.textContent = question.hint;
+            wrapQ.appendChild(hintEl);
           }
-          lab.appendChild(inp);
-          var span = document.createElement('span');
-          span.textContent = opt.t;
-          lab.appendChild(span);
-          opts.appendChild(lab);
-        });
+          var ta = document.createElement('textarea');
+          ta.className =
+            'challenge-textarea quiz-console-input mt-2 min-h-[8rem] w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent';
+          ta.setAttribute('data-quiz-console', topicId + '-' + qi);
+          ta.setAttribute('spellcheck', 'false');
+          ta.placeholder = question.placeholder || 'Escribe tu código aquí (JavaScript o pseudocódigo según indique el docente)…';
+          if (currentState.quizRewards[topicId]) {
+            ta.disabled = true;
+            ta.value = '';
+            ta.placeholder = 'Completado.';
+          }
+          wrapQ.appendChild(ta);
+        } else {
+          var opts = document.createElement('div');
+          opts.className = 'quiz-options';
 
-        wrapQ.appendChild(opts);
+          question.opts.forEach(function (opt) {
+            var lab = document.createElement('label');
+            lab.className = 'quiz-option';
+            var inp = document.createElement('input');
+            inp.type = 'radio';
+            inp.name = 'quiz-' + topicId + '-' + qi;
+            inp.value = opt.k;
+            if (currentState.quizRewards[topicId]) {
+              inp.disabled = true;
+              if (opt.k === question.correct) inp.checked = true;
+            }
+            lab.appendChild(inp);
+            var span = document.createElement('span');
+            span.textContent = opt.t;
+            lab.appendChild(span);
+            opts.appendChild(lab);
+          });
+
+          wrapQ.appendChild(opts);
+        }
         box.appendChild(wrapQ);
       });
 
@@ -915,9 +1003,41 @@
           labels.forEach(function (l) {
             l.classList.remove('quiz-option--correct', 'quiz-option--wrong');
           });
+          box.querySelectorAll('.quiz-console-input').forEach(function (ta) {
+            ta.classList.remove('border-amber-500', 'border-emerald-500/70', 'ring-2', 'ring-amber-500/30', 'ring-emerald-500/20');
+            ta.classList.add('border-lab-border');
+          });
 
           var unanswered = 0;
-          QUIZZES[topicId].forEach(function (question, qi) {
+          var firstConsoleMsg = '';
+          quizList.forEach(function (question, qi) {
+            if (question.kind === 'console') {
+              var ta = box.querySelector('textarea[data-quiz-console="' + topicId + '-' + qi + '"]');
+              var val = ta ? ta.value : '';
+              if (!val.trim()) {
+                unanswered += 1;
+                allOk = false;
+                if (ta) {
+                  ta.classList.remove('border-lab-border');
+                  ta.classList.add('border-amber-500', 'ring-2', 'ring-amber-500/30');
+                }
+              } else {
+                var vr = validateTeacherConsoleAnswer(question, val);
+                if (!vr.ok) {
+                  allOk = false;
+                  if (ta) {
+                    ta.classList.remove('border-lab-border');
+                    ta.classList.add('border-amber-500', 'ring-2', 'ring-amber-500/30');
+                  }
+                  if (!firstConsoleMsg) firstConsoleMsg = vr.message;
+                } else if (ta) {
+                  ta.classList.remove('border-lab-border');
+                  ta.classList.add('border-emerald-500/70', 'ring-2', 'ring-emerald-500/20');
+                }
+              }
+              return;
+            }
+
             var name = 'quiz-' + topicId + '-' + qi;
             var sel = box.querySelector('input[name="' + name + '"]:checked');
             var picked = sel ? sel.value : null;
@@ -944,7 +1064,7 @@
             feedback.textContent =
               '¡Muy bien! Demuestras que entiendes las ideas clave de este tema.';
             currentState.quizRewards[topicId] = true;
-            currentState.points += POINTS_QUIZ_TOPIC;
+            currentState.points += getQuizPointsAward(topicId);
             saveState(currentState);
             updatePointsDisplay(currentState);
             maybeAwardQuizMasterBadge(currentState);
@@ -952,13 +1072,16 @@
             renderAllTopicQuizzes(currentState);
           } else {
             feedback.className = 'quiz-feedback-msg text-amber-400';
-            feedback.textContent =
-              'Algunas respuestas no son correctas. En verde está la opción adecuada; en rojo, la que elegiste si era incorrecta. Vuelve a intentar.';
             if (unanswered > 0) {
               feedback.textContent =
-                unanswered === QUIZZES[topicId].length
-                  ? 'Selecciona una opción en cada pregunta y pulsa Comprobar de nuevo.'
-                  : 'Falta marcar una o más preguntas. Completa todas y vuelve a comprobar.';
+                unanswered === quizList.length
+                  ? 'Completa todas las preguntas (opciones y/o código en consola) y pulsa Comprobar de nuevo.'
+                  : 'Falta marcar alguna opción o escribir código en consola donde corresponda.';
+            } else if (firstConsoleMsg) {
+              feedback.textContent = firstConsoleMsg;
+            } else {
+              feedback.textContent =
+                'Algunas respuestas no son correctas. En opción múltiple: en verde la correcta; en rojo, la elegida si falló. En consola: borde verde si el texto cumple las reglas del docente.';
             }
             btn.disabled = false;
           }
@@ -976,7 +1099,7 @@
   }
 
   function markTopicVisited(state, topicId) {
-    if (THEORY_IDS.indexOf(topicId) === -1) return;
+    if (getTheoryIds().indexOf(topicId) === -1) return;
     if (!state.topicsVisited[topicId]) {
       state.topicsVisited[topicId] = true;
       saveState(state);
@@ -991,6 +1114,38 @@
       .replace(/[\u0300-\u036f]/g, '')
       .replace(/\s+/g, ' ')
       .trim();
+  }
+
+  /** Validación de respuestas “consola” en cuestionarios de temas del docente (no ejecuta código). */
+  function validateTeacherConsoleAnswer(question, rawCode) {
+    var check = (question && question.consoleCheck) || {};
+    var code = rawCode == null ? '' : String(rawCode);
+    if (!code.trim()) {
+      return { ok: false, message: 'Escribe código o texto en el área de consola de esta pregunta.' };
+    }
+    var minLen = typeof check.minLength === 'number' ? Math.max(0, Math.min(2000, check.minLength)) : 0;
+    if (code.trim().length < minLen) {
+      return {
+        ok: false,
+        message: 'Tu respuesta es demasiado corta: el docente definió una longitud mínima para esta consigna.',
+      };
+    }
+    var n = normalizeForCheck(code);
+    if (check.requireConsoleLog && n.indexOf('console.log') === -1) {
+      return { ok: false, message: 'Debes incluir console.log en tu código, como indica el enunciado.' };
+    }
+    var must = Array.isArray(check.mustInclude) ? check.mustInclude : [];
+    for (var i = 0; i < must.length; i++) {
+      var frag = normalizeForCheck(must[i] || '');
+      if (frag && n.indexOf(frag) === -1) {
+        return {
+          ok: false,
+          message:
+            'Tu código aún no incluye todo lo que pidió el docente. Repasa la consigna y las pistas, y comprueba mayúsculas o símbolos.',
+        };
+      }
+    }
+    return { ok: true, message: '' };
   }
 
   function validateConditionalSolution(code) {
@@ -1724,6 +1879,15 @@
     pruebas_trazado: '3.3 · Pruebas y trazado',
   };
 
+  function getTopicDisplayTitle(topicId) {
+    if (TOPIC_TITLE_FOR_LOCK[topicId]) return TOPIC_TITLE_FOR_LOCK[topicId];
+    if (typeof LabCustomTopics !== 'undefined') {
+      var ct = LabCustomTopics.findTopic(topicId);
+      if (ct) return ct.tabLabel || ct.title;
+    }
+    return topicId;
+  }
+
   function getChallengeDef(challengeId) {
     for (var i = 0; i < CHALLENGE_DEFS.length; i++) {
       if (CHALLENGE_DEFS[i].id === challengeId) return CHALLENGE_DEFS[i];
@@ -1744,7 +1908,7 @@
     if (!st.quizRewards[c.requiresQuizTopic]) {
       return (
         'Bloqueado: responde bien el cuestionario de «' +
-        (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic) +
+        getTopicDisplayTitle(c.requiresQuizTopic) +
         '» en Teoría + RA (los temas se abren en orden: 1.1, luego 1.2, etc.).'
       );
     }
@@ -2158,7 +2322,7 @@
   }
 
   function showTheoryTopic(topicId) {
-    if (THEORY_IDS.indexOf(topicId) === -1) topicId = 'algoritmos';
+    if (getTheoryIds().indexOf(topicId) === -1) topicId = 'algoritmos';
     if (!isTopicUnlocked(state, topicId)) {
       topicId = getFirstUnlockedTopicId(state);
     }
@@ -2235,6 +2399,9 @@
 
   document.documentElement.setAttribute('data-lab-auth', '1');
   wireThemeToggle();
+  if (typeof LabCustomTopics !== 'undefined') {
+    LabCustomTopics.injectTheoryUI();
+  }
   clampLastTheoryTopic(state);
   syncChallengeBadgesFromRewards(state);
   saveState(state);
@@ -2303,8 +2470,11 @@
     });
   });
 
-  document.querySelectorAll('.topic-tab').forEach(function (tab) {
-    tab.addEventListener('click', function () {
+  var topicTabsHost = document.getElementById('topic-tabs');
+  if (topicTabsHost) {
+    topicTabsHost.addEventListener('click', function (ev) {
+      var tab = ev.target.closest('.topic-tab');
+      if (!tab || !topicTabsHost.contains(tab)) return;
       var topic = tab.getAttribute('data-topic');
       if (!topic) return;
       if (!isTopicUnlocked(state, topic)) {
@@ -2315,7 +2485,7 @@
       }
       showTheoryTopic(topic);
     });
-  });
+  }
 
   if (customElements.whenDefined) {
     customElements.whenDefined('model-viewer').then(wireAllModelViewers).catch(wireAllModelViewers);
