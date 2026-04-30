@@ -5,14 +5,71 @@
   'use strict';
 
   var STORAGE_KEY = 'interactiveCodeLab_v1';
-  /* Orden pedagógico por niveles: N1 fund. → N2 expresión/rep. → N3 datos/módulos */
-  var THEORY_IDS = ['algoritmos', 'variables', 'operadores', 'bucles', 'arreglos', 'funciones'];
+  /**
+   * Orden estricto de lo más básico a lo más avanzado.
+   * Cada tema se desbloquea solo tras el cuestionario del tema anterior (1.1 → 1.2 → … → 3.3).
+   */
+  var THEORY_IDS = [
+    'algoritmos',
+    'variables',
+    'entrada_salida',
+    'operadores',
+    'decisiones_multiples',
+    'cadenas',
+    'bucles',
+    'arreglos',
+    'funciones',
+    'pruebas_trazado',
+  ];
+
+  /** Retos agrupados por nivel; el Nivel n exige mayoría de retos completos del Nivel n−1. */
+  var CHALLENGE_IDS_BY_LEVEL = {
+    1: ['conditional_age', 'variables_total', 'io_rectangle'],
+    2: ['operators_parity', 'grades_letter', 'string_length', 'loop_sum'],
+    3: ['array_average', 'function_double', 'trace_while'],
+  };
+
+  /** Mínimo de retos del nivel anterior que deben estar superados (mayoría estricta). */
+  function majorityThreshold(total) {
+    return Math.floor(total / 2) + 1;
+  }
+
+  function countChallengesDoneInList(st, ids) {
+    var n = 0;
+    for (var i = 0; i < ids.length; i++) {
+      if (st.challengeRewards[ids[i]]) n++;
+    }
+    return n;
+  }
+
+  /** ¿Se cumple el requisito de retos del nivel anterior para poder jugar retos de `challengeLevel`? */
+  function isPreviousLevelChallengesSatisfied(st, challengeLevel) {
+    if (challengeLevel <= 1) return true;
+    var prevLevel = challengeLevel - 1;
+    var prevIds = CHALLENGE_IDS_BY_LEVEL[prevLevel];
+    if (!prevIds || !prevIds.length) return true;
+    var need = majorityThreshold(prevIds.length);
+    return countChallengesDoneInList(st, prevIds) >= need;
+  }
+
+  function getPreviousLevelChallengeProgress(st, challengeLevel) {
+    if (challengeLevel <= 1) return null;
+    var prevLevel = challengeLevel - 1;
+    var prevIds = CHALLENGE_IDS_BY_LEVEL[prevLevel];
+    if (!prevIds || !prevIds.length) return null;
+    return {
+      level: prevLevel,
+      done: countChallengesDoneInList(st, prevIds),
+      need: majorityThreshold(prevIds.length),
+      total: prevIds.length,
+    };
+  }
 
   /** Insignias de progreso general (no son retos de código). */
   var PROGRESS_BADGE_DEFS = [
     { id: 'explorer', label: 'Explorador', desc: 'Abriste el módulo Teoría + RA', icon: '🔭' },
-    { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Completaste los 6 temas (3 niveles) con su modelo 3D', icon: '📚' },
-    { id: 'quiz_master', label: 'Comprensión', desc: 'Acertaste los cuestionarios de los 6 temas', icon: '📝' },
+    { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Completaste los 10 temas con modelo 3D/RA', icon: '📚' },
+    { id: 'quiz_master', label: 'Comprensión', desc: 'Acertaste los cuestionarios de los 10 temas', icon: '📝' },
   ];
 
   var POINTS_QUIZ_TOPIC = 20;
@@ -21,10 +78,14 @@
     return {
       conditional_age: false,
       variables_total: false,
+      io_rectangle: false,
       operators_parity: false,
+      grades_letter: false,
       loop_sum: false,
+      string_length: false,
       array_average: false,
       function_double: false,
+      trace_while: false,
     };
   }
 
@@ -32,10 +93,14 @@
   var CHALLENGE_BADGE_TO_REWARD_KEY = {
     conditional_master: 'conditional_age',
     reto_variables: 'variables_total',
+    reto_entrada_salida: 'io_rectangle',
     reto_operadores: 'operators_parity',
+    reto_decisiones: 'grades_letter',
     reto_bucle: 'loop_sum',
+    reto_cadenas: 'string_length',
     reto_arreglos: 'array_average',
     reto_funciones: 'function_double',
+    reto_trazado: 'trace_while',
   };
 
   /** Dos preguntas por tema; tres opciones; una correcta (clave k). */
@@ -59,6 +124,15 @@
           { k: 'c', t: 'Un triángulo equilátero.' },
         ],
       },
+      {
+        q: 'Mini‑código: ¿cuál línea abre bien un `if` que comprueba si `edad` es mayor o igual a 18?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'if edad >= 18 {' },
+          { k: 'b', t: 'if (edad >= 18) {' },
+          { k: 'c', t: 'if [edad >= 18] {' },
+        ],
+      },
     ],
     variables: [
       {
@@ -77,6 +151,15 @@
           { k: 'a', t: '"false" entre comillas dobles.' },
           { k: 'b', t: 'false sin comillas.' },
           { k: 'c', t: 'El número 0 como único valor posible.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: ¿cuál declara la variable `nombre` y guarda el texto "Ana"?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'nombre = "Ana";' },
+          { k: 'b', t: 'let nombre = "Ana";' },
+          { k: 'c', t: 'let nombre == "Ana";' },
         ],
       },
     ],
@@ -99,6 +182,15 @@
           { k: 'c', t: '21 (producto de 7 y 3).' },
         ],
       },
+      {
+        q: 'Mini‑código: ¿qué expresión calcula el resto de dividir `n` entre `2` (par/impar)?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'n / 2' },
+          { k: 'b', t: 'n % 2' },
+          { k: 'c', t: 'n ** 2' },
+        ],
+      },
     ],
     bucles: [
       {
@@ -117,6 +209,15 @@
           { k: 'a', t: 'El nombre del archivo fuente.' },
           { k: 'b', t: 'La actualización del contador (ej. `i++`).' },
           { k: 'c', t: 'Un mensaje de error obligatorio.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: ¿cuál es una cabecera válida de `while` en JavaScript?',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'while (i < 10) {' },
+          { k: 'b', t: 'while i < 10 {' },
+          { k: 'c', t: 'while [i < 10] {' },
         ],
       },
     ],
@@ -139,6 +240,15 @@
           { k: 'c', t: '30' },
         ],
       },
+      {
+        q: 'Mini‑código: ¿cuál crea un arreglo con los números 8, 9 y 10?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'let notas = (8, 9, 10);' },
+          { k: 'b', t: 'let notas = [8, 9, 10];' },
+          { k: 'c', t: 'let notas = {8, 9, 10};' },
+        ],
+      },
     ],
     funciones: [
       {
@@ -159,6 +269,131 @@
           { k: 'c', t: 'Tipos de retorno obligatorios.' },
         ],
       },
+      {
+        q: 'Mini‑código: ¿cuál define una función `doble` con parámetro `x` en JavaScript?',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'function doble(x) { }' },
+          { k: 'b', t: 'def doble(x):' },
+          { k: 'c', t: 'fun doble(x) { }' },
+        ],
+      },
+    ],
+    entrada_salida: [
+      {
+        q: 'En lógica de programación, la “salida” de un algoritmo suele referirse a…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Solo a cerrar el programa.' },
+          { k: 'b', t: 'Los resultados que se muestran o entregan después de procesar.' },
+          { k: 'c', t: 'Al archivo donde guardas el código fuente.' },
+        ],
+      },
+      {
+        q: 'En el esquema entrada → proceso → salida, la **entrada** suele ser…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Solo el mensaje final que ves en pantalla.' },
+          { k: 'b', t: 'Los datos o valores que el programa recibe para trabajar.' },
+          { k: 'c', t: 'Únicamente el código fuente guardado en el archivo.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: en el navegador, ¿qué instrucción muestra `area` en la consola (como “imprimir”)?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'print(area);' },
+          { k: 'b', t: 'console.log(area);' },
+          { k: 'c', t: 'echo area;' },
+        ],
+      },
+    ],
+    decisiones_multiples: [
+      {
+        q: 'En JavaScript, si la primera condición de un `if` no se cumple y quieres probar otra distinta, suele usarse…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Solo otro `if` sin relación (nunca encadenado).' },
+          { k: 'b', t: '`else if` (otra condición en cadena).' },
+          { k: 'c', t: 'El operador `++` obligatorio.' },
+        ],
+      },
+      {
+        q: 'Un `if` dentro de otro `if` se llama condicional…',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'Anidado.' },
+          { k: 'b', t: 'Infinito.' },
+          { k: 'c', t: 'Duplicado ilegal.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: tras un `if` que no se cumple, ¿qué encadena otra condición (antes del `else` final)?',
+        correct: 'a',
+        opts: [
+          { k: 'a', t: 'else if (nota >= 70) { }' },
+          { k: 'b', t: 'elseif (nota >= 70) { }' },
+          { k: 'c', t: 'else then (nota >= 70) { }' },
+        ],
+      },
+    ],
+    cadenas: [
+      {
+        q: 'En JavaScript, ¿qué devuelve `"Hola".length`?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: '0' },
+          { k: 'b', t: '4 (cuatro caracteres).' },
+          { k: 'c', t: 'El texto "length".' },
+        ],
+      },
+      {
+        q: 'Concatenar dos cadenas en JavaScript con `+` significa…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Sumar sus longitudes numéricamente siempre.' },
+          { k: 'b', t: 'Unir los textos uno detrás del otro.' },
+          { k: 'c', t: 'Comparar si son iguales.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: si `s` es una cadena, ¿cómo se obtiene su longitud en JavaScript?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'length(s)' },
+          { k: 'b', t: 's.length' },
+          { k: 'c', t: 's.len' },
+        ],
+      },
+    ],
+    pruebas_trazado: [
+      {
+        q: 'Un comentario con `//` en JavaScript…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'Se ejecuta como instrucción normal.' },
+          { k: 'b', t: 'Lo ignora el intérprete; sirve para humanos.' },
+          { k: 'c', t: 'Solo puede ir al final del archivo.' },
+        ],
+      },
+      {
+        q: 'Antes de ejecutar código nuevo, una buena práctica es…',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: 'No leer el código y confiar ciegamente.' },
+          { k: 'b', t: 'Imaginar o anotar qué valores saldrían en cada paso (traza mental).' },
+          { k: 'c', t: 'Eliminar todas las llaves { }.' },
+        ],
+      },
+      {
+        q: 'Mini‑código: ¿cuál línea es un comentario de una sola línea en JavaScript (no se ejecuta)?',
+        correct: 'b',
+        opts: [
+          { k: 'a', t: '# traza: i = 0' },
+          { k: 'b', t: '// traza: i = 0' },
+          { k: 'c', t: '** traza: i = 0' },
+        ],
+      },
     ],
   };
 
@@ -174,6 +409,9 @@
     } else if (data.theoryVisited) {
       o.algoritmos = true;
     }
+    if (o.bucles && !o.cadenas) {
+      o.cadenas = true;
+    }
     return o;
   }
 
@@ -182,6 +420,18 @@
     THEORY_IDS.forEach(function (id) {
       o[id] = !!(data.quizRewards && data.quizRewards[id]);
     });
+    return o;
+  }
+
+  /**
+   * El temario pasó a enseñar cadenas (2.3) antes que bucles (2.4).
+   * Si un guardado antiguo tiene bucles aprobado pero no cadenas, se asume cadenas vista para no cerrar temas ya alcanzados.
+   */
+  function migrateQuizRewardsWithOrderFix(data) {
+    var o = migrateQuizRewards(data);
+    if (o.bucles && !o.cadenas) {
+      o.cadenas = true;
+    }
     return o;
   }
 
@@ -223,7 +473,7 @@
           typeof data.studentName === 'string' && data.studentName.trim()
             ? data.studentName.trim()
             : 'Estudiante',
-        quizRewards: migrateQuizRewards(data),
+        quizRewards: migrateQuizRewardsWithOrderFix(data),
         challengeRewards: migrateChallengeRewards(data),
       };
     } catch (e) {
@@ -306,7 +556,10 @@
       } else {
         tab.classList.add('topic-tab--locked');
         tab.setAttribute('aria-disabled', 'true');
-        tab.setAttribute('title', 'Completa el cuestionario del tema anterior (todas las respuestas correctas) para desbloquear este tema.');
+        tab.setAttribute(
+          'title',
+          'Completa el cuestionario del tema anterior (todas las preguntas, incluidas las de código) para desbloquear este tema.'
+        );
         tab.setAttribute('tabindex', '-1');
       }
     });
@@ -356,14 +609,16 @@
       box.setAttribute('data-quiz-box', topicId);
 
       var title = document.createElement('h4');
-      title.textContent = 'Comprueba lo aprendido (opción múltiple)';
+      title.textContent = 'Comprueba lo aprendido (concepto + mini‑código, opción múltiple)';
       box.appendChild(title);
 
       if (currentState.quizRewards[topicId]) {
         var done = document.createElement('div');
         done.className = 'quiz-done-badge';
         done.textContent =
-          'Completado: respondiste bien las dos preguntas. +' + POINTS_QUIZ_TOPIC + ' pts (solo la primera vez).';
+          'Completado: acertaste todas las preguntas del tema (incluidas las de código). +' +
+          POINTS_QUIZ_TOPIC +
+          ' pts (solo la primera vez).';
         box.appendChild(done);
       }
 
@@ -474,6 +729,7 @@
     });
     renderTopicTabsLockState(currentState);
     renderChallengePanels(currentState);
+    renderChallengeBadgesCard(currentState);
   }
 
   function markTopicVisited(state, topicId) {
@@ -799,6 +1055,161 @@
     };
   }
 
+  function validateIoRectangle(code) {
+    if (!code || code.trim().length < 12) {
+      return {
+        ok: false,
+        message: 'Escribe unas líneas: dos medidas, el área y un console.log para ver el 20.',
+      };
+    }
+    var n = normalizeForCheck(code);
+    var hasBase = n.includes('base') || n.includes('ancho') || n.includes('width');
+    var hasAlt = n.includes('altura') || n.includes('alto') || n.includes('height');
+    if (!hasBase || !hasAlt) {
+      return {
+        ok: false,
+        message: 'Declara dos variables con nombres claros, por ejemplo base (o ancho) y altura (o alto).',
+      };
+    }
+    if (!n.includes('4') || !n.includes('5') || !n.includes('20')) {
+      return {
+        ok: false,
+        message: 'Usa base 4 y altura 5; el área del rectángulo debe quedar como 20 en el resultado o en el mensaje.',
+      };
+    }
+    if (!n.includes('*') && !n.includes('area')) {
+      return {
+        ok: false,
+        message: 'El área es base por altura: en código suele ser base * altura (asterisco).',
+      };
+    }
+    if (!n.includes('console.log')) {
+      return {
+        ok: false,
+        message: 'Muestra el resultado con console.log para practicar la “salida” en la consola.',
+      };
+    }
+    return {
+      ok: true,
+      message: '¡Bien! Conectaste datos de entrada, cálculo y salida como en un algoritmo pequeño.',
+    };
+  }
+
+  function validateGradesLetter(code) {
+    if (!code || code.trim().length < 20) {
+      return {
+        ok: false,
+        message: 'Necesitas varias ramas: piensa en nota alta, nota media y el resto. Usa if y else if.',
+      };
+    }
+    var n = normalizeForCheck(code);
+    if (!n.includes('nota')) {
+      return {
+        ok: false,
+        message: 'Usa una variable llamada por ejemplo nota para guardar la calificación numérica.',
+      };
+    }
+    if (!n.includes('85')) {
+      return {
+        ok: false,
+        message: 'El reto pide probar con nota 85: debe aparecer ese número en tu código (asignación o comentario de prueba).',
+      };
+    }
+    var hasChain = /\belse\s+if\b/.test(code) || (n.includes('else') && n.includes('if'));
+    if (!hasChain || !n.includes('90') || !n.includes('70')) {
+      return {
+        ok: false,
+        message: 'Encadena condiciones: típicamente nota >= 90 para una letra, else if nota >= 70 para otra, y else para la última. Revisa los umbrales 90 y 70.',
+      };
+    }
+    var hasB =
+      n.includes('letra b') ||
+      n.includes('letra: b') ||
+      n.includes('"b"') ||
+      n.includes("'b'") ||
+      (n.includes('console.log') && n.includes('b') && n.includes('85'));
+    if (!hasB) {
+      return {
+        ok: false,
+        message: 'Deja claro en el resultado que la nota 85 corresponde a la letra B (por ejemplo un mensaje con “letra B” o la b entre comillas).',
+      };
+    }
+    return {
+      ok: true,
+      message: '¡Muy bien! Ordenaste varias condiciones y la nota 85 cae en la categoría B.',
+    };
+  }
+
+  function validateStringLength(code) {
+    if (!code || code.trim().length < 15) {
+      return {
+        ok: false,
+        message: 'Declara un texto, usa .length y muestra el número en consola.',
+      };
+    }
+    var n = normalizeForCheck(code);
+    if (!n.includes('hola') || !n.includes('.length')) {
+      return {
+        ok: false,
+        message: 'Crea una cadena con la palabra Hola entre comillas y léela con .length (cuántos caracteres tiene).',
+      };
+    }
+    if (!n.includes('console.log')) {
+      return {
+        ok: false,
+        message: 'Añade console.log(...) para ver en la consola la longitud (debe ser 4 para "Hola").',
+      };
+    }
+    if (!n.includes('4')) {
+      return {
+        ok: false,
+        message: 'La palabra "Hola" tiene 4 letras: deja el 4 visible en un comentario o en el mensaje.',
+      };
+    }
+    return {
+      ok: true,
+      message: '¡Genial! Ya relacionas texto, longitud y salida por consola.',
+    };
+  }
+
+  function validateTraceWhile(code) {
+    if (!code || code.trim().length < 25) {
+      return {
+        ok: false,
+        message: 'Escribe un while que cuente con i desde 0, imprima i en cada vuelta y sume 1 a i hasta que i sea 2.',
+      };
+    }
+    var n = normalizeForCheck(code);
+    if (!/\bwhile\s*\(/.test(code) && !n.includes('mientras')) {
+      return {
+        ok: false,
+        message: 'Usa un bucle while (o mientras en pseudocódigo) como en el tema de pruebas y trazado.',
+      };
+    }
+    if (!n.includes('i') || !n.includes('0') || !n.includes('2')) {
+      return {
+        ok: false,
+        message: 'El patrón típico empieza con i en 0 y repite mientras i sea menor que 2 (así salen dos números en consola).',
+      };
+    }
+    if (!n.includes('console.log')) {
+      return {
+        ok: false,
+        message: 'Dentro del bucle, muestra el valor de i con console.log para ver la traza 0 y 1.',
+      };
+    }
+    if (!n.includes('++') && !n.includes('i = i + 1') && !n.includes('i=i+1')) {
+      return {
+        ok: false,
+        message: 'En cada vuelta debes acercar i al final: por ejemplo i++ o i = i + 1, si no el bucle no termina bien.',
+      };
+    }
+    return {
+      ok: true,
+      message: '¡Perfecto! Ese while reproduce la traza 0 luego 1, ideal para practicar lectura de código.',
+    };
+  }
+
   var CHALLENGE_DEFS = [
     {
       id: 'conditional_age',
@@ -807,6 +1218,7 @@
       desc: 'Reto: acceso por edad',
       icon: '🔷',
       requiresQuizTopic: 'algoritmos',
+      challengeLevel: 1,
       points: 100,
       validate: validateConditionalSolution,
     },
@@ -817,8 +1229,20 @@
       desc: 'Reto: precio × cantidad',
       icon: '🏷️',
       requiresQuizTopic: 'variables',
+      challengeLevel: 1,
       points: 85,
       validate: validateVariablesTotal,
+    },
+    {
+      id: 'io_rectangle',
+      badgeId: 'reto_entrada_salida',
+      label: 'Entrada / salida',
+      desc: 'Reto: área del rectángulo',
+      icon: '📐',
+      requiresQuizTopic: 'entrada_salida',
+      challengeLevel: 1,
+      points: 85,
+      validate: validateIoRectangle,
     },
     {
       id: 'operators_parity',
@@ -827,8 +1251,31 @@
       desc: 'Reto: par/impar con %',
       icon: '🧮',
       requiresQuizTopic: 'operadores',
+      challengeLevel: 2,
       points: 85,
       validate: validateOperatorsParity,
+    },
+    {
+      id: 'grades_letter',
+      badgeId: 'reto_decisiones',
+      label: 'Decisiones múltiples',
+      desc: 'Reto: nota a letra',
+      icon: '🔀',
+      requiresQuizTopic: 'decisiones_multiples',
+      challengeLevel: 2,
+      points: 90,
+      validate: validateGradesLetter,
+    },
+    {
+      id: 'string_length',
+      badgeId: 'reto_cadenas',
+      label: 'Cadenas',
+      desc: 'Reto: longitud de texto',
+      icon: '📝',
+      requiresQuizTopic: 'cadenas',
+      challengeLevel: 2,
+      points: 80,
+      validate: validateStringLength,
     },
     {
       id: 'loop_sum',
@@ -837,6 +1284,7 @@
       desc: 'Reto: suma 1…10',
       icon: '🔄',
       requiresQuizTopic: 'bucles',
+      challengeLevel: 2,
       points: 90,
       validate: validateLoopSum,
     },
@@ -847,6 +1295,7 @@
       desc: 'Reto: promedio',
       icon: '📋',
       requiresQuizTopic: 'arreglos',
+      challengeLevel: 3,
       points: 90,
       validate: validateArrayAverage,
     },
@@ -857,8 +1306,20 @@
       desc: 'Reto: función doble',
       icon: '🔧',
       requiresQuizTopic: 'funciones',
+      challengeLevel: 3,
       points: 95,
       validate: validateFunctionDouble,
+    },
+    {
+      id: 'trace_while',
+      badgeId: 'reto_trazado',
+      label: 'Prueba y trazado',
+      desc: 'Reto: while y traza',
+      icon: '🔍',
+      requiresQuizTopic: 'pruebas_trazado',
+      challengeLevel: 3,
+      points: 85,
+      validate: validateTraceWhile,
     },
   ];
 
@@ -954,15 +1415,70 @@
         text: 'Puedes cambiar el nombre de la función o del parámetro, pero mantén return y la multiplicación por 2.',
       },
     ],
+    io_rectangle: [
+      {
+        text: 'El reto pide “datos de entrada” (base y altura), un cálculo en el medio y una salida visible. Piensa en papel: 4 × 5 = 20.',
+      },
+      {
+        text: 'Declara dos variables con los números del enunciado y una tercera (o directamente el producto) para el área.',
+        code: 'let base = 4;\nlet altura = 5;\nlet area = base * altura;',
+      },
+      {
+        text: 'Muestra el 20 con console.log. El validador busca 4, 5, 20, el asterisco de multiplicar y la palabra base o altura (o sinónimos como ancho/alto).',
+        code: 'console.log(area);  // 20',
+      },
+    ],
+    grades_letter: [
+      {
+        text: 'Aquí no basta un if/else simple: hay tres “cajones” (A, B, C). En JavaScript encadena con else if y deja un else final para el resto.',
+      },
+      {
+        text: 'Ejemplo de esqueleto: primero la nota más alta (≥90 → A), luego un tramo medio (≥70 → B), y todo lo demás → C. Ajusta los textos a tu estilo.',
+        code:
+          'let nota = 85;\nif (nota >= 90) {\n  console.log("Letra A");\n} else if (nota >= 70) {\n  console.log("Letra B");\n} else {\n  console.log("Letra C");\n}',
+      },
+      {
+        text: 'Comprueba mentalmente: 85 no llega a 90 pero sí a 70, así que debe caer en la rama B. Tu código debe mostrar algo con la letra B para ese caso.',
+      },
+    ],
+    string_length: [
+      {
+        text: 'Las cadenas van entre comillas. La propiedad .length cuenta caracteres (incluye letras y espacios si los hubiera).',
+        code: 'let saludo = "Hola";',
+      },
+      {
+        text: 'Hola tiene cuatro letras H-o-l-a, así que la longitud es 4. Puedes guardarla en una variable o ponerla directo en console.log.',
+        code: 'console.log(saludo.length);  // 4',
+      },
+      {
+        text: 'El validador quiere ver la palabra hola en minúsculas o mayúsculas en el código, .length y el número 4 en algún sitio (mensaje o comentario).',
+      },
+    ],
+    trace_while: [
+      {
+        text: 'Imagina una tabla con columnas: vuelta, valor de i, qué imprime. Eso es la traza. El código debe usar while, no solo for.',
+      },
+      {
+        text: 'Empieza con i = 0. La condición suele ser “mientras i sea menor que 2”. Dentro: console.log(i) y luego sube i con i++ o i = i + 1.',
+        code: 'let i = 0;\nwhile (i < 2) {\n  console.log(i);\n  i++;\n}',
+      },
+      {
+        text: 'Al ejecutar, la consola debe mostrar primero 0 y luego 1. Si te sobra otra línea, revisa la condición o el valor inicial.',
+      },
+    ],
   };
 
   var TOPIC_TITLE_FOR_LOCK = {
     algoritmos: '1.1 · Algoritmos y condicionales',
     variables: '1.2 · Variables y tipos',
+    entrada_salida: '1.3 · Entrada, proceso y salida',
     operadores: '2.1 · Operadores',
-    bucles: '2.2 · Bucles',
+    decisiones_multiples: '2.2 · Decisiones múltiples',
+    cadenas: '2.3 · Cadenas de texto',
+    bucles: '2.4 · Bucles',
     arreglos: '3.1 · Arreglos',
     funciones: '3.2 · Funciones',
+    pruebas_trazado: '3.3 · Pruebas y trazado',
   };
 
   function getChallengeDef(challengeId) {
@@ -975,7 +1491,38 @@
   function isChallengeUnlocked(st, challengeId) {
     var def = getChallengeDef(challengeId);
     if (!def) return false;
-    return !!st.quizRewards[def.requiresQuizTopic];
+    if (!st.quizRewards[def.requiresQuizTopic]) return false;
+    var lvl = def.challengeLevel != null ? def.challengeLevel : 1;
+    return isPreviousLevelChallengesSatisfied(st, lvl);
+  }
+
+  /** Mensaje de bloqueo para panel de reto (cuestionario o retos del nivel anterior). */
+  function getChallengeLockBannerText(st, c) {
+    if (!st.quizRewards[c.requiresQuizTopic]) {
+      return (
+        'Bloqueado: responde bien el cuestionario de «' +
+        (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic) +
+        '» en Teoría + RA (los temas se abren en orden: 1.1, luego 1.2, etc.).'
+      );
+    }
+    var lvl = c.challengeLevel != null ? c.challengeLevel : 1;
+    var prog = getPreviousLevelChallengeProgress(st, lvl);
+    if (!prog || prog.done >= prog.need) return '';
+    return (
+      'Bloqueado: los retos de Nivel ' +
+      lvl +
+      ' exigen la mayoría de retos del Nivel ' +
+      prog.level +
+      ' completados. Llevas ' +
+      prog.done +
+      ' de ' +
+      prog.total +
+      ' (necesitas al menos ' +
+      prog.need +
+      '). Ve a Retos y termina los del Nivel ' +
+      prog.level +
+      ' primero.'
+    );
   }
 
   function syncChallengeBadgesFromRewards(st) {
@@ -1014,8 +1561,7 @@
       } else if (unlocked) {
         sub.textContent = 'Disponible en Retos · ' + c.desc;
       } else {
-        sub.textContent =
-          'Bloqueado: completa el cuestionario de ' + (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic);
+        sub.textContent = getChallengeLockBannerText(st, c);
       }
       text.appendChild(title);
       text.appendChild(sub);
@@ -1041,10 +1587,7 @@
           banner.textContent = '';
         } else {
           banner.classList.remove('hidden');
-          banner.textContent =
-            'Bloqueado: responde bien el cuestionario de «' +
-            (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic) +
-            '» en Teoría + RA.';
+          banner.textContent = getChallengeLockBannerText(st, c);
         }
       }
 
@@ -1377,7 +1920,7 @@
       if (!topic) return;
       if (!isTopicUnlocked(state, topic)) {
         flashTopicLockHint(
-          'Este tema sigue bloqueado. Responde bien las dos preguntas del tema anterior para desbloquearlo.'
+          'Este tema sigue bloqueado. Responde bien todas las preguntas del cuestionario del tema anterior para desbloquearlo.'
         );
         return;
       }

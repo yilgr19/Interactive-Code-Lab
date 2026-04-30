@@ -353,3 +353,65 @@ model-viewer.model-viewer-3d {
   font-size: 0.75rem;
   color: #6ee7b7;
 }
+
+/* Resúmenes integrados por nivel (Teoría + RA) */
+.lab-level-summary {
+  border-radius: 0.75rem;
+  border: 1px solid rgba(30, 42, 58, 1);
+  background: rgba(11, 15, 20, 0.55);
+  overflow: hidden;
+}
+
+.lab-level-summary[open] {
+  border-color: rgba(34, 211, 238, 0.35);
+  box-shadow: 0 0 0 1px rgba(34, 211, 238, 0.08);
+}
+
+.lab-level-summary > summary {
+  cursor: pointer;
+  list-style: none;
+  padding: 0.85rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #e2e8f0;
+  user-select: none;
+}
+
+.lab-level-summary > summary::-webkit-details-marker {
+  display: none;
+}
+
+.lab-level-summary > summary::after {
+  content: '';
+  float: right;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-top: 0.35rem;
+  border-right: 2px solid rgba(34, 211, 238, 0.7);
+  border-bottom: 2px solid rgba(34, 211, 238, 0.7);
+  transform: rotate(45deg);
+  transition: transform 0.2s ease;
+}
+
+.lab-level-summary[open] > summary::after {
+  transform: rotate(-135deg);
+  margin-top: 0.5rem;
+}
+
+.lab-level-summary > summary:hover {
+  background: rgba(34, 211, 238, 0.06);
+}
+
+.lab-level-summary > summary:focus {
+  outline: none;
+}
+
+.lab-level-summary > summary:focus-visible {
+  outline: 2px solid rgba(34, 211, 238, 0.6);
+  outline-offset: 2px;
+}
+
+.lab-level-summary-body {
+  border-top: 1px solid rgba(30, 42, 58, 1);
+  padding: 1rem 1rem 1.25rem;
+}

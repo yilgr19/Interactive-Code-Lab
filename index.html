@@ -120,17 +120,21 @@
             <ul class="mt-6 grid gap-3 sm:grid-cols-2">
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">①</span>
-                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis temas en tres niveles</strong> (fundamentos → expresiones y bucles → arreglos y funciones), cada uno con modelo 3D/RA.</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Diez unidades en tres niveles</strong> (fundamentos → operadores, decisiones, texto y bucles → arreglos, funciones y trazado), en orden del más básico al más avanzado.</span>
               </li>
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">②</span>
-                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis retos de código</strong> alineados con cada tema (desbloqueo por cuestionario), con insignias en la barra lateral.</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Diez retos de código</strong> alineados con cada unidad (desbloqueo por cuestionario), con insignias en la barra lateral.</span>
+              </li>
+              <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4 sm:col-span-2">
+                <span class="text-lab-accent">③</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Tres resúmenes integrados</strong> (uno por nivel) en <strong class="text-slate-200">Teoría + RA</strong>: siempre disponibles para repasar la unidad, sin depender del cuestionario.</span>
               </li>
             </ul>
           </div>
         </section>
 
-        <!-- Theory + RA (6 temas, 6 modelos) -->
+        <!-- Theory + RA (10 temas; modelos .glb reutilizados donde aplica) -->
         <section id="section-theory" class="section-panel hidden max-w-4xl space-y-6">
           <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
             <p class="font-mono text-sm text-lab-accent">Módulo teórico · Lógica de programación (1.º semestre)</p>
@@ -143,34 +147,421 @@
               <strong class="text-slate-400">RA:</strong> carga el 3D primero; en móvil usa <strong class="text-slate-300">Escanear en mi espacio</strong> (Chrome Android / Safari iOS). Los puntos sobre el modelo amplían la explicación.
             </p>
             <p class="mt-3 rounded-lg border border-lab-border bg-lab-bg/40 px-4 py-3 text-xs text-slate-400 sm:text-sm">
-              <strong class="text-slate-200">Progresión por niveles:</strong> los temas van de <strong class="text-lab-accent">Nivel 1</strong> (ideas base y datos) a <strong class="text-lab-accent">Nivel 3</strong> (colecciones y funciones). <strong class="text-slate-300">Al inicio solo está disponible el tema 1.1;</strong> cada tema siguiente se desbloquea cuando respondes bien las dos preguntas del tema anterior.
+              <strong class="text-slate-200">Progresión lineal:</strong> del más simple al más avanzado (1.1 → 1.2 → … → 3.3). <strong class="text-slate-300">Solo el 1.1 está abierto al principio;</strong> al acertar <strong class="text-slate-200">todas las preguntas</strong> del cuestionario de un tema (concepto y mini‑código), se desbloquea el siguiente. En <strong class="text-lab-accent">Retos</strong>, el Nivel 2 y 3 piden además haber completado la <strong class="text-slate-300">mayoría de los retos del nivel anterior</strong> (así no saltas práctica avanzada sin base).
             </p>
+          </div>
+
+          <!-- Resúmenes por nivel: siempre accesibles (sin cuestionario) -->
+          <div id="level-summaries" class="rounded-2xl border border-cyan-500/25 bg-gradient-to-b from-cyan-950/20 to-lab-surface/40 p-6 sm:p-8 space-y-4" aria-label="Resúmenes integrados por nivel">
+            <div class="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
+              <div>
+                <p class="font-mono text-sm text-lab-accent">Repaso · Siempre disponible</p>
+                <h2 class="mt-1 text-xl font-bold text-white sm:text-2xl">Resúmenes integrados por nivel</h2>
+                <p class="mt-2 max-w-2xl text-sm text-slate-400">
+                  Aquí tienes un <strong class="text-slate-200">resumen detallado y ordenado</strong> de cada unidad: qué viste en cada tema (1.1–3.3), con <strong class="text-slate-200">ejemplos de código</strong> en JavaScript y, cuando ayuda, pseudocódigo en español.
+                  Complementa las lecciones completas y el 3D; úsalo para <strong class="text-slate-200">repasar con ejemplos concretos</strong> cuando necesites retomar ideas.
+                </p>
+              </div>
+            </div>
+            <p class="text-xs text-slate-500">Pulsa cada título para expandir o cerrar. Cada bloque repasa <strong class="text-slate-400">todos los temas del nivel</strong> con ideas + ejemplos.</p>
+
+            <details id="resumen-nivel-1" class="lab-level-summary">
+              <summary>Nivel 1 · Fundamentos — resumen detallado con ejemplos (1.1 a 1.3)</summary>
+              <div class="lab-level-summary-body space-y-6 text-sm leading-relaxed text-slate-400">
+                <p class="border-l-2 border-cyan-500/35 pl-4 text-slate-300">
+                  <strong class="text-white">Qué cubre esta unidad.</strong> Tres bloques que siempre van juntos: <strong class="text-slate-200">algoritmo y bifurcación</strong> (<code class="font-mono text-xs">if</code>/<code class="font-mono text-xs">else</code>),
+                  <strong class="text-slate-200">datos con nombre y tipo</strong> (variables), y el esquema <strong class="text-lab-accent">entrada → proceso → salida</strong> para organizar cualquier ejercicio pequeño. Es el cimiento del Nivel 2 y del resto del curso.
+                </p>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">1.1 · Algoritmos y condicionales (<code class="font-mono text-sm">if</code> / <code class="font-mono text-sm">else</code>, diagramas)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> un <strong class="text-slate-200">algoritmo</strong> es una lista finita de pasos sin ambigüedad; en un <strong class="text-slate-200">diagrama de flujo</strong> el <em>rombo</em> representa la pregunta sí/no. En código, eso es un condicional: si la condición es verdadera se ejecuta un bloque; si no, otro (<code class="font-mono text-xs">else</code>). La ejecución sigue siendo línea a línea, pero la rama depende de los datos.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — dos ramas según la edad (idea general)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let edad = 17;
+
+if (edad &gt;= 18) {
+  console.log("Mayor de edad");
+} else {
+  console.log("Menor de edad");
+}</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — mismo patrón que el reto «acceso por edad» (18 años)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let edad = 20;
+
+if (edad &gt;= 18) {
+  console.log("Acceso permitido");
+} else {
+  console.log("Acceso denegado");
+}
+
+// Prueba mental con edad = 17: debe caer en la segunda rama</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — misma lógica en español</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero edad
+edad &lt;- 17
+
+si edad &gt;= 18 entonces
+  escribir "Mayor de edad"
+si no
+  escribir "Menor de edad"
+fin si</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> condicional por edad con mensajes claros de permitido/denegado y umbral 18 (como en el laboratorio).</p>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Errores típicos:</strong> olvidar una de las dos ramas; usar <code class="font-mono text-xs">=</code> (asignación) en lugar de <code class="font-mono text-xs">&gt;=</code> o <code class="font-mono text-xs">===</code> en la condición; no encerrar el bloque entre llaves <code class="font-mono text-xs">{ }</code> cuando hay varias líneas.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">1.2 · Variables y tipos (<code class="font-mono text-sm">let</code>, <code class="font-mono text-sm">const</code>, identificadores)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> una <strong class="text-slate-200">variable</strong> es un nombre para un valor en memoria; el <strong class="text-slate-200">identificador</strong> debe ser válido (p. ej. <code class="font-mono text-xs">camelCase</code> en JavaScript). Los tipos básicos que manejas aquí son <strong class="text-slate-200">número</strong>, <strong class="text-slate-200">cadena</strong> (texto entre comillas) y <strong class="text-slate-200">booleano</strong>. Con <code class="font-mono text-xs">let</code> puedes cambiar el valor; con <code class="font-mono text-xs">const</code> no reasignas el nombre a otra cosa.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — tres tipos en un mismo programa</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let puntos = 100;                 // número
+const nombreCurso = "Lógica";     // cadena (const: no reasignas el nombre)
+let aprobado = false;             // booleano
+
+puntos = puntos + 10;             // el valor puede cambiar
+console.log(nombreCurso, puntos, aprobado);</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — precio × cantidad (mismo enfoque que el reto del laboratorio)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let precio = 10;
+let cantidad = 2;
+let total = precio * cantidad;
+
+console.log(total);   // 20</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — tipos explícitos</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero puntos
+cadena nombreCurso
+logico aprobado
+
+puntos &lt;- 100
+nombreCurso &lt;- "Lógica"
+aprobado &lt;- falso
+
+puntos &lt;- puntos + 10
+escribir nombreCurso, puntos, aprobado</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> declarar precio y cantidad, calcular el total con <code class="font-mono text-xs">*</code> y dejar visible el <strong class="text-slate-300">20</strong> (consola o comentario).</p>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Errores típicos:</strong> poner números entre comillas y tratarlos como texto sin querer; olvidar declarar antes de usar; nombres ilegibles o con espacios.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">1.3 · Entrada, proceso y salida (<code class="font-mono text-sm">console.log</code>, flujo E → P → S)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> separar el enunciado en tres fases: qué datos <strong class="text-slate-200">entran</strong>, qué operaciones o decisiones forman el <strong class="text-slate-200">proceso</strong>, y qué <strong class="text-slate-200">sale</strong> (en el navegador, casi siempre con <code class="font-mono text-xs">console.log</code> al practicar). Las variables de 1.2 guardan entradas y resultados intermedios; un <code class="font-mono text-xs">if</code> de 1.1 puede formar parte del proceso.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — rectángulo: entrada → proceso → salida</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Entrada (podrían venir de un formulario más adelante)
+let base = 4;
+let altura = 5;
+
+// Proceso
+let area = base * altura;
+
+// Salida
+console.log("Área del rectángulo:", area);  // 20</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — E/P/S con decisión en el proceso (integra 1.1 + 1.3)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Entrada
+let edad = 16;
+
+// Proceso (aquí va la lógica que transforma o clasifica)
+let puedeVotar;
+if (edad &gt;= 18) {
+  puedeVotar = true;
+} else {
+  puedeVotar = false;
+}
+
+// Salida
+console.log("¿Puede votar?", puedeVotar);  // false</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — área con el mismo flujo</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero base, altura, area
+base &lt;- 4
+altura &lt;- 5
+area &lt;- base * altura
+escribir "Área:", area</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> área del rectángulo con base <strong class="text-slate-300">4</strong>, altura <strong class="text-slate-300">5</strong>, producto y <strong class="text-slate-300">20</strong> visibles, más <code class="font-mono text-xs">console.log</code>.</p>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Errores típicos:</strong> mezclar salida sin haber calculado antes en el proceso; olvidar comentar o nombrar qué parte es E, P o S en ejercicios largos; perder el <code class="font-mono text-xs">*</code> en una fórmula geométrica.</p>
+                </section>
+
+                <p class="rounded-lg border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 text-xs text-slate-300 sm:text-sm">
+                  <strong class="text-emerald-300">Ideas que deben ir juntas:</strong> el <code class="font-mono text-xs">if</code> siempre evalúa una expresión verdadera/falsa; las variables son los “cubos” donde guardas lo que entra y lo que vas calculando; pintar mentalmente <em>entrada → proceso → salida</em> evita saltarte pasos cuando el enunciado mezcla texto, números y decisiones.
+                </p>
+              </div>
+            </details>
+
+            <details id="resumen-nivel-2" class="lab-level-summary">
+              <summary>Nivel 2 · Expresiones, decisiones, texto y bucles — resumen detallado con ejemplos (2.1 a 2.4)</summary>
+              <div class="lab-level-summary-body space-y-6 text-sm leading-relaxed text-slate-400">
+                <p class="border-l-2 border-cyan-500/35 pl-4 text-slate-300">
+                  <strong class="text-white">Qué cubre esta unidad.</strong> Cuatro bloques que se usan juntos en programas reales: <strong class="text-slate-200">calcular y comparar</strong> (operadores), <strong class="text-slate-200">elegir entre varias opciones</strong> (<code class="font-mono text-xs">else if</code>),
+                  <strong class="text-slate-200">trabajar texto</strong> (longitud, concatenar, índices) y <strong class="text-slate-200">repetir</strong> (<code class="font-mono text-xs">while</code> / <code class="font-mono text-xs">for</code>) sin duplicar líneas.
+                </p>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">2.1 · Operadores y expresiones</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> aritmética (<code class="font-mono text-xs">+ - * /</code>), módulo <code class="font-mono text-xs">%</code>, comparaciones (<code class="font-mono text-xs">===</code>, <code class="font-mono text-xs">&lt;</code>, etc.) y lógica (<code class="font-mono text-xs">&amp;&amp;</code>, <code class="font-mono text-xs">||</code>). Las expresiones se evalúan a un valor; los paréntesis fijan el orden.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — aritmética, descuento y comparación</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let precio = 100;
+let descuento = 0.15;
+let total = precio * (1 - descuento);   // paréntesis primero
+
+let a = 10, b = 3;
+console.log(a + b);    // 13
+console.log(a % b);    // 1  (resto: útil para par/impar)
+
+console.log(10 === 10);           // true
+console.log(10 === "10");         // false (tipos distintos)
+console.log(a &gt; b &amp;&amp; a % b === 1);  // true</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — par o impar con <code class="font-mono text-cyan-300">%</code></p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let n = 8;
+if (n % 2 === 0) {
+  console.log(n + " es par");
+}
+n = 7;
+if (n % 2 !== 0) {
+  console.log(n + " es impar");
+}</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> usar <code class="font-mono text-xs">%</code> y condicionales para 8 (par) y 7 (impar).</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">2.2 · Decisiones múltiples (<code class="font-mono text-sm">else if</code>, anidación)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> más de dos salidas encadenando condiciones; el orden de los <code class="font-mono text-xs">if / else if</code> importa; el último <code class="font-mono text-xs">else</code> atrapa el resto. También viste la idea de <em>if anidado</em> para decisiones en dos etapas.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — nota numérica a letra (tres tramos)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let nota = 85;
+
+if (nota &gt;= 90) {
+  console.log("Letra A");
+} else if (nota &gt;= 70) {
+  console.log("Letra B");   // 85 cae aquí
+} else {
+  console.log("Letra C");
+}</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — misma estructura</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero nota
+nota &lt;- 85
+
+si nota &gt;= 90 entonces
+  escribir "Letra A"
+si no si nota &gt;= 70 entonces
+  escribir "Letra B"
+si no
+  escribir "Letra C"
+fin si</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> nota 85 con umbrales 90 y 70 y mensaje que deje clara la B.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">2.3 · Cadenas de texto (strings)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> literales entre comillas; propiedad <code class="font-mono text-xs">.length</code>; acceso por índice <code class="font-mono text-xs">[0]</code>; concatenación con <code class="font-mono text-xs">+</code>. El texto es un tipo más junto a números y booleanos.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — longitud, unir textos, primer carácter</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let saludo = "Hola";
+let nombre = "Ana";
+
+console.log(saludo.length);              // 4  (H-o-l-a)
+console.log(saludo + ", " + nombre);    // "Hola, Ana"
+console.log(saludo[0]);                  // "H"
+
+// Cuidado: espacios y signos cuentan en length
+console.log("a b".length);               // 3</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> <code class="font-mono text-xs">"Hola"</code>, <code class="font-mono text-xs">.length</code> y dejar visible el 4.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">2.4 · Bucles (<code class="font-mono text-sm">while</code> y <code class="font-mono text-sm">for</code>)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> iteración = repetir un bloque; en <code class="font-mono text-xs">while</code> la condición se evalúa antes de cada vuelta; en <code class="font-mono text-xs">for</code> llevas inicio, condición y paso en la cabecera; acumuladores (<code class="font-mono text-xs">suma</code>) empiezan en 0.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — <code class="font-mono text-cyan-300">while</code>: cuentas del 1 al 3</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let n = 1;
+while (n &lt;= 3) {
+  console.log("Vuelta:", n);
+  n = n + 1;   // o n++;
+}</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — <code class="font-mono text-cyan-300">for</code> y suma del 1 al 10 (reto del laboratorio: total 55)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let suma = 0;
+for (let i = 1; i &lt;= 10; i++) {
+  suma = suma + i;   // o suma += i;
+}
+console.log(suma);   // 55</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — idea equivalente</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero suma, i
+suma &lt;- 0
+para i desde 1 hasta 10 hacer
+  suma &lt;- suma + i
+fin para
+escribir suma</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Errores típicos:</strong> olvidar <code class="font-mono text-xs">i++</code> en <code class="font-mono text-xs">while</code> (bucle infinito); usar <code class="font-mono text-xs">&lt;</code> cuando el enunciado incluye el tope (<code class="font-mono text-xs">&lt;=</code>); no inicializar <code class="font-mono text-xs">suma</code> en 0.</p>
+                </section>
+
+                <p class="rounded-lg border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 text-xs text-slate-300 sm:text-sm">
+                  <strong class="text-emerald-300">Ideas que deben ir juntas:</strong> una condición en un <code class="font-mono text-xs">if</code> o <code class="font-mono text-xs">while</code> es siempre una <em>expresión</em> que da verdadero/falso; dentro del bucle usas las mismas variables y operadores que ya practicaste en 2.1.
+                </p>
+              </div>
+            </details>
+
+            <details id="resumen-nivel-3" class="lab-level-summary">
+              <summary>Nivel 3 · Estructuras, modularidad y trazado — resumen detallado con ejemplos (3.1 a 3.3)</summary>
+              <div class="lab-level-summary-body space-y-6 text-sm leading-relaxed text-slate-400">
+                <p class="border-l-2 border-cyan-500/35 pl-4 text-slate-300">
+                  <strong class="text-white">Qué cubre esta unidad.</strong> Pasas de “unas pocas variables” a <strong class="text-slate-200">colecciones ordenadas</strong> (arreglos), aprendes a <strong class="text-slate-200">empaquetar lógica reutilizable</strong> en funciones con <code class="font-mono text-xs">return</code>,
+                  y cierras con el hábito de <strong class="text-slate-200">trazar y comentar</strong>: leer código como la máquina, fila a fila, para encontrar errores antes de ejecutar o depurar más rápido.
+                </p>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">3.1 · Arreglos (listas ordenadas)</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> literal <code class="font-mono text-xs">[a, b, c]</code>; índices desde <strong class="text-amber-300">0</strong>; <code class="font-mono text-xs">length</code> = cantidad de elementos; recorrido con <code class="font-mono text-xs">for</code> y <code class="font-mono text-xs">i &lt; arr.length</code>. Modificar una casilla no cambia el nombre del arreglo, solo su contenido.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — crear, leer, cambiar y recorrer</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let notas = [8, 9, 10];
+
+console.log(notas[0]);       // 8  (primera posición)
+console.log(notas.length);   // 3
+
+notas[1] = 10;               // subo la segunda nota
+console.log(notas);          // [8, 10, 10]
+
+for (let i = 0; i &lt; notas.length; i++) {
+  console.log("Índice", i, "→", notas[i]);
+}</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — promedio de tres números (reto del laboratorio)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let notas = [8, 9, 10];
+let suma = notas[0] + notas[1] + notas[2];
+let promedio = suma / 3;
+console.log(promedio);   // 9</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — índice base 0</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">arreglo notas de enteros
+notas &lt;- [8, 9, 10]
+entero i
+para i desde 0 hasta longitud(notas) - 1 hacer
+  escribir "Casilla", i, ":", notas[i]
+fin para</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Errores típicos:</strong> usar índice <code class="font-mono text-xs">3</code> en un arreglo de 3 elementos (válidos 0,1,2); confundir <code class="font-mono text-xs">length</code> con el último índice.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">3.2 · Funciones y modularidad</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> definición con nombre y parámetros; cuerpo entre llaves; <code class="font-mono text-xs">return</code> devuelve un valor al lugar de la llamada; los argumentos son los valores concretos que pasas al invocar. Las variables locales no ensucian el programa global.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — función que devuelve el doble (reto del laboratorio)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">function doble(x) {
+  return x * 2;
+}
+
+console.log(doble(3));   // 6
+let y = doble(5);
+console.log(y);          // 10</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — función con varias líneas y uso del resultado</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">function sumar(a, b) {
+  let s = a + b;
+  return s;
+}
+
+let total = sumar(10, 3);
+console.log("Total:", total);   // 13</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo — función con retorno</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">función sumar(a, b): entero
+  retornar a + b
+fin función
+
+entero total
+total &lt;- sumar(10, 3)
+escribir total</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Idea clave:</strong> la llamada <code class="font-mono text-xs">doble(3)</code> es una expresión que vale <code class="font-mono text-xs">6</code>; puedes anidarla en otras expresiones o pasarla a otras funciones.</p>
+                </section>
+
+                <section class="rounded-xl border border-lab-border bg-lab-bg/50 p-4 space-y-4">
+                  <h3 class="text-base font-semibold text-white">3.3 · Pruebas mentales, trazado y comentarios</h3>
+                  <p><strong class="text-slate-200">Visto en clase:</strong> los comentarios <code class="font-mono text-xs">//</code> no se ejecutan; sirven para explicar supuestos, recordar el enunciado o anotar salidas esperadas. La <strong class="text-slate-200">traza</strong> es simular la ejecución: tras cada línea, anotas valores de variables y lo que imprimiría <code class="font-mono text-xs">console.log</code>.</p>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript — código con comentarios y traza mental</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Traza esperada: imprime 0, luego 1 (dos líneas)
+let i = 0;
+while (i &lt; 2) {
+  console.log(i);
+  i++;
+}
+// Tras el bucle, i vale 2; no se entra otra vez porque 2 &lt; 2 es falso</pre>
+                  </div>
+                  <div class="rounded-lg border border-lab-border bg-lab-bg/70 p-3">
+                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ejemplo de tabla de traza (a mano en papel)</p>
+                    <pre class="mt-2 overflow-x-auto text-xs text-slate-300 sm:text-sm">Línea / vuelta | i (antes) | condición i&lt;2 | salida console | i (después)
+Inicio         | 0         | verdadera     | 0             | 1
+Vuelta 2       | 1         | verdadera     | 1             | 2
+Fin            | 2         | falsa         | (no imprime)  | —</pre>
+                  </div>
+                  <p class="text-xs text-slate-500"><strong class="text-slate-400">Reto alineado:</strong> <code class="font-mono text-xs">while</code> con <code class="font-mono text-xs">i</code> desde 0, condición típica <code class="font-mono text-xs">i &lt; 2</code>, salida 0 y 1. Es el mismo patrón mental que usarás al depurar bucles en cualquier lenguaje.</p>
+                </section>
+
+                <p class="rounded-lg border border-emerald-500/20 bg-emerald-950/15 px-4 py-3 text-xs text-slate-300 sm:text-sm">
+                  <strong class="text-emerald-300">Cierre del curso lógico en este laboratorio:</strong> ya puedes combinar <em>datos múltiples</em> (arreglos), <em>abstracción</em> (funciones) y <em>verificación</em> (trazas y comentarios). Lo siguiente en una carrera suele ser más sintaxis, más librerías o otros paradigmas — la lógica que practicaste aquí sigue siendo el núcleo.
+                </p>
+              </div>
+            </details>
           </div>
 
           <div id="topic-tabs" class="rounded-xl border border-lab-border bg-lab-surface/40 p-4 space-y-5" role="tablist" aria-label="Temas de lógica por nivel">
             <p id="topic-lock-hint" class="hidden rounded-lg border border-amber-500/30 bg-amber-950/25 px-3 py-2 text-xs text-amber-200" role="status" aria-live="polite"></p>
             <div class="topic-level-group">
               <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 1 · Fundamentos</p>
-              <p class="mb-2 text-xs text-slate-500">Pensar en pasos, condiciones y cómo guarda la computadora datos elementales.</p>
+              <p class="mb-2 text-xs text-slate-500">Pasos, condiciones, variables y el ciclo clásico <em>entrada → proceso → salida</em>.</p>
               <div class="flex flex-wrap gap-2">
                 <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="algoritmos" aria-selected="true">1.1 · Diagramas y condicionales</button>
                 <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="variables" aria-selected="false">1.2 · Variables y tipos</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="entrada_salida" aria-selected="false">1.3 · Entrada, proceso y salida</button>
               </div>
             </div>
             <div class="topic-level-group">
-              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 2 · Expresiones y repetición</p>
-              <p class="mb-2 text-xs text-slate-500">Calcular, comparar y repetir instrucciones sin copiar código infinito.</p>
+              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 2 · Expresiones, decisiones y repetición</p>
+              <p class="mb-2 text-xs text-slate-500">Calcular, encadenar condiciones, trabajar con texto y, después, repetir con bucles.</p>
               <div class="flex flex-wrap gap-2">
                 <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="operadores" aria-selected="false">2.1 · Operadores</button>
-                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="bucles" aria-selected="false">2.2 · Bucles</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="decisiones_multiples" aria-selected="false">2.2 · Decisiones múltiples</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="cadenas" aria-selected="false">2.3 · Cadenas de texto</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="bucles" aria-selected="false">2.4 · Bucles</button>
               </div>
             </div>
             <div class="topic-level-group">
-              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 3 · Datos múltiples y modularidad</p>
-              <p class="mb-2 text-xs text-slate-500">Varios valores ordenados y trozos de programa reutilizables.</p>
+              <p class="text-xs font-semibold uppercase tracking-wider text-lab-accent">Nivel 3 · Estructuras, modularidad y lectura de código</p>
+              <p class="mb-2 text-xs text-slate-500">Listas, funciones reutilizables y hábitos para probar y trazar algoritmos.</p>
               <div class="flex flex-wrap gap-2">
                 <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="arreglos" aria-selected="false">3.1 · Arreglos</button>
                 <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="funciones" aria-selected="false">3.2 · Funciones</button>
+                <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="pruebas_trazado" aria-selected="false">3.3 · Pruebas y trazado</button>
               </div>
             </div>
           </div>
@@ -290,6 +681,50 @@ escribir nombre, edad, activo</pre>
                 <button type="button" class="lab-hotspot" slot="hotspot-v2" data-position="0 0.16 0.14" data-normal="0 1 0" aria-label="Texto"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Texto: hoja plana (cadena)</span></button>
                 <button type="button" class="lab-hotspot" slot="hotspot-v3" data-position="0.48 0.24 0.12" data-normal="0 1 0" aria-label="Booleano"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Booleano: palanca (true/false)</span></button>
                 <button type="button" class="lab-hotspot" slot="hotspot-v4" data-position="0 -0.12 0.2" data-normal="0 1 0" aria-label="Memoria"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Base: tres “huecos” de memoria</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 1.3: entrada, proceso y salida -->
+          <div id="topic-panel-entrada_salida" class="topic-theory-panel hidden space-y-6" data-topic-panel="entrada_salida">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">Nivel 1 · 1.3 — Entrada, proceso y salida (el “esqueleto” de casi todo programa)</h3>
+              <p>
+                En lógica de programación, conviene ver cualquier tarea como tres bloques conectados: <strong class="text-slate-200">entrada</strong> (qué datos llegan o lees),
+                <strong class="text-slate-200">proceso</strong> (cálculos, decisiones, repeticiones) y <strong class="text-slate-200">salida</strong> (qué resultado muestras, guardas o devuelves).
+                No es magia: es la misma idea que un diagrama de flujo que empieza, hace trabajo en el medio y termina en un resultado.
+              </p>
+              <p>
+                En clase, la <strong class="text-slate-200">traza</strong> (seguir valores a mano, vuelta por vuelta) conecta este tema con el 3.3: antes de confiar en la computadora, <em>tú</em> simulas ser la máquina con papel y lápiz.
+                En el navegador, <code class="font-mono text-lab-accent">console.log</code> es una salida rápida para depurar y aprender.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Ejemplo mínimo: rectángulo</h4>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Entrada: medidas (podrían venir de un formulario más adelante)
+let base = 4;
+let altura = 5;
+
+// Proceso: regla geométrica
+let area = base * altura;
+
+// Salida: ver el resultado
+console.log("Área:", area);</pre>
+              </div>
+              <p class="text-xs text-slate-500">
+                <strong class="text-slate-400">Modelo 3D:</strong> reutilizamos el flujo del tema 1.1 para recordar que “arriba” suele ser el inicio y los datos bajan hacia acciones y resultado.
+              </p>
+            </div>
+            <div class="topic-quiz-mount" data-topic-quiz="entrada_salida"></div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="entrada_salida" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm">Mismo escenario que 1.1: piensa “datos arriba → decisión o cálculo → caminos o resultado abajo”. En RA, úsalo para explicar en voz alta entrada / proceso / salida.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="entrada_salida" src="assets/FlujoLogicoAlgoritmo.glb" alt="Flujo lógico: entrada, proceso y bifurcación" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 62deg 3.1m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-io1" data-position="0 1.02 0.1" data-normal="0 1 0" aria-label="Entrada"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Entrada: datos que alimentan el algoritmo</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-io2" data-position="0 0.68 0.1" data-normal="0 1 0" aria-label="Proceso"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Proceso: operaciones en orden</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-io3" data-position="0 0.36 0.14" data-normal="0 1 0" aria-label="Decisión"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">A veces hay una pregunta que parte el flujo</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-io4" data-position="-0.68 -0.06 0.16" data-normal="0 1 0" aria-label="Salida A"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Una rama puede ser tu salida o resultado intermedio</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-io5" data-position="0.68 -0.06 0.16" data-normal="0 1 0" aria-label="Salida B"><span class="lab-hotspot-dot lab-hotspot-dot--red"></span><span class="lab-hotspot-label">Otra rama = otra salida posible</span></button>
               </model-viewer>
             </div>
           </div>
@@ -486,10 +921,91 @@ fin si</pre>
             </div>
           </div>
 
-          <!-- Panel 4: bucles -->
+          <!-- Panel 2.2: decisiones múltiples -->
+          <div id="topic-panel-decisiones_multiples" class="topic-theory-panel hidden space-y-6" data-topic-panel="decisiones_multiples">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.2 — Decisiones múltiples (<code class="font-mono text-lab-accent">else if</code>, anidación y tablas de decisión)</h3>
+              <p>
+                El <code class="font-mono text-xs text-lab-accent">if / else</code> del tema 1.1 sirve para <strong class="text-slate-200">dos</strong> caminos. En la vida real suele haber <strong class="text-slate-200">varias categorías</strong>: nota a letra, menú con opciones, rangos de descuento, etc.
+                En JavaScript encadenas condiciones con <strong class="text-slate-200"><code class="font-mono text-lab-accent">else if</code></strong>: “si no fue la primera, prueba la segunda; si no, la tercera…”.
+              </p>
+              <p>
+                Un <strong class="text-slate-200">condicional anidado</strong> es un <code class="font-mono text-xs">if</code> <em>dentro</em> de otro: primero divides por un criterio grande (¿es estudiante?) y dentro afinas con otro <code class="font-mono text-xs">if</code>.
+                Ojo con la legibilidad: muchos niveles seguidos confunden; a veces una tabla en papel o un <code class="font-mono text-xs">switch</code> (cuando comparas un valor contra constantes) ayuda — en este curso basta con entender la <em>lógica</em>; el sintaxis exacto de <code class="font-mono text-xs">switch</code> la verás con práctica.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Ejemplo: nota numérica → letra (tres tramos)</h4>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let nota = 85;
+
+if (nota &gt;= 90) {
+  console.log("Letra A");
+} else if (nota &gt;= 70) {
+  console.log("Letra B");
+} else {
+  console.log("Letra C");
+}</pre>
+                <p class="mt-2 text-xs text-slate-500">Orden importa: la primera condición que se cumple “gana”. Si pusieras primero <code class="font-mono text-xs">&gt;= 70</code>, una nota 95 caería en B por error.</p>
+              </div>
+              <p class="text-xs text-slate-500">
+                <strong class="text-slate-400">Modelo 3D:</strong> mismo diagrama de flujo que 1.1 — imagina <em>varios rombos seguidos</em> o un rombo que representa “¿en qué rango cae?”.
+              </p>
+            </div>
+            <div class="topic-quiz-mount" data-topic-quiz="decisiones_multiples"></div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="decisiones_multiples" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm">Visualiza varias ramas: cada salida del rombo puede llevar a otra pregunta o a un resultado distinto.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="decisiones_multiples" src="assets/FlujoLogicoAlgoritmo.glb" alt="Diagrama de flujo para varias decisiones" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 62deg 3.1m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-dm1" data-position="0 1.02 0.1" data-normal="0 1 0" aria-label="Dato"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Empiezas con un dato (ej. nota)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-dm2" data-position="0 0.36 0.14" data-normal="0 1 0" aria-label="Primera condición"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Primera condición (¿alto?)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-dm3" data-position="-0.68 -0.06 0.16" data-normal="0 1 0" aria-label="Rama A"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Si sí → una acción o resultado</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-dm4" data-position="0.68 -0.06 0.16" data-normal="0 1 0" aria-label="Continuar"><span class="lab-hotspot-dot lab-hotspot-dot--red"></span><span class="lab-hotspot-label">Si no → otra condición (else if) o else final</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 2.3: cadenas -->
+          <div id="topic-panel-cadenas" class="topic-theory-panel hidden space-y-6" data-topic-panel="cadenas">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.3 — Cadenas de texto (strings): longitud, concatenar y leer carácter a carácter</h3>
+              <p>
+                Un <strong class="text-slate-200">string</strong> es una secuencia de caracteres: letras, dígitos, espacios, símbolos. En JavaScript va entre comillas dobles <code class="font-mono text-xs">" "</code> o simples <code class="font-mono text-xs">' '</code>.
+                Ya viste el tipo “texto” en 1.2; aquí profundizas en <strong class="text-slate-200">qué puedes preguntarle</strong> al texto y cómo combinarlo.
+              </p>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-slate-200">Longitud</strong> — <code class="font-mono text-xs">"Hola".length</code> es <strong class="text-lab-accent">4</strong> (cuatro letras). Espacios y signos cuentan como caracteres.</li>
+                <li><strong class="text-slate-200">Concatenar</strong> — con <code class="font-mono text-xs">+</code> unes textos: <code class="font-mono text-xs">"Hola, " + nombre</code>.</li>
+                <li><strong class="text-slate-200">Índice</strong> — como en arreglos, puedes leer una posición: <code class="font-mono text-xs">texto[0]</code> es el primer carácter (en JS también hay <code class="font-mono text-xs">charAt</code>).</li>
+              </ul>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let saludo = "Hola";
+let nombre = "Ana";
+console.log(saludo.length);           // 4
+console.log(saludo + ", " + nombre);   // Hola, Ana
+console.log(saludo[0]);               // H</pre>
+              </div>
+              <p class="text-xs text-slate-500">
+                <strong class="text-slate-400">Modelo 3D:</strong> reutilizamos el de tipos de dato (lámina de texto) para fijar la metáfora visual del string.
+              </p>
+            </div>
+            <div class="topic-quiz-mount" data-topic-quiz="cadenas"></div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="cadenas" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm"><strong class="text-slate-300">Cómo leerlo:</strong> la forma plana con líneas sugiere texto escrito; conecta con <code class="font-mono text-lab-accent">.length</code> y con índice 0 = primera letra.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="cadenas" src="assets/VariablesTipos.glb" alt="Tipo cadena en el modelo de variables" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="15deg 55deg 2.45m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-s1" data-position="-0.48 0.28 0.12" data-normal="0 1 0" aria-label="Contexto"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Recuerda: número vs texto vs booleano</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-s2" data-position="0 0.16 0.14" data-normal="0 1 0" aria-label="Cadena"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Cadena: secuencia de caracteres</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-s3" data-position="0.48 0.24 0.12" data-normal="0 1 0" aria-label="Operaciones"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Puedes medir (.length) y unir (+)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-s4" data-position="0 -0.12 0.2" data-normal="0 1 0" aria-label="Memoria"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">En memoria es un bloque ordenado de caracteres</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 2.4: bucles -->
           <div id="topic-panel-bucles" class="topic-theory-panel hidden space-y-6" data-topic-panel="bucles">
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
-              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.2 — Estructuras repetitivas (bucles)</h3>
+              <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.4 — Estructuras repetitivas (bucles)</h3>
               <p>
                 A veces no quieres escribir la misma instrucción 100 veces. Un <strong class="text-slate-200">bucle</strong> (o <em>loop</em>) le dice a la computadora: “vuelve a hacer este trozo de código” según una regla.
                 Cada vuelta se llama <strong class="text-slate-200">iteración</strong>. En el modelo 3D, el <strong class="text-slate-200">centro apilado</strong> es el <em>cuerpo del bucle</em> (lo que se repite); el <strong class="text-slate-200">anillo</strong> es volver al inicio; las <strong class="text-emerald-300">flechas</strong> son “otra vuelta más”, en orden.
@@ -767,6 +1283,44 @@ escribir total</pre>
             </div>
           </div>
 
+          <!-- Panel 3.3: pruebas y trazado -->
+          <div id="topic-panel-pruebas_trazado" class="topic-theory-panel hidden space-y-6" data-topic-panel="pruebas_trazado">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">Nivel 3 · 3.3 — Pruebas mentales, trazado y comentarios</h3>
+              <p>
+                La lógica no es solo escribir: es <strong class="text-slate-200">predecir</strong> qué hará el código. La <strong class="text-slate-200">traza</strong> es una tabla (o narración) donde en cada línea anotas valores de variables y qué salida produciría.
+                Es la herramienta número uno cuando algo “debería funcionar” y no lo hace.
+              </p>
+              <p>
+                Los <strong class="text-slate-200">comentarios</strong> (<code class="font-mono text-xs">//</code> en JavaScript en una línea) no son instrucciones: el intérprete los ignora. Sirven para explicar <em>por qué</em> hiciste algo, anotar supuestos o dejar ejemplos de entrada/salida esperada.
+                No abuses: comenta ideas, no cada línea obvia.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Mini-traza de un <code class="font-mono text-lab-accent">while</code></h4>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <pre class="overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let i = 0;
+while (i &lt; 2) {
+  console.log(i);
+  i++;
+}
+// Salida esperada en consola: 0 luego 1</pre>
+                <p class="mt-2 text-xs text-slate-500">Vuelta 1: i es 0 → imprime 0 → i pasa a 1. Vuelta 2: i es 1 → imprime 1 → i pasa a 2. Condición falsa → fin.</p>
+              </div>
+              <p class="text-xs text-slate-500">
+                <strong class="text-slate-400">Modelo 3D:</strong> reutilizamos el bucle para recordar que la traza se hace <em>vuelta por vuelta</em>.
+              </p>
+            </div>
+            <div class="topic-quiz-mount" data-topic-quiz="pruebas_trazado"></div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="pruebas_trazado" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-3 text-left text-xs text-slate-400 sm:text-sm">Sigue las flechas del anillo: cada vuelta es una fila más en tu tabla de traza.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="pruebas_trazado" src="assets/BuclesIteracion.glb" alt="Bucle para practicar trazado" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 48deg 2.85m" field-of-view="36deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-t1" data-position="0 0.2 0" data-normal="0 1 0" aria-label="Cuerpo"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Cada pasada: anota i y lo que imprime</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-t2" data-position="0 0.08 0.52" data-normal="0 1 0" aria-label="Condición"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Antes de repetir: ¿sigue siendo verdadera la condición?</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-t3" data-position="0.48 0.16 0" data-normal="0 1 0" aria-label="Siguiente"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Actualizar contador = siguiente fila de la traza</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
           <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
             <div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
               <p class="text-sm text-slate-500">RA del tema seleccionado (modelo visible arriba).</p>
@@ -787,9 +1341,8 @@ escribir total</pre>
             <p class="font-mono text-sm text-lab-accent">Laboratorio de retos · Progresión</p>
             <h2 class="mt-2 text-2xl font-bold text-white">Retos al ritmo de tu aprendizaje</h2>
             <p class="mt-4 max-w-2xl text-slate-400">
-              Cada reto se <strong class="text-slate-200">desbloquea</strong> cuando completas el <strong class="text-lab-accent">cuestionario</strong> del tema indicado en Teoría + RA.
-              Al validar bien tu código ganas <strong class="text-slate-200">puntos</strong> y una <strong class="text-slate-200">insignia de reto</strong> (tarjeta en la barra lateral, debajo de puntos).
-              Si te bloqueas, usa <strong class="text-slate-200">¿No recuerdo? Ver guía paso a paso</strong>: te ordena las ideas sin pegar la solución completa.
+              Cada reto exige el <strong class="text-lab-accent">cuestionario</strong> de su tema en Teoría + RA <em>y</em>, a partir del Nivel 2, la <strong class="text-slate-200">mayoría de retos del nivel anterior</strong> (ej.: al menos 2 de 3 del Nivel 1 antes de los retos del Nivel 2; al menos 3 de 4 del Nivel 2 antes del Nivel 3).
+              Al validar bien tu código ganas <strong class="text-slate-200">puntos</strong> e <strong class="text-slate-200">insignia</strong>. Si te bloqueas, usa <strong class="text-slate-200">¿No recuerdo? Ver guía paso a paso</strong>.
             </p>
           </div>
 
@@ -820,7 +1373,7 @@ escribir total</pre>
           <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="variables_total">
             <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="variables_total"></p>
             <div class="challenge-panel-active space-y-4" data-challenge-body="variables_total">
-              <p class="font-mono text-xs text-lab-accent">Reto 2 · Tras tema 1.2 (variables)</p>
+              <p class="font-mono text-xs text-lab-accent">Reto 2 · Tras tema 1.2 (variables y tipos)</p>
               <h3 class="text-lg font-semibold text-white">Precio × cantidad</h3>
               <p class="text-sm text-slate-400">
                 Declara <strong class="text-slate-200">precio = 10</strong> y <strong class="text-slate-200">cantidad = 2</strong>, calcula <strong class="text-slate-200">total</strong> como la multiplicación y deja claro el resultado <strong class="text-lab-accent">20</strong> (por ejemplo en <code class="font-mono text-xs">console.log</code> o comentario).
@@ -838,11 +1391,33 @@ escribir total</pre>
             </div>
           </article>
 
-          <!-- Reto N2: operadores -->
+          <!-- Reto 1.3: entrada / salida -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="io_rectangle">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="io_rectangle" role="status"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="io_rectangle">
+              <p class="font-mono text-xs text-lab-accent">Reto 3 · Tras tema 1.3 (entrada, proceso y salida)</p>
+              <h3 class="text-lg font-semibold text-white">Área de un rectángulo</h3>
+              <p class="text-sm text-slate-400">
+                Declara <strong class="text-slate-200">base = 4</strong> y <strong class="text-slate-200">altura = 5</strong> (o nombres equivalentes como ancho/alto). Calcula el área con la multiplicación, deja visible el <strong class="text-lab-accent">20</strong> y muestra el resultado con <code class="font-mono text-xs">console.log</code>.
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-io_rectangle">Tu solución</label>
+              <textarea id="code-input-io_rectangle" data-challenge-input="io_rectangle" class="challenge-textarea mt-2 h-36 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let base = 4; ..." spellcheck="false"></textarea>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="io_rectangle">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="io_rectangle" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="io_rectangle" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
+              </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="io_rectangle" role="region" aria-label="Guía área rectángulo"></div>
+            </div>
+          </article>
+
+          <!-- Reto 2.1: operadores -->
           <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="operators_parity">
             <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="operators_parity"></p>
             <div class="challenge-panel-active space-y-4" data-challenge-body="operators_parity">
-              <p class="font-mono text-xs text-lab-accent">Reto 3 · Tras tema 2.1 (operadores)</p>
+              <p class="font-mono text-xs text-lab-accent">Reto 4 · Tras tema 2.1 (operadores)</p>
               <h3 class="text-lg font-semibold text-white">Par o impar con <code class="font-mono text-cyan-300">%</code></h3>
               <p class="text-sm text-slate-400">
                 Usa el operador <strong class="text-slate-200">módulo</strong> (<code class="font-mono">%</code>) y una condicional: para <strong class="text-white">8</strong> indica que es <strong class="text-emerald-400">par</strong>; para <strong class="text-white">7</strong> que es <strong class="text-amber-400">impar</strong> (puede ser dos <code class="font-mono">if</code> o una sola lógica).
@@ -860,11 +1435,56 @@ escribir total</pre>
             </div>
           </article>
 
-          <!-- Reto N2: bucles -->
+          <!-- Reto 2.2: decisiones múltiples -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="grades_letter">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="grades_letter" role="status"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="grades_letter">
+              <p class="font-mono text-xs text-lab-accent">Reto 5 · Tras tema 2.2 (decisiones múltiples)</p>
+              <h3 class="text-lg font-semibold text-white">Nota numérica → letra</h3>
+              <p class="text-sm text-slate-400">
+                Usa una variable <strong class="text-slate-200">nota</strong> con valor <strong class="text-white">85</strong> y encadena condiciones con <code class="font-mono text-xs">if</code> / <code class="font-mono text-xs">else if</code> / <code class="font-mono text-xs">else</code>:
+                típicamente <strong class="text-white">≥ 90</strong> → A, <strong class="text-white">≥ 70</strong> → B, y el resto → C. Deja claro en un <code class="font-mono text-xs">console.log</code> (o equivalente) que para 85 corresponde la <strong class="text-lab-accent">letra B</strong>.
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-grades_letter">Tu solución</label>
+              <textarea id="code-input-grades_letter" data-challenge-input="grades_letter" class="challenge-textarea mt-2 h-44 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let nota = 85; if ... else if ..." spellcheck="false"></textarea>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="grades_letter">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="grades_letter" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="grades_letter" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
+              </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="grades_letter" role="region" aria-label="Guía nota a letra"></div>
+            </div>
+          </article>
+
+          <!-- Reto 2.3: cadenas -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="string_length">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="string_length" role="status"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="string_length">
+              <p class="font-mono text-xs text-lab-accent">Reto 6 · Tras tema 2.3 (cadenas de texto)</p>
+              <h3 class="text-lg font-semibold text-white">Longitud de <code class="font-mono text-cyan-300">"Hola"</code></h3>
+              <p class="text-sm text-slate-400">
+                Crea una cadena con la palabra <strong class="text-white">Hola</strong>, usa <code class="font-mono text-xs">.length</code> y muestra en consola que la longitud es <strong class="text-lab-accent">4</strong> (puede ser el número en el mensaje o en un comentario claro).
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-string_length">Tu solución</label>
+              <textarea id="code-input-string_length" data-challenge-input="string_length" class="challenge-textarea mt-2 h-32 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder='let s = "Hola"; ...' spellcheck="false"></textarea>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="string_length">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="string_length" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="string_length" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
+              </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="string_length" role="region" aria-label="Guía longitud de cadena"></div>
+            </div>
+          </article>
+
+          <!-- Reto 2.4: bucles -->
           <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="loop_sum">
             <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="loop_sum"></p>
             <div class="challenge-panel-active space-y-4" data-challenge-body="loop_sum">
-              <p class="font-mono text-xs text-lab-accent">Reto 4 · Tras tema 2.2 (bucles)</p>
+              <p class="font-mono text-xs text-lab-accent">Reto 7 · Tras tema 2.4 (bucles)</p>
               <h3 class="text-lg font-semibold text-white">Suma del 1 al 10</h3>
               <p class="text-sm text-slate-400">
                 Con un <strong class="text-slate-200">bucle</strong> (<code class="font-mono">for</code>, <code class="font-mono">while</code> o <em>mientras</em> en pseudocódigo), acumula la suma de los enteros del <strong class="text-white">1</strong> al <strong class="text-white">10</strong>. El resultado correcto es <strong class="text-lab-accent">55</strong>.
@@ -882,11 +1502,11 @@ escribir total</pre>
             </div>
           </article>
 
-          <!-- Reto N3: arreglos -->
+          <!-- Reto 3.1: arreglos -->
           <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="array_average">
             <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="array_average"></p>
             <div class="challenge-panel-active space-y-4" data-challenge-body="array_average">
-              <p class="font-mono text-xs text-lab-accent">Reto 5 · Tras tema 3.1 (arreglos)</p>
+              <p class="font-mono text-xs text-lab-accent">Reto 8 · Tras tema 3.1 (arreglos)</p>
               <h3 class="text-lg font-semibold text-white">Promedio de tres notas</h3>
               <p class="text-sm text-slate-400">
                 Crea un arreglo con <strong class="text-white">8</strong>, <strong class="text-white">9</strong> y <strong class="text-white">10</strong>, calcula el <strong class="text-slate-200">promedio</strong> (suma dividida entre 3) y muestra o comenta el valor <strong class="text-lab-accent">9</strong>.
@@ -904,11 +1524,11 @@ escribir total</pre>
             </div>
           </article>
 
-          <!-- Reto N3: funciones -->
+          <!-- Reto 3.2: funciones -->
           <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="function_double">
             <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="function_double"></p>
             <div class="challenge-panel-active space-y-4" data-challenge-body="function_double">
-              <p class="font-mono text-xs text-lab-accent">Reto 6 · Tras tema 3.2 (funciones)</p>
+              <p class="font-mono text-xs text-lab-accent">Reto 9 · Tras tema 3.2 (funciones)</p>
               <h3 class="text-lg font-semibold text-white">Función “doble”</h3>
               <p class="text-sm text-slate-400">
                 Define una función (por ejemplo <code class="font-mono">doble</code>) que reciba un número y <strong class="text-slate-200">devuelva</strong> el doble usando <code class="font-mono">return</code>. Incluye una prueba mental o en código: <strong class="text-white">doble(3)</strong> debe ser <strong class="text-lab-accent">6</strong>.
@@ -923,6 +1543,28 @@ escribir total</pre>
                 <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="function_double" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
               <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="function_double" role="region" aria-label="Guía paso a paso función doble"></div>
+            </div>
+          </article>
+
+          <!-- Reto 3.3: pruebas y trazado -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="trace_while">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="trace_while" role="status"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="trace_while">
+              <p class="font-mono text-xs text-lab-accent">Reto 10 · Tras tema 3.3 (pruebas y trazado)</p>
+              <h3 class="text-lg font-semibold text-white">Trazado con <code class="font-mono text-cyan-300">while</code></h3>
+              <p class="text-sm text-slate-400">
+                Escribe un <strong class="text-slate-200"><code class="font-mono text-xs">while</code></strong> que empiece con <strong class="text-white">i = 0</strong>, imprima <code class="font-mono text-xs">i</code> en cada vuelta con <code class="font-mono text-xs">console.log</code>, aumente <code class="font-mono text-xs">i</code> (por ejemplo con <code class="font-mono text-xs">i++</code>) y termine cuando hayas mostrado <strong class="text-white">0</strong> y <strong class="text-white">1</strong> (condición típica: mientras <code class="font-mono text-xs">i &lt; 2</code>).
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-trace_while">Tu solución</label>
+              <textarea id="code-input-trace_while" data-challenge-input="trace_while" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let i = 0; while (i &lt; 2) { ... }" spellcheck="false"></textarea>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="trace_while">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="trace_while" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="trace_while" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
+              </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="trace_while" role="region" aria-label="Guía while y trazado"></div>
             </div>
           </article>
         </section>
