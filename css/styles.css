@@ -115,3 +115,22 @@ model-viewer.model-viewer-3d {
     max-width: 9rem;
   }
 }
+
+/* Pestañas de temas (teoría) */
+.topic-tab {
+  border: 1px solid rgba(30, 42, 58, 1);
+  background: rgba(11, 15, 20, 0.6);
+  color: #94a3b8;
+  transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.topic-tab:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: #f1f5f9;
+}
+
+.topic-tab[aria-selected="true"] {
+  border-color: rgba(34, 211, 238, 0.45);
+  background: rgba(34, 211, 238, 0.12);
+  color: #22d3ee;
+}

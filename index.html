@@ -92,7 +92,7 @@
               Inicio
             </button>
             <button type="button" data-section="theory" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent">
-              Algoritmos + RA
+              Teoría + RA
             </button>
             <button type="button" data-section="practice" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent">
               Reto condicionales
@@ -114,120 +114,419 @@
             <ul class="mt-6 grid gap-3 sm:grid-cols-2">
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">①</span>
-                <span class="text-sm text-slate-300">Teoría breve sobre algoritmos y flujo lógico en 3D.</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis temas</strong> de lógica con modelo 3D/RA propio (diagramas, variables, operadores, condicionales, bucles, arreglos, funciones).</span>
               </li>
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">②</span>
-                <span class="text-sm text-slate-300">Reto práctico de condicionales con validación automática.</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Reto</strong> de condicionales con puntos e insignias.</span>
               </li>
             </ul>
           </div>
         </section>
 
-        <!-- Theory + AR -->
+        <!-- Theory + RA (6 temas, 6 modelos) -->
         <section id="section-theory" class="section-panel hidden max-w-4xl space-y-6">
           <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
-            <p class="font-mono text-sm text-lab-accent">Módulo teórico · Ligado a Unidad 2 (condicionales)</p>
-            <h2 class="mt-2 text-2xl font-bold text-white">¿Qué es un algoritmo?</h2>
-            <p class="mt-4 text-slate-400">
-              Un <strong class="text-slate-200">algoritmo</strong> es una secuencia finita de pasos bien definidos que resuelve un problema.
-              En programación, traducimos ese flujo en instrucciones (entrada, <strong class="text-slate-200">decisiones</strong>, repetición, salida). Las <strong class="text-slate-200">estructuras condicionales</strong> son el punto donde el flujo se bifurca según una condición (como en el reto de validación por edad).
-            </p>
-            <p class="mt-3 text-slate-400">
-              Abajo tienes el archivo <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">FlujoLogicoAlgoritmo.glb</code>: no es una figura “vacía”, sino un <strong class="text-slate-200">diagrama de flujo en 3D</strong> donde <em>cada forma y color tiene un significado fijo</em> (como en papel, pero rotable y en RA). Regenerable con <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">scripts/generar_modelo_flujo_logico.py</code>.
+            <p class="font-mono text-sm text-lab-accent">Módulo teórico · Lógica de programación (1.º semestre)</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">Temas con modelo 3D y RA</h2>
+            <p class="mt-4 max-w-2xl text-slate-400">
+              Las explicaciones están pensadas para quien <strong class="text-slate-200">nunca ha programado</strong>: primero ideas sencillas (cajas, pasos, decisiones), luego <strong class="text-slate-200">ejemplos reales</strong> en JavaScript (el lenguaje del navegador) y, cuando ayuda, pseudocódigo en español.
+              Cada tema tiene su modelo <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">.glb</code> para RA. Regenera los archivos con <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">python scripts/generar_modelos_logica.py</code>.
             </p>
             <p class="mt-2 text-xs text-slate-500">
-              <strong class="text-slate-400">Sobre la RA:</strong> carga primero el 3D; en móvil, “Escanear en mi espacio” abre la escena en tu entorno (<strong class="text-slate-300">Chrome en Android</strong>, <strong class="text-slate-300">Safari en iOS</strong>). Los <strong class="text-slate-300">puntos interactivos</strong> sobre el modelo repiten la explicación al pulsarlos.
+              <strong class="text-slate-400">RA:</strong> carga el 3D primero; en móvil usa <strong class="text-slate-300">Escanear en mi espacio</strong> (Chrome Android / Safari iOS). Los puntos sobre el modelo amplían la explicación.
             </p>
           </div>
 
-          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
-            <h3 class="text-lg font-semibold text-white">Cómo leer el FlujoLogicoAlgoritmo</h3>
-            <p class="mt-2 text-sm text-slate-400">
-              Sigue el flujo <strong class="text-slate-200">de arriba hacia abajo</strong>, como al leer un algoritmo línea a línea. Luego mira las <strong class="text-slate-200">dos salidas</strong> del rombo: una es el camino cuando la condición se cumple, la otra cuando no.
-            </p>
-            <ol class="mt-4 list-decimal space-y-3 pl-5 text-sm text-slate-300 marker:text-lab-accent">
-              <li>
-                <strong class="text-cyan-300">Disco cyan (arriba)</strong> — <em>Inicio del proceso.</em> Aquí “entra” el dato que vas a evaluar (en el reto: la edad de la persona).
-              </li>
-              <li>
-                <strong class="text-slate-300">Formas grises</strong> — Conectores y flecha: el control <strong class="text-slate-200">baja</strong> hacia la decisión (orden de ejecución).
-              </li>
-              <li>
-                <strong class="text-amber-300">Rombo ámbar (centro)</strong> — <em>Condición / pregunta lógica.</em> En código es el <code class="rounded bg-lab-bg px-1 font-mono text-xs">if (…)</code>. En el reto, la pregunta es: <strong class="text-white">¿edad ≥ 18?</strong>
-              </li>
-              <li>
-                <strong class="text-emerald-300">Rectángulo verde (izquierda)</strong> — Rama <em>verdadera</em> (la condición se cumple): <strong class="text-emerald-400">acceso permitido</strong> → equivale a la rama del <code class="rounded bg-lab-bg px-1 font-mono text-xs">if</code>.
-              </li>
-              <li>
-                <strong class="text-red-300">Rectángulo rojo (derecha)</strong> — Rama <em>falsa</em> (no se cumple): <strong class="text-red-400">acceso denegado</strong> → equivale a la rama del <code class="rounded bg-lab-bg px-1 font-mono text-xs">else</code>.
-              </li>
-              <li>
-                <strong class="text-slate-400">Base oscura (abajo)</strong> — Suelo del diagrama; indica que ambos caminos ya <strong class="text-slate-200">terminaron</strong> esa validación (en un programa podría seguir otro bloque después).
-              </li>
-            </ol>
-            <div class="mt-6 grid gap-3 sm:grid-cols-2">
-              <div class="rounded-xl border border-lab-border bg-lab-bg/50 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Equivalencia rápida</p>
-                <p class="mt-2 font-mono text-xs leading-relaxed text-lab-accent">
-                  if (edad &gt;= 18) → bloque <span class="text-emerald-400">verde</span><br />
-                  else → bloque <span class="text-red-400">rojo</span>
-                </p>
+          <div class="flex flex-wrap gap-2 rounded-xl border border-lab-border bg-lab-surface/40 p-3" id="topic-tabs" role="tablist" aria-label="Temas de lógica">
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="algoritmos" aria-selected="true">1 · Diagramas y condicionales</button>
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="variables" aria-selected="false">2 · Variables y tipos</button>
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="operadores" aria-selected="false">3 · Operadores</button>
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="bucles" aria-selected="false">4 · Bucles</button>
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="arreglos" aria-selected="false">5 · Arreglos</button>
+            <button type="button" class="topic-tab rounded-lg px-3 py-2 text-xs font-medium sm:text-sm" data-topic="funciones" aria-selected="false">6 · Funciones</button>
+          </div>
+
+          <!-- Panel 1: algoritmos + condicionales -->
+          <div id="topic-panel-algoritmos" class="topic-theory-panel space-y-6" data-topic-panel="algoritmos">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">1 · Algoritmos, diagramas de flujo y condicionales</h3>
+              <p>
+                Imagina una <strong class="text-slate-200">receta de cocina</strong>: hay ingredientes, pasos en orden y un resultado. En computación, eso es un <strong class="text-slate-200">algoritmo</strong>: una lista <em>finita</em> y <em>clara</em> de pasos para que la computadora (o una persona) resuelva un problema sin ambigüedad.
+                No hace falta saber electrónica: solo que la máquina ejecuta instrucciones una tras otra, y a veces debe <strong class="text-slate-200">elegir</strong> entre dos caminos según una condición.
+              </p>
+              <p>
+                Un <strong class="text-slate-200">diagrama de flujo</strong> dibuja esos pasos con formas: óvalo o inicio, flechas, <strong class="text-amber-300">rombo = pregunta sí/no</strong>, rectángulos = acciones. El modelo 3D es la misma idea: <strong class="text-slate-200">entrada → decisión → dos salidas</strong>.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">¿Qué es un condicional (<code class="font-mono text-sm text-lab-accent">if / else</code>)?</h4>
+              <p>
+                Es una <strong class="text-slate-200">pregunta lógica</strong>. Si la respuesta es “sí”, se hace un bloque de instrucciones; si es “no”, se puede hacer otro bloque (<code class="font-mono text-xs text-slate-300">else</code>). Así el programa no hace siempre lo mismo: se <em>adapta</em> a los datos.
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ejemplo en JavaScript (validación por edad)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let edad = 17;  // dato de entrada (podría venir de un formulario)
+
+if (edad &gt;= 18) {
+  console.log("Acceso permitido");
+} else {
+  console.log("Acceso denegado");
+}</pre>
+                <p class="mt-3 text-xs text-slate-500">Lectura: “si edad es mayor o igual a 18, muestra permitido; si no, muestra denegado”. El símbolo <code class="font-mono text-lab-accent">&gt;=</code> es una <em>comparación</em>, no una asignación.</p>
               </div>
-              <div class="rounded-xl border border-lab-border bg-lab-bg/50 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Leyenda de colores (igual que en el 3D)</p>
-                <ul class="mt-2 space-y-2 text-xs text-slate-400">
-                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-cyan-400" aria-hidden="true"></span> Inicio / entrada de datos</li>
-                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rotate-45 border-2 border-amber-400 bg-amber-400/40" aria-hidden="true"></span> Decisión (rombo)</li>
-                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-emerald-400" aria-hidden="true"></span> Condición verdadera</li>
-                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-red-400" aria-hidden="true"></span> Condición falsa</li>
-                </ul>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mismo idea en pseudocódigo (español)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero edad
+edad &lt;- 17
+
+si edad &gt;= 18 entonces
+  escribir "Acceso permitido"
+si no
+  escribir "Acceso denegado"
+fin si</pre>
               </div>
+              <h4 class="text-base font-semibold text-slate-200">Leyenda del modelo 3D</h4>
+              <ol class="list-decimal space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-cyan-300">Cyan arriba</strong> — inicio / dato que entra al proceso.</li>
+                <li><strong class="text-slate-400">Gris</strong> — el flujo avanza en orden hasta la pregunta.</li>
+                <li><strong class="text-amber-300">Rombo</strong> — la condición (equivalente al <code class="font-mono text-xs">if</code>).</li>
+                <li><strong class="text-emerald-300">Verde</strong> — camino “sí”; <strong class="text-red-300">rojo</strong> — camino “no” (<code class="font-mono text-xs">else</code>).</li>
+              </ol>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="algoritmos" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Puntos interactivos sobre el diagrama.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="algoritmos" src="assets/FlujoLogicoAlgoritmo.glb" alt="Diagrama de flujo con decisión y dos ramas" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 65deg 2.8m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-a1" data-position="0 0.98 0.12" data-normal="0 1 0" aria-label="Inicio"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Inicio · entrada</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a2" data-position="0 0.66 0.08" data-normal="0 0 1" aria-label="Secuencia"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Flujo secuencial</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a3" data-position="0 0.34 0.12" data-normal="0 1 0" aria-label="Decisión"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Condición · if</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a4" data-position="-0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Permitido"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Verdadero</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-a5" data-position="0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Denegado"><span class="lab-hotspot-dot lab-hotspot-dot--red"></span><span class="lab-hotspot-label">Falso · else</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 2: variables -->
+          <div id="topic-panel-variables" class="topic-theory-panel hidden space-y-6" data-topic-panel="variables">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">2 · Variables, identificadores y tipos de datos</h3>
+              <p>
+                La memoria de la computadora guarda millones de valores. Para no referirnos a “el valor que está en la posición 4 847 291”, usamos un <strong class="text-slate-200">nombre simbólico</strong>: eso es una <strong class="text-slate-200">variable</strong>.
+                Piensa en una <strong class="text-slate-200">etiqueta</strong> pegada a una cajita: el nombre es lo que escribes en el código; dentro de la cajita está el valor actual (que puede cambiar con el tiempo).
+              </p>
+              <p>
+                El <strong class="text-slate-200">identificador</strong> es el nombre de la variable (por ejemplo <code class="font-mono text-lab-accent">edad</code>, <code class="font-mono text-lab-accent">nombreUsuario</code>). Convención habitual en JavaScript: <strong class="text-slate-200">camelCase</strong> (primera palabra minúscula, siguientes con mayúscula inicial), sin espacios ni acentos, y no puede empezar por número.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Tipos de dato (qué “forma” tiene el valor)</h4>
+              <ul class="list-disc space-y-3 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-blue-400">Número</strong> — entero (<code class="font-mono text-xs">42</code>) o decimal (<code class="font-mono text-xs">3.14</code>). En muchos lenguajes se distingue <code class="font-mono text-xs">int</code> / <code class="font-mono text-xs">float</code>; en JavaScript suele usarse <code class="font-mono text-xs">number</code> para ambos.</li>
+                <li><strong class="text-violet-300">Cadena (string)</strong> — texto entre comillas: <code class="font-mono text-xs">"Hola"</code> o <code class="font-mono text-xs">'Ana'</code>.</li>
+                <li><strong class="text-amber-300">Booleano</strong> — solo dos valores lógicos: <code class="font-mono text-xs">true</code> (verdadero) o <code class="font-mono text-xs">false</code> (falso). Sirve para encender/apagar decisiones.</li>
+              </ul>
+              <p>
+                El modelo 3D muestra <strong class="text-slate-200">tres cajas</strong> de colores: cada una sugiere un tipo distinto (número, texto, booleano). En la práctica, mezclar tipos sin convertir (por ejemplo sumar texto y número como si fueran matemáticas puras) suele dar resultados inesperados; por eso entender el tipo es base de la lógica.
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Declaración y asignación en JavaScript</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Forma moderna: let (valor puede cambiar) o const (referencia fija)
+let edad = 20;                    // número
+const nombre = "María";           // cadena (const: no reasignas el nombre a otra cosa)
+let esEstudiante = true;          // booleano
+
+// Cambiar el valor de una variable ya declarada:
+edad = 21;
+
+// Mostrar en consola del navegador (F12 → Consola)
+console.log(nombre, edad, esEstudiante);</pre>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo (declaración explícita de tipo)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero edad
+cadena nombre
+logico activo
+
+edad &lt;- 20
+nombre &lt;- "María"
+activo &lt;- verdadero
+
+escribir nombre, edad, activo</pre>
+                <p class="mt-2 text-xs text-slate-500">Aquí el tipo se declara primero; en JavaScript el tipo se “infiere” del valor que asignas.</p>
+              </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="variables" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Tres “cajas de memoria” con distinto tipo.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="variables" src="assets/VariablesTipos.glb" alt="Tres variables de distintos tipos" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 58deg 2.2m" field-of-view="42deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-v1" data-position="-0.48 0.18 0.18" data-normal="0 1 0" aria-label="Número"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Tipo numérico</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-v2" data-position="0 0.18 0.18" data-normal="0 1 0" aria-label="Texto"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Cadena / string</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-v3" data-position="0.48 0.18 0.18" data-normal="0 1 0" aria-label="Booleano"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Booleano</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 3: operadores -->
+          <div id="topic-panel-operadores" class="topic-theory-panel hidden space-y-6" data-topic-panel="operadores">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">3 · Operadores y expresiones</h3>
+              <p>
+                Una <strong class="text-slate-200">expresión</strong> es una “frase matemática o lógica” en código: combina <strong class="text-slate-200">valores</strong> (números fijos, variables, textos) con <strong class="text-slate-200">operadores</strong> (símbolos que dicen qué hacer) y al evaluarse produce un <strong class="text-slate-200">resultado</strong>.
+                El modelo 3D sugiere: <em>valor A → operación → valor B → resultado</em>.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Tipos comunes de operadores</h4>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-slate-200">Aritméticos:</strong> <code class="font-mono text-xs">+</code> (suma; con cadenas, <em>concatena</em>), <code class="font-mono text-xs">-</code>, <code class="font-mono text-xs">*</code>, <code class="font-mono text-xs">/</code>, <code class="font-mono text-xs">%</code> (módulo = resto de una división entera, ej. <code class="font-mono text-xs">7 % 3 === 1</code>).</li>
+                <li><strong class="text-slate-200">Comparación</strong> (dan un booleano): <code class="font-mono text-xs">===</code> igual estricto (mismo valor y tipo), <code class="font-mono text-xs">!==</code> distinto, <code class="font-mono text-xs">&lt;</code> <code class="font-mono text-xs">&gt;</code> <code class="font-mono text-xs">&lt;=</code> <code class="font-mono text-xs">&gt;=</code>. En JavaScript moderno se prefiere <code class="font-mono text-xs">===</code> frente a <code class="font-mono text-xs">==</code> para evitar conversiones raras.</li>
+                <li><strong class="text-slate-200">Lógicos:</strong> <code class="font-mono text-xs">&amp;&amp;</code> (Y: ambas partes verdaderas), <code class="font-mono text-xs">||</code> (O: al menos una verdadera), <code class="font-mono text-xs">!</code> (NO: invierte true/false).</li>
+                <li><strong class="text-slate-200">Asignación:</strong> <code class="font-mono text-xs">=</code> guarda un valor en una variable. No confundir con <code class="font-mono text-xs">===</code>, que <em>compara</em>.</li>
+              </ul>
+              <p>
+                <strong class="text-slate-200">Precedencia y paréntesis:</strong> como en matemáticas, lo que está entre <code class="font-mono text-lab-accent">( )</code> se evalúa primero. Si dudas, añade paréntesis: hace el código más claro para ti y para quien lo lea.
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ejemplos en JavaScript (variables + operadores)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let a = 10;
+let b = 3;
+
+let suma = a + b;           // 13
+let resto = a % b;          // 1  (sobra de dividir 10 entre 3)
+
+let mayor = a &gt; b;          // true
+let igualEstricto = (a === 10);  // true
+
+let precio = 100;
+let descuento = 0.15;
+let total = precio * (1 - descuento);  // 85 — paréntesis primero
+
+let nombre = "Hola, " + "Lucía";       // concatenación: "Hola, Lucía"
+
+let edad = 20;
+let tieneEntrada = true;
+let puedeEntrar = (edad &gt;= 18) &amp;&amp; (tieneEntrada === true);  // true si ambas condiciones se cumplen</pre>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero a, b, suma
+a &lt;- 10
+b &lt;- 3
+suma &lt;- a + b
+
+si (a &gt; b) y (a mod b = 1) entonces
+  escribir "Condición cumplida"
+fin si</pre>
+              </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="operadores" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Operando A · operador · operando B · resultado.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="operadores" src="assets/OperadoresExpresion.glb" alt="Expresión con dos operandos y resultado" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="20deg 62deg 2.35m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-o1" data-position="-0.52 0.12 0.12" data-normal="0 1 0" aria-label="Operando A"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Operando A</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o2" data-position="0 0.18 0" data-normal="0 1 0" aria-label="Operador"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Operador (+, &gt;, …)</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o3" data-position="0.52 0.12 0.12" data-normal="0 1 0" aria-label="Operando B"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Operando B</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-o4" data-position="0 0.02 0.32" data-normal="0 0 1" aria-label="Resultado"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Resultado de la expresión</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 4: bucles -->
+          <div id="topic-panel-bucles" class="topic-theory-panel hidden space-y-6" data-topic-panel="bucles">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">4 · Estructuras repetitivas (bucles)</h3>
+              <p>
+                A veces no quieres escribir la misma instrucción 100 veces. Un <strong class="text-slate-200">bucle</strong> (o <em>loop</em>) indica: “repite este bloque mientras se cumpla una regla” o “repite exactamente N veces”.
+                Cada repetición se llama <strong class="text-slate-200">iteración</strong>. El modelo 3D muestra un <strong class="text-slate-200">centro</strong> (el cuerpo: lo que se repite) y elementos alrededor (las “vueltas”).
+              </p>
+              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">while</code> — “mientras…”</h4>
+              <p>
+                Antes de cada vuelta se evalúa la condición. Si es verdadera, se ejecuta el bloque y se vuelve al inicio del <code class="font-mono text-xs">while</code>. Si es falsa, se sale y continúa el programa <em>después</em> del bucle.
+                Ojo: si la condición nunca se vuelve falsa, el bucle no termina (<strong class="text-amber-300">bucle infinito</strong>) — error lógico muy común al principio.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">for</code> — contador clásico</h4>
+              <p>
+                Suele usarse cuando sabes cuántas vueltas quieres o quieres recorrer un rango numérico: inicialización (ej. <code class="font-mono text-xs">i = 0</code>), condición de seguir (<code class="font-mono text-xs">i &lt; n</code>), y actualización al final de cada vuelta (<code class="font-mono text-xs">i = i + 1</code> o <code class="font-mono text-xs">i++</code>).
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: <code class="font-mono text-lab-accent">while</code> y <code class="font-mono text-lab-accent">for</code></p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Contar del 1 al 3 con while
+let n = 1;
+while (n &lt;= 3) {
+  console.log("Vuelta número:", n);
+  n = n + 1;   // imprescindible: acercamos n a que falle la condición
+}
+
+// Mismo recorrido con for
+for (let i = 1; i &lt;= 3; i++) {
+  console.log("i vale", i);
+}
+
+// Sumar los números del 1 al 100
+let suma = 0;
+for (let k = 1; k &lt;= 100; k++) {
+  suma = suma + k;
+}
+console.log("Suma total:", suma);</pre>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero n
+n &lt;- 1
+mientras n &lt;= 3 hacer
+  escribir n
+  n &lt;- n + 1
+fin mientras
+
+para i desde 1 hasta 3 hacer
+  escribir i
+fin para</pre>
+              </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="bucles" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Centro = cuerpo; alrededor = iteraciones.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="bucles" src="assets/BuclesIteracion.glb" alt="Bucle con cuerpo central e iteraciones" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 52deg 2.65m" field-of-view="38deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-b1" data-position="0 0.22 0" data-normal="0 1 0" aria-label="Cuerpo"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Cuerpo del bucle</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-b2" data-position="0 0.14 0.48" data-normal="0 1 0" aria-label="Iteración"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Una iteración</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-b3" data-position="0.46 0.1 0" data-normal="0 1 0" aria-label="Vuelta"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Siguiente vuelta</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 5: arreglos -->
+          <div id="topic-panel-arreglos" class="topic-theory-panel hidden space-y-6" data-topic-panel="arreglos">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">5 · Arreglos y listas (colecciones ordenadas)</h3>
+              <p>
+                Una variable normal guarda <strong class="text-slate-200">un</strong> valor. Un <strong class="text-slate-200">arreglo</strong> (array) o lista ordenada guarda <strong class="text-slate-200">varios</strong> valores en fila, cada uno en una “casilla” numerada.
+                A ese número de casilla se le llama <strong class="text-slate-200">índice</strong>. En JavaScript, C, Java, Python y muchos otros, el <strong class="text-amber-300">primer índice es 0</strong>, no 1: la primera casilla es <code class="font-mono text-lab-accent">[0]</code>, la segunda <code class="font-mono text-lab-accent">[1]</code>, etc.
+              </p>
+              <p>
+                La <strong class="text-slate-200">longitud</strong> del arreglo (<code class="font-mono text-xs">length</code> en JavaScript) dice cuántos elementos hay. El último índice válido es <code class="font-mono text-xs">length - 1</code>. Si pides un índice que no existe, obtienes <code class="font-mono text-xs">undefined</code> (u error en otros lenguajes).
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">¿Para qué sirve en lógica?</h4>
+              <p>
+                Procesar muchas notas, nombres de una clase, días de la semana, etc., sin crear 50 variables sueltas. Suele combinarse con un <code class="font-mono text-lab-accent">for</code> que recorre cada índice de <code class="font-mono text-xs">0</code> a <code class="font-mono text-xs">length - 1</code>.
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: crear, leer, modificar, recorrer</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Declaración con corchetes (literal de arreglo)
+let notas = [85, 90, 72, 88];
+
+// Leer por índice
+console.log(notas[0]);   // 85  (primera posición)
+console.log(notas[3]);   // 88  (cuarta posición)
+
+// Cantidad de elementos
+console.log(notas.length);  // 4
+
+// Cambiar un elemento
+notas[2] = 95;           // subí la tercera nota
+
+// Recorrer todo el arreglo con for
+for (let i = 0; i &lt; notas.length; i++) {
+  console.log("Índice", i, "→ valor", notas[i]);
+}</pre>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo (índice desde 0)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">arreglo notas de enteros
+notas &lt;- [85, 90, 72, 88]
+
+entero i
+para i desde 0 hasta longitud(notas) - 1 hacer
+  escribir "Casilla", i, ":", notas[i]
+fin para</pre>
+              </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="arreglos" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Casillas [0] [1] [2] [3].</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="arreglos" src="assets/ArreglosListas.glb" alt="Arreglo de cuatro elementos indexados" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 58deg 2.45m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-r0" data-position="-0.45 0.16 0.15" data-normal="0 1 0" aria-label="Índice 0"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 0</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r1" data-position="-0.15 0.16 0.15" data-normal="0 1 0" aria-label="Índice 1"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Índice 1</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r2" data-position="0.15 0.16 0.15" data-normal="0 1 0" aria-label="Índice 2"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Índice 2</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-r3" data-position="0.45 0.16 0.15" data-normal="0 1 0" aria-label="Índice 3"><span class="lab-hotspot-dot lab-hotspot-dot--amber"></span><span class="lab-hotspot-label">Índice 3</span></button>
+              </model-viewer>
+            </div>
+          </div>
+
+          <!-- Panel 6: funciones -->
+          <div id="topic-panel-funciones" class="topic-theory-panel hidden space-y-6" data-topic-panel="funciones">
+            <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
+              <h3 class="text-lg font-semibold text-white">6 · Funciones y modularidad</h3>
+              <p>
+                Escribir todo el programa en una sola lista larga es difícil de leer y de corregir. Una <strong class="text-slate-200">función</strong> es un <strong class="text-slate-200">bloque con nombre</strong> que agrupa pasos para una tarea concreta (por ejemplo “calcular el precio con IVA” o “validar la edad”).
+                Puedes <strong class="text-slate-200">llamar</strong> la función varias veces desde distintos sitios sin copiar y pegar el código.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Partes de una función</h4>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-slate-200">Nombre</strong> — describe la acción (<code class="font-mono text-xs">calcularTotal</code>, <code class="font-mono text-xs">saludar</code>).</li>
+                <li><strong class="text-slate-200">Parámetros</strong> — valores de <em>entrada</em> que la función necesita (van entre paréntesis). Son como variables locales que solo existen dentro de la función.</li>
+                <li><strong class="text-slate-200">Cuerpo</strong> — instrucciones entre llaves <code class="font-mono text-xs">{ }</code>.</li>
+                <li><strong class="text-slate-200">Retorno (<code class="font-mono text-xs">return</code>)</strong> — opcional: devuelve un valor al lugar donde llamaste la función. Si no hay <code class="font-mono text-xs">return</code>, la función puede servir solo para efectos secundarios (ej. mostrar un mensaje).</li>
+              </ul>
+              <p>
+                El modelo 3D sugiere: <strong class="text-slate-200">entrada (cono izquierda) → caja proceso (función) → salida (cono derecha)</strong>.
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: declarar y usar funciones</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Función con un parámetro y valor de retorno
+function cuadrado(x) {
+  return x * x;
+}
+
+let resultado = cuadrado(5);   // resultado es 25
+
+// Varios parámetros
+function sumar(a, b) {
+  return a + b;
+}
+
+console.log(sumar(10, 3));     // 13
+
+// Función que usa operadores y condicional dentro
+function puedeVotar(edad) {
+  if (edad &gt;= 18) {
+    return true;
+  }
+  return false;
+}
+
+// Forma compacta equivalente (flecha) — verás esto en muchos tutoriales
+const duplicar = (n) =&gt; n * 2;
+console.log(duplicar(4));      // 8</pre>
+                <p class="mt-2 text-xs text-slate-500">Las variables <code class="font-mono text-lab-accent">a</code>, <code class="font-mono text-lab-accent">b</code>, <code class="font-mono text-lab-accent">x</code> solo “viven” dentro de cada función: son <em>parámetros</em> o variables locales.</p>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">función sumar(a, b): entero
+  retornar a + b
+fin función
+
+función puedeVotar(edad): logico
+  si edad &gt;= 18 entonces
+    retornar verdadero
+  si no
+    retornar falso
+  fin si
+fin función
+
+entero total
+total &lt;- sumar(10, 3)
+escribir total</pre>
+              </div>
+            </div>
+            <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+              <p class="mv-status-topic border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" data-mv-status="funciones" role="status">Cargando modelo 3D…</p>
+              <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">Entrada → proceso (módulo) → salida.</p>
+              <model-viewer class="model-viewer-3d ar-lab-mv" data-topic-mv="funciones" src="assets/FuncionesModulos.glb" alt="Función con entrada, módulo y salida" shadow-intensity="1" camera-controls touch-action="pan-y" exposure="1" camera-orbit="0deg 68deg 2.35m" field-of-view="40deg" ar ar-modes="webxr scene-viewer quick-look">
+                <button type="button" class="lab-hotspot" slot="hotspot-f1" data-position="-0.58 0.14 0.1" data-normal="0 1 0" aria-label="Entrada"><span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span><span class="lab-hotspot-label">Parámetros / entrada</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-f2" data-position="0 0.2 0" data-normal="0 1 0" aria-label="Módulo"><span class="lab-hotspot-dot lab-hotspot-dot--slate"></span><span class="lab-hotspot-label">Cuerpo de la función</span></button>
+                <button type="button" class="lab-hotspot" slot="hotspot-f3" data-position="0.58 0.14 0.1" data-normal="0 1 0" aria-label="Salida"><span class="lab-hotspot-dot lab-hotspot-dot--green"></span><span class="lab-hotspot-label">Retorno / salida</span></button>
+              </model-viewer>
             </div>
           </div>
 
           <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
-            <p id="mv-status" class="border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" role="status">Cargando modelo 3D…</p>
-            <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">
-              <strong class="text-slate-400">Tip:</strong> pulsa o mantén cada <span class="text-lab-accent">punto</span> sobre el modelo para ver la etiqueta. En RA, acerca el teléfono y toca el mismo punto sobre la figura.
-            </p>
-            <model-viewer
-              id="flow-model-viewer"
-              class="model-viewer-3d"
-              src="assets/FlujoLogicoAlgoritmo.glb"
-              alt="Diagrama de flujo 3D: inicio, decisión y ramas de resultado (algoritmo y condicionales)"
-              shadow-intensity="1"
-              camera-controls
-              touch-action="pan-y"
-              exposure="1"
-              camera-orbit="0deg 65deg 2.8m"
-              field-of-view="40deg"
-              ar
-              ar-modes="webxr scene-viewer quick-look"
-            >
-              <button type="button" class="lab-hotspot" slot="hotspot-inicio" data-position="0 0.98 0.12" data-normal="0 1 0" aria-label="Inicio: aquí entra la edad u otros datos">
-                <span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span>
-                <span class="lab-hotspot-label">Inicio · entrada (ej. edad)</span>
-              </button>
-              <button type="button" class="lab-hotspot" slot="hotspot-flujo" data-position="0 0.66 0.08" data-normal="0 0 1" aria-label="El flujo avanza en orden hacia la decisión">
-                <span class="lab-hotspot-dot lab-hotspot-dot--slate"></span>
-                <span class="lab-hotspot-label">Flujo en secuencia</span>
-              </button>
-              <button type="button" class="lab-hotspot" slot="hotspot-decision" data-position="0 0.34 0.12" data-normal="0 1 0" aria-label="Decisión: ¿se cumple la condición?">
-                <span class="lab-hotspot-dot lab-hotspot-dot--amber"></span>
-                <span class="lab-hotspot-label">Decisión · ¿edad ≥ 18?</span>
-              </button>
-              <button type="button" class="lab-hotspot" slot="hotspot-permitido" data-position="-0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Rama verdadera: acceso permitido">
-                <span class="lab-hotspot-dot lab-hotspot-dot--green"></span>
-                <span class="lab-hotspot-label">Sí · permitido (if)</span>
-              </button>
-              <button type="button" class="lab-hotspot" slot="hotspot-denegado" data-position="0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Rama falsa: acceso denegado">
-                <span class="lab-hotspot-dot lab-hotspot-dot--red"></span>
-                <span class="lab-hotspot-label">No · denegado (else)</span>
-              </button>
-            </model-viewer>
-            <div class="flex flex-col gap-3 border-t border-lab-border p-4 sm:flex-row sm:items-center sm:justify-between">
-              <p class="text-sm text-slate-500">En móvil compatible: usa el botón para abrir RA (Scene Viewer / Quick Look).</p>
+            <div class="flex flex-col gap-3 p-4 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm text-slate-500">RA del tema seleccionado (modelo visible arriba).</p>
               <button type="button" id="btn-ar-scan" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 px-5 py-3 font-semibold text-lab-bg shadow-lg shadow-cyan-500/20 transition hover:from-cyan-500 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-lab-bg">
                 <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
@@ -246,7 +545,7 @@
             <h2 class="mt-2 text-2xl font-bold text-white">Sistema de validación de acceso por edad</h2>
             <p class="mt-4 text-slate-400">
               Implementa la lógica: si la persona tiene <strong class="text-white">18 años o más</strong>, el acceso es <strong class="text-emerald-400">permitido</strong>; si no, <strong class="text-amber-400">denegado</strong>.
-              Es el mismo patrón que el <strong class="text-slate-200">rombo de decisión</strong> del modelo 3D en <em>Algoritmos + RA</em>.
+              Es el mismo patrón que el <strong class="text-slate-200">rombo de decisión</strong> del tema <em>Diagramas y condicionales</em> en <strong class="text-slate-200">Teoría + RA</strong>.
               Puedes escribir en <strong class="text-slate-200">JavaScript</strong> o pseudocódigo (español) con <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si</code> / <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si no</code>.
             </p>
             <div class="mt-4 rounded-xl border border-lab-border bg-lab-bg/60 p-4 font-mono text-sm text-slate-300">

@@ -1,17 +1,34 @@
 /**
- * Interactive Code Lab — estado, gamificación y persistencia (localStorage)
+ * Interactive Code Lab — gamificación, temas teóricos + RA, localStorage
  */
 (function () {
   'use strict';
 
   var STORAGE_KEY = 'interactiveCodeLab_v1';
+  var THEORY_IDS = ['algoritmos', 'variables', 'operadores', 'bucles', 'arreglos', 'funciones'];
 
   var BADGE_DEFS = [
-    { id: 'explorer', label: 'Explorador', desc: 'Visitaste el módulo de algoritmos y RA', icon: '🔭' },
+    { id: 'explorer', label: 'Explorador', desc: 'Abriste el módulo Teoría + RA', icon: '🔭' },
+    { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Visitaste los 6 temas con su modelo 3D', icon: '📚' },
     { id: 'conditional_master', label: 'Lógica condicional', desc: 'Completaste el reto de acceso por edad', icon: '🎯' },
   ];
 
   var POINTS_CHALLENGE = 100;
+
+  function migrateTopicsVisited(data) {
+    var o = {};
+    THEORY_IDS.forEach(function (id) {
+      o[id] = false;
+    });
+    if (data.topicsVisited && typeof data.topicsVisited === 'object') {
+      THEORY_IDS.forEach(function (id) {
+        o[id] = !!data.topicsVisited[id];
+      });
+    } else if (data.theoryVisited) {
+      o.algoritmos = true;
+    }
+    return o;
+  }
 
   function loadState() {
     try {
@@ -23,7 +40,15 @@
         badges: Array.isArray(data.badges) ? data.badges : [],
         challengeCompleted: !!data.challengeCompleted,
         theoryVisited: !!data.theoryVisited,
-        studentName: typeof data.studentName === 'string' && data.studentName.trim() ? data.studentName.trim() : 'Estudiante',
+        topicsVisited: migrateTopicsVisited(data),
+        lastTheoryTopic:
+          typeof data.lastTheoryTopic === 'string' && THEORY_IDS.indexOf(data.lastTheoryTopic) !== -1
+            ? data.lastTheoryTopic
+            : 'algoritmos',
+        studentName:
+          typeof data.studentName === 'string' && data.studentName.trim()
+            ? data.studentName.trim()
+            : 'Estudiante',
       };
     } catch (e) {
       return defaultState();
@@ -31,11 +56,17 @@
   }
 
   function defaultState() {
+    var tv = {};
+    THEORY_IDS.forEach(function (id) {
+      tv[id] = false;
+    });
     return {
       points: 0,
       badges: [],
       challengeCompleted: false,
       theoryVisited: false,
+      topicsVisited: tv,
+      lastTheoryTopic: 'algoritmos',
       studentName: 'Estudiante',
     };
   }
@@ -48,6 +79,29 @@
     }
   }
 
+  function allTopicsVisited(state) {
+    return THEORY_IDS.every(function (id) {
+      return state.topicsVisited[id];
+    });
+  }
+
+  function maybeAwardCurriculumBadge(state) {
+    if (!allTopicsVisited(state)) return;
+    if (state.badges.indexOf('curriculum_ra') !== -1) return;
+    state.badges.push('curriculum_ra');
+    saveState(state);
+    renderBadges(state);
+  }
+
+  function markTopicVisited(state, topicId) {
+    if (THEORY_IDS.indexOf(topicId) === -1) return;
+    if (!state.topicsVisited[topicId]) {
+      state.topicsVisited[topicId] = true;
+      saveState(state);
+      maybeAwardCurriculumBadge(state);
+    }
+  }
+
   function normalizeForCheck(text) {
     return text
       .toLowerCase()
@@ -57,9 +111,6 @@
       .trim();
   }
 
-  /**
-   * Valida solución del reto sin eval(): busca condición de mayoría de edad (18) y ambas ramas permitido/denegado.
-   */
   function validateConditionalSolution(code) {
     if (!code || code.trim().length < 10) {
       return { ok: false, message: 'Escribe una solución más completa (condicional + mensajes).' };
@@ -190,10 +241,67 @@
     }
   }
 
+  function showTheoryTopic(topicId) {
+    if (THEORY_IDS.indexOf(topicId) === -1) topicId = 'algoritmos';
+
+    document.querySelectorAll('.topic-theory-panel').forEach(function (panel) {
+      panel.classList.add('hidden');
+    });
+    var panel = document.getElementById('topic-panel-' + topicId);
+    if (panel) panel.classList.remove('hidden');
+
+    document.querySelectorAll('.topic-tab').forEach(function (tab) {
+      var sel = tab.getAttribute('data-topic') === topicId;
+      tab.setAttribute('aria-selected', sel ? 'true' : 'false');
+    });
+
+    state.lastTheoryTopic = topicId;
+    markTopicVisited(state, topicId);
+    saveState(state);
+  }
+
+  function getActiveModelViewer() {
+    var panel = document.querySelector('.topic-theory-panel:not(.hidden)');
+    if (!panel) return null;
+    return panel.querySelector('model-viewer.ar-lab-mv');
+  }
+
+  function setMvStatusFor(topicId, text, kind) {
+    var el = document.querySelector('[data-mv-status="' + topicId + '"]');
+    if (!el) return;
+    el.textContent = text;
+    el.className =
+      'mv-status-topic border-b border-lab-border px-4 py-2 text-center text-xs ' +
+      (kind === 'error' ? 'bg-red-950/40 text-amber-300' : kind === 'ok' ? 'hidden' : 'bg-lab-surface/40 text-slate-400');
+    if (kind === 'ok') el.setAttribute('aria-hidden', 'true');
+    else el.removeAttribute('aria-hidden');
+  }
+
+  function wireAllModelViewers() {
+    document.querySelectorAll('model-viewer.ar-lab-mv').forEach(function (mv) {
+      var tid = mv.getAttribute('data-topic-mv');
+      if (!tid) return;
+      mv.addEventListener('load', function () {
+        setMvStatusFor(tid, '', 'ok');
+      });
+      mv.addEventListener('error', function () {
+        setMvStatusFor(
+          tid,
+          'Error al cargar el modelo. Ejecuta python scripts/generar_modelos_logica.py y sirve la carpeta con http.server.',
+          'error'
+        );
+      });
+    });
+  }
+
   var state = loadState();
   updatePointsDisplay(state);
   renderBadges(state);
   applyStudentNameToUI();
+
+  if (allTopicsVisited(state)) {
+    maybeAwardCurriculumBadge(state);
+  }
 
   var nameInput = document.getElementById('student-name-input');
   if (nameInput) {
@@ -211,66 +319,51 @@
       if (!section) return;
       showSection(section);
 
-      if (section === 'theory' && !state.theoryVisited) {
-        state.theoryVisited = true;
-        if (state.badges.indexOf('explorer') === -1) {
-          state.badges.push('explorer');
+      if (section === 'theory') {
+        if (!state.theoryVisited) {
+          state.theoryVisited = true;
+          if (state.badges.indexOf('explorer') === -1) {
+            state.badges.push('explorer');
+          }
+          saveState(state);
+          renderBadges(state);
         }
-        saveState(state);
-        renderBadges(state);
+        showTheoryTopic(state.lastTheoryTopic || 'algoritmos');
       }
     });
   });
 
-  var mv = document.getElementById('flow-model-viewer');
-  var mvStatus = document.getElementById('mv-status');
-  var btnAr = document.getElementById('btn-ar-scan');
-
-  function setMvStatus(text, kind) {
-    if (!mvStatus) return;
-    mvStatus.textContent = text;
-    mvStatus.className =
-      'border-b border-lab-border px-4 py-2 text-center text-xs ' +
-      (kind === 'error' ? 'bg-red-950/40 text-amber-300' : kind === 'ok' ? 'hidden' : 'bg-lab-surface/40 text-slate-400');
-    if (kind === 'ok') mvStatus.setAttribute('aria-hidden', 'true');
-    else mvStatus.removeAttribute('aria-hidden');
-  }
-
-  function wireModelViewer() {
-    if (!mv) return;
-    mv.addEventListener('load', function () {
-      setMvStatus('', 'ok');
+  document.querySelectorAll('.topic-tab').forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var topic = tab.getAttribute('data-topic');
+      if (!topic) return;
+      showTheoryTopic(topic);
     });
-    mv.addEventListener('error', function () {
-      setMvStatus(
-        'No se pudo cargar el modelo. Abre la página con python -m http.server (carpeta del proyecto) y comprueba que exista assets/FlujoLogicoAlgoritmo.glb (o ejecuta scripts/generar_modelo_flujo_logico.py).',
-        'error'
-      );
-    });
-  }
+  });
 
   if (customElements.whenDefined) {
-    customElements.whenDefined('model-viewer').then(wireModelViewer).catch(function () {
-      wireModelViewer();
-    });
+    customElements.whenDefined('model-viewer').then(wireAllModelViewers).catch(wireAllModelViewers);
   } else {
-    wireModelViewer();
+    wireAllModelViewers();
   }
 
-  if (btnAr && mv) {
+  var btnAr = document.getElementById('btn-ar-scan');
+  if (btnAr) {
     btnAr.addEventListener('click', function () {
+      var mv = getActiveModelViewer();
+      if (!mv) {
+        alert('No hay modelo activo. Elige un tema en las pestañas.');
+        return;
+      }
       if (mv.canActivateAR === false) {
         alert(
-          'La RA no está disponible en este navegador o el modelo aún no cargó.\n\n' +
-            'Prueba en Chrome (Android) o Safari (iPhone/iPad) después de ver el modelo en 3D.'
+          'La RA no está disponible o el modelo aún no cargó.\n\nPrueba en Chrome (Android) o Safari (iPhone/iPad) cuando veas el 3D.'
         );
         return;
       }
       var arFn = mv.activateAR;
       if (typeof arFn !== 'function') {
-        alert(
-          'La realidad aumentada no está disponible aquí. Prueba Chrome en Android o Safari en iOS, y recarga la página.'
-        );
+        alert('RA no disponible en este navegador.');
         return;
       }
       try {
@@ -278,17 +371,12 @@
         if (out && typeof out.then === 'function') {
           out.catch(function () {
             alert(
-              'No se pudo abrir la RA.\n\n' +
-                '• Usa Chrome en Android o Safari en iPhone/iPad.\n' +
-                '• Espera a que el diagrama de flujo se vea en 3D.\n' +
-                '• En muchos PCs no hay “ver en tu sala”; el 3D en pantalla es lo habitual.'
+              'No se pudo abrir la RA. Usa móvil compatible y espera a que el modelo termine de cargar.'
             );
           });
         }
       } catch (err) {
-        alert(
-          'No se pudo iniciar la RA en este dispositivo. En PC suele limitarse a ver y rotar el modelo en pantalla.'
-        );
+        alert('No se pudo iniciar la RA en este dispositivo.');
       }
     });
   }
