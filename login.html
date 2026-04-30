@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <script>
+    (function () {
+      var k = 'interactiveCodeLab_theme';
+      var d = document.documentElement;
+      try {
+        if (localStorage.getItem(k) === 'light') d.classList.remove('dark');
+        else d.classList.add('dark');
+      } catch (e) {
+        d.classList.add('dark');
+      }
+    })();
+  </script>
+  <script>
+    (function () {
+      try {
+        var raw = localStorage.getItem('interactiveCodeLab_session');
+        if (!raw) return;
+        var s = JSON.parse(raw);
+        if (!s || !s.userId || !s.role) return;
+        if (s.role === 'student') window.location.replace('index.html');
+        else if (s.role === 'admin') window.location.replace('admin.html');
+        else if (s.role === 'teacher') window.location.replace('teacher.html');
+      } catch (e) {}
+    })();
+  </script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Acceso — Interactive Code Lab" />
+  <title>Acceso · Interactive Code Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            lab: {
+              bg: 'rgb(var(--lab-bg) / <alpha-value>)',
+              surface: 'rgb(var(--lab-surface) / <alpha-value>)',
+              border: 'rgb(var(--lab-border) / <alpha-value>)',
+              accent: 'rgb(var(--lab-accent) / <alpha-value>)',
+              accentDim: 'rgb(var(--lab-accentDim) / <alpha-value>)',
+              success: 'rgb(var(--lab-success) / <alpha-value>)',
+              warning: 'rgb(var(--lab-warning) / <alpha-value>)',
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="min-h-screen bg-lab-bg text-slate-200 font-sans antialiased">
+  <div
+    id="login-gate"
+    class="login-gate login-page flex min-h-screen flex-col items-center justify-center bg-lab-bg px-4 py-12"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="login-title"
+  >
+    <div class="absolute right-4 top-4 z-10 sm:right-6 sm:top-6">
+      <button
+        type="button"
+        class="theme-toggle-btn rounded-lg border border-lab-border bg-lab-surface/60 p-2 text-lab-accent shadow-sm transition hover:bg-lab-accent/10 focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-accent/50"
+        aria-label="Cambiar tema"
+        title="Tema"
+      >
+        <svg data-icon="sun" class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+        </svg>
+        <svg data-icon="moon" class="hidden h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+        </svg>
+      </button>
+    </div>
+
+    <div class="w-full max-w-md rounded-2xl border border-lab-border bg-lab-surface/90 p-6 shadow-2xl shadow-black/20 backdrop-blur-sm sm:p-8">
+      <div class="flex items-center gap-3 border-b border-lab-border pb-5">
+        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/5 ring-1 ring-cyan-500/30">
+          <svg class="h-6 w-6 text-lab-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+          </svg>
+        </div>
+        <div class="min-w-0">
+          <p class="font-mono text-xs font-medium uppercase tracking-wider text-lab-accent">Acceso</p>
+          <h1 id="login-title" class="font-mono text-lg font-semibold tracking-tight text-white sm:text-xl">
+            <span class="text-lab-accent">Interactive</span> Code Lab
+          </h1>
+        </div>
+      </div>
+
+      <p class="mt-4 text-sm leading-relaxed text-slate-400">
+        Entra con tu <strong class="font-medium text-slate-300">usuario</strong> y la <strong class="font-medium text-slate-300">clave del aula</strong>. Tu progreso se asocia a esta sesión en el navegador.
+      </p>
+
+      <form id="login-form" class="mt-6 space-y-4" novalidate>
+        <div>
+          <label for="login-user" class="mb-1.5 block text-xs font-medium uppercase tracking-wider text-slate-500">Usuario</label>
+          <input
+            id="login-user"
+            name="username"
+            type="text"
+            autocomplete="username"
+            required
+            maxlength="64"
+            class="w-full rounded-lg border border-lab-border bg-lab-bg px-3 py-2.5 text-sm font-medium text-white placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent"
+            placeholder="Tu nombre o identificador"
+          />
+        </div>
+        <div>
+          <label for="login-password" class="mb-1.5 block text-xs font-medium uppercase tracking-wider text-slate-500">Contraseña</label>
+          <input
+            id="login-password"
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            maxlength="128"
+            class="w-full rounded-lg border border-lab-border bg-lab-bg px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent"
+            placeholder="Clave compartida del curso"
+          />
+        </div>
+        <p id="login-error" class="hidden rounded-lg border border-amber-500/35 bg-amber-950/25 px-3 py-2 text-sm text-amber-200" role="alert"></p>
+        <button
+          type="submit"
+          class="btn-login-submit w-full rounded-xl py-3 text-sm font-semibold text-lab-bg transition hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-lab-accent focus-visible:ring-offset-2 focus-visible:ring-offset-lab-surface"
+        >
+          Entrar al laboratorio
+        </button>
+      </form>
+
+      <p class="mt-5 text-center text-[11px] leading-snug text-slate-500">
+        Usuarios de prueba: <span class="font-mono text-slate-400">estudiante</span> / <span class="font-mono text-slate-400">docente</span> / <span class="font-mono text-slate-400">admin</span> — contraseñas en <span class="font-mono text-slate-400">data/users.json</span>.
+      </p>
+    </div>
+  </div>
+
+  <script src="js/users-store.js"></script>
+  <script src="js/login.js"></script>
+</body>
+</html>

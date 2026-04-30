@@ -1,0 +1,28 @@
+{
+  "users": [
+    {
+      "id": "usr-admin",
+      "username": "admin",
+      "password": "admin123",
+      "role": "admin",
+      "active": true,
+      "displayName": "Administrador"
+    },
+    {
+      "id": "usr-teacher",
+      "username": "docente",
+      "password": "docente123",
+      "role": "teacher",
+      "active": true,
+      "displayName": "Docente demo"
+    },
+    {
+      "id": "usr-student-1",
+      "username": "estudiante",
+      "password": "laboratorio",
+      "role": "student",
+      "active": true,
+      "displayName": "Estudiante demo"
+    }
+  ]
+}

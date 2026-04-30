@@ -4,7 +4,17 @@
 (function () {
   'use strict';
 
-  var STORAGE_KEY = 'interactiveCodeLab_v1';
+  var THEME_STORAGE_KEY = 'interactiveCodeLab_theme';
+
+  function getProgressStorageKeyForApp() {
+    if (typeof LabUsers === 'undefined') return 'interactiveCodeLab_v1';
+    var s = LabUsers.getSession();
+    if (s && s.userId && s.role === 'student') {
+      return LabUsers.getProgressStorageKey(s.userId);
+    }
+    return 'interactiveCodeLab_v1';
+  }
+
   /**
    * Orden estricto de lo más básico a lo más avanzado.
    * Cada tema se desbloquea solo tras el cuestionario del tema anterior (1.1 → 1.2 → … → 3.3).
@@ -29,6 +39,31 @@
     3: ['array_average', 'function_double', 'trace_while'],
   };
 
+  /**
+   * Temas teóricos agrupados como en los resúmenes (1.1–1.3, 2.1–2.4, 3.1–3.3).
+   * Sirve para donas de % de cuestionarios por nivel en el panel Inicio.
+   */
+  var THEORY_LEVEL_GROUPS = [
+    {
+      level: 1,
+      title: 'Nivel 1 · Fundamentos',
+      subtitle: 'Temas 1.1 – 1.3',
+      topicIds: ['algoritmos', 'variables', 'entrada_salida'],
+    },
+    {
+      level: 2,
+      title: 'Nivel 2 · Estructuras y texto',
+      subtitle: 'Temas 2.1 – 2.4',
+      topicIds: ['operadores', 'decisiones_multiples', 'cadenas', 'bucles'],
+    },
+    {
+      level: 3,
+      title: 'Nivel 3 · Datos y calidad',
+      subtitle: 'Temas 3.1 – 3.3',
+      topicIds: ['arreglos', 'funciones', 'pruebas_trazado'],
+    },
+  ];
+
   /** Mínimo de retos del nivel anterior que deben estar superados (mayoría estricta). */
   function majorityThreshold(total) {
     return Math.floor(total / 2) + 1;
@@ -40,6 +75,171 @@
       if (st.challengeRewards[ids[i]]) n++;
     }
     return n;
+  }
+
+  function countQuizzesDoneInTopicList(st, topicIds) {
+    var n = 0;
+    for (var i = 0; i < topicIds.length; i++) {
+      if (st.quizRewards[topicIds[i]]) n++;
+    }
+    return n;
+  }
+
+  function getNextPendingQuizTopicId(st) {
+    for (var i = 0; i < THEORY_IDS.length; i++) {
+      if (!st.quizRewards[THEORY_IDS[i]]) return THEORY_IDS[i];
+    }
+    return null;
+  }
+
+  function topicIdToTheoryLevel(topicId) {
+    for (var i = 0; i < THEORY_LEVEL_GROUPS.length; i++) {
+      if (THEORY_LEVEL_GROUPS[i].topicIds.indexOf(topicId) !== -1) return THEORY_LEVEL_GROUPS[i].level;
+    }
+    return 1;
+  }
+
+  function formatPercentExact(done, total) {
+    if (!total) return '0.0';
+    return ((100 * done) / total).toFixed(1);
+  }
+
+  var DASHBOARD_DONUT_COLORS = ['#22d3ee', '#34d399', '#a78bfa'];
+
+  function createDashboardDonutSvg(percent, colorStroke) {
+    var p = Math.max(0, Math.min(100, percent));
+    var r = 40;
+    var c = 2 * Math.PI * r;
+    var dash = (p / 100) * c;
+    var stroke = colorStroke || '#22d3ee';
+    var ns = 'http://www.w3.org/2000/svg';
+    var svg = document.createElementNS(ns, 'svg');
+    svg.setAttribute('viewBox', '0 0 100 100');
+    svg.setAttribute('role', 'img');
+    svg.setAttribute('aria-label', 'Progreso teórico del nivel: ' + p.toFixed(1) + ' por ciento');
+    var bg = document.createElementNS(ns, 'circle');
+    bg.setAttribute('cx', '50');
+    bg.setAttribute('cy', '50');
+    bg.setAttribute('r', String(r));
+    bg.setAttribute('fill', 'none');
+    bg.setAttribute('class', 'donut-track-ring');
+    bg.setAttribute('stroke-width', '10');
+    var fg = document.createElementNS(ns, 'circle');
+    fg.setAttribute('cx', '50');
+    fg.setAttribute('cy', '50');
+    fg.setAttribute('r', String(r));
+    fg.setAttribute('fill', 'none');
+    fg.setAttribute('stroke', stroke);
+    fg.setAttribute('stroke-width', '10');
+    fg.setAttribute('stroke-linecap', 'round');
+    fg.setAttribute('stroke-dasharray', dash + ' ' + c);
+    fg.setAttribute('transform', 'rotate(-90 50 50)');
+    svg.appendChild(bg);
+    svg.appendChild(fg);
+    return svg;
+  }
+
+  function renderDashboardYouAreHere(st) {
+    var el = document.getElementById('dashboard-you-are-here');
+    if (!el) return;
+    var nextId = getNextPendingQuizTopicId(st);
+    var totalTheory = THEORY_IDS.length;
+    var doneTheory = countQuizzesDoneInTopicList(st, THEORY_IDS);
+    var globalPct = formatPercentExact(doneTheory, totalTheory);
+
+    if (!nextId) {
+      el.innerHTML =
+        'Has completado el <strong>100%</strong> de los cuestionarios teóricos (' +
+        doneTheory +
+        '/' +
+        totalTheory +
+        ' temas). Global: <strong>' +
+        globalPct +
+        '%</strong> del currículo en evaluaciones aprobadas.';
+      return;
+    }
+
+    var lvl = topicIdToTheoryLevel(nextId);
+    var title = TOPIC_TITLE_FOR_LOCK[nextId] || nextId;
+    el.innerHTML =
+      '<strong>Tu posición:</strong> el siguiente paso está en el <strong>Nivel ' +
+      lvl +
+      '</strong>. Meta inmediata: <strong>' +
+      title +
+      '</strong> (aprueba todas las preguntas de su cuestionario en Teoría + RA). ' +
+      'Progreso global de teoría: <strong>' +
+      doneTheory +
+      '/' +
+      totalTheory +
+      ' temas</strong> (<strong>' +
+      globalPct +
+      '%</strong>).';
+  }
+
+  function renderDashboardProgress(st) {
+    var mount = document.getElementById('dashboard-donuts');
+    if (!mount) return;
+    renderDashboardYouAreHere(st);
+    mount.innerHTML = '';
+
+    THEORY_LEVEL_GROUPS.forEach(function (grp, gi) {
+      var totalTopics = grp.topicIds.length;
+      var doneTopics = countQuizzesDoneInTopicList(st, grp.topicIds);
+      var pctNum = totalTopics ? (100 * doneTopics) / totalTopics : 0;
+      var pctLabel = formatPercentExact(doneTopics, totalTopics);
+      var ringColor = DASHBOARD_DONUT_COLORS[gi] || DASHBOARD_DONUT_COLORS[0];
+
+      var chIds = CHALLENGE_IDS_BY_LEVEL[grp.level] || [];
+      var chDone = countChallengesDoneInList(st, chIds);
+      var chTotal = chIds.length;
+
+      var card = document.createElement('div');
+      card.className = 'dashboard-donut-card rounded-xl border border-lab-border bg-lab-bg/35 px-4 py-5';
+
+      var h = document.createElement('h3');
+      h.className = 'text-sm font-semibold text-white';
+      h.textContent = grp.title;
+      card.appendChild(h);
+
+      var sub = document.createElement('p');
+      sub.className = 'mt-1 text-[11px] text-slate-500';
+      sub.textContent = grp.subtitle;
+      card.appendChild(sub);
+
+      var wrap = document.createElement('div');
+      wrap.className = 'dashboard-donut-wrap mt-4';
+      wrap.appendChild(createDashboardDonutSvg(pctNum, ringColor));
+
+      var inner = document.createElement('div');
+      inner.className = 'dashboard-donut-inner';
+      var pctSpan = document.createElement('span');
+      pctSpan.className = 'dashboard-donut-pct';
+      pctSpan.textContent = pctLabel + '%';
+      var frac = document.createElement('span');
+      frac.className = 'dashboard-donut-fraction';
+      frac.textContent = doneTopics + '/' + totalTopics + ' cuestionarios';
+      inner.appendChild(pctSpan);
+      inner.appendChild(frac);
+      wrap.appendChild(inner);
+      card.appendChild(wrap);
+
+      var retos = document.createElement('p');
+      retos.className = 'mt-3 text-xs text-slate-400';
+      retos.innerHTML =
+        'Retos Nivel ' +
+        grp.level +
+        ': <strong class="text-slate-300">' +
+        chDone +
+        '/' +
+        chTotal +
+        '</strong>' +
+        (chTotal
+          ? ' (<strong class="text-slate-300">' + formatPercentExact(chDone, chTotal) + '%</strong>)'
+          : '');
+      card.appendChild(retos);
+
+      mount.appendChild(card);
+    });
   }
 
   /** ¿Se cumple el requisito de retos del nivel anterior para poder jugar retos de `challengeLevel`? */
@@ -73,6 +273,32 @@
   ];
 
   var POINTS_QUIZ_TOPIC = 20;
+
+  /**
+   * Puntos necesarios para pasar del nivel `levelIndex` al siguiente (1 = primer tramo).
+   * Curva creciente: tras muchas recompensas la barra sigue teniendo meta clara.
+   */
+  function xpNeededToLevelUp(levelIndex) {
+    return 100 + (levelIndex - 1) * 50;
+  }
+
+  function unpackXp(points) {
+    var p = Math.max(0, Math.floor(points));
+    var level = 1;
+    while (true) {
+      var need = xpNeededToLevelUp(level);
+      if (p < need) {
+        return {
+          level: level,
+          inLevel: p,
+          need: need,
+          pct: need > 0 ? (p / need) * 100 : 0,
+        };
+      }
+      p -= need;
+      level++;
+    }
+  }
 
   function defaultChallengeRewards() {
     return {
@@ -457,9 +683,13 @@
 
   function loadState() {
     try {
-      var raw = localStorage.getItem(STORAGE_KEY);
+      var key = getProgressStorageKeyForApp();
+      var raw = localStorage.getItem(key);
       if (!raw) return defaultState();
       var data = JSON.parse(raw);
+      var sess = typeof LabUsers !== 'undefined' ? LabUsers.getSession() : null;
+      var fallbackName =
+        (sess && sess.displayName) || (sess && sess.username) || 'Estudiante';
       return {
         points: typeof data.points === 'number' ? data.points : 0,
         badges: Array.isArray(data.badges) ? data.badges : [],
@@ -472,7 +702,7 @@
         studentName:
           typeof data.studentName === 'string' && data.studentName.trim()
             ? data.studentName.trim()
-            : 'Estudiante',
+            : fallbackName,
         quizRewards: migrateQuizRewardsWithOrderFix(data),
         challengeRewards: migrateChallengeRewards(data),
       };
@@ -488,13 +718,19 @@
       tv[id] = false;
       qr[id] = false;
     });
+    var sn = 'Estudiante';
+    if (typeof LabUsers !== 'undefined') {
+      var sx = LabUsers.getSession();
+      if (sx && sx.displayName) sn = sx.displayName;
+      else if (sx && sx.username) sn = sx.username;
+    }
     return {
       points: 0,
       badges: [],
       theoryVisited: false,
       topicsVisited: tv,
       lastTheoryTopic: 'algoritmos',
-      studentName: 'Estudiante',
+      studentName: sn,
       quizRewards: qr,
       challengeRewards: defaultChallengeRewards(),
     };
@@ -502,7 +738,13 @@
 
   function saveState(state) {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      var key = getProgressStorageKeyForApp();
+      var out = {};
+      Object.keys(state).forEach(function (k) {
+        if (k === 'sessionUser') return;
+        out[k] = state[k];
+      });
+      localStorage.setItem(key, JSON.stringify(out));
     } catch (e) {
       console.warn('No se pudo guardar en localStorage', e);
     }
@@ -730,6 +972,7 @@
     renderTopicTabsLockState(currentState);
     renderChallengePanels(currentState);
     renderChallengeBadgesCard(currentState);
+    renderDashboardProgress(currentState);
   }
 
   function markTopicVisited(state, topicId) {
@@ -1641,6 +1884,7 @@
       }
     }
     renderChallengePanels(st);
+    renderDashboardProgress(st);
   }
 
   function wireChallengeValidators() {
@@ -1778,8 +2022,119 @@
   }
 
   function updatePointsDisplay(state) {
-    var el = document.getElementById('points-display');
-    if (el) el.textContent = String(state.points);
+    var card = document.getElementById('xp-points-card');
+    var fill = document.getElementById('xp-bar-fill');
+    var track = document.getElementById('xp-bar-track');
+    var disp = document.getElementById('points-display');
+    var lvlEl = document.getElementById('xp-level-display');
+    var capEl = document.getElementById('xp-bar-caption');
+
+    var now = typeof state.points === 'number' && !isNaN(state.points) ? Math.max(0, Math.floor(state.points)) : 0;
+    var rawPrev = card ? card.getAttribute('data-last-points') : null;
+    var isFirstPaint = rawPrev === null || rawPrev === '';
+    var prev = isFirstPaint ? now : parseInt(rawPrev, 10);
+    if (isNaN(prev)) prev = 0;
+
+    var meta = unpackXp(now);
+    var prevMeta = unpackXp(prev);
+
+    if (disp) disp.textContent = String(now);
+    if (lvlEl) lvlEl.textContent = 'Nivel ' + meta.level;
+    if (capEl) {
+      capEl.textContent =
+        meta.inLevel +
+        ' / ' +
+        meta.need +
+        ' XP → Nivel ' +
+        (meta.level + 1) +
+        ' · Total ' +
+        now +
+        ' pts';
+    }
+    if (track) {
+      track.setAttribute('aria-valuenow', String(meta.inLevel));
+      track.setAttribute('aria-valuemax', String(meta.need));
+      track.setAttribute(
+        'aria-valuetext',
+        meta.inLevel + ' de ' + meta.need + ' puntos de experiencia hacia el nivel ' + (meta.level + 1)
+      );
+    }
+
+    if (fill) {
+      if (isFirstPaint) {
+        fill.style.transition = 'none';
+        fill.style.width = meta.pct + '%';
+        void fill.offsetHeight;
+        fill.style.transition = '';
+      } else if (now !== prev) {
+        fill.style.width = prevMeta.pct + '%';
+        void fill.offsetHeight;
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            fill.style.width = meta.pct + '%';
+          });
+        });
+      } else {
+        fill.style.width = meta.pct + '%';
+      }
+    }
+
+    if (card && !isFirstPaint && now > prev) {
+      card.classList.remove('xp-points-card--pulse');
+      void card.offsetWidth;
+      card.classList.add('xp-points-card--pulse');
+
+      if (fill) {
+        fill.classList.remove('xp-bar-fill--gain');
+        void fill.offsetWidth;
+        fill.classList.add('xp-bar-fill--gain');
+        setTimeout(function () {
+          if (fill) fill.classList.remove('xp-bar-fill--gain');
+        }, 900);
+      }
+      if (disp) {
+        disp.classList.remove('xp-points-number--tick');
+        void disp.offsetWidth;
+        disp.classList.add('xp-points-number--tick');
+      }
+    }
+
+    if (card) card.setAttribute('data-last-points', String(now));
+  }
+
+  function syncThemeToggleButton() {
+    var isDark = document.documentElement.classList.contains('dark');
+    document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
+      btn.setAttribute('aria-label', isDark ? 'Activar tema claro' : 'Activar tema oscuro');
+      btn.setAttribute('title', isDark ? 'Tema claro' : 'Tema oscuro');
+      var sun = btn.querySelector('[data-icon="sun"]');
+      var moon = btn.querySelector('[data-icon="moon"]');
+      if (sun) sun.classList.toggle('hidden', !isDark);
+      if (moon) moon.classList.toggle('hidden', isDark);
+    });
+  }
+
+  function applyTheme(theme) {
+    var root = document.documentElement;
+    if (theme === 'light') root.classList.remove('dark');
+    else root.classList.add('dark');
+    try {
+      localStorage.setItem(THEME_STORAGE_KEY, theme);
+    } catch (e) {}
+    syncThemeToggleButton();
+    if (document.documentElement.getAttribute('data-lab-auth') === '1') {
+      renderDashboardProgress(state);
+    }
+  }
+
+  function wireThemeToggle() {
+    document.querySelectorAll('.theme-toggle-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var next = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+        applyTheme(next);
+      });
+    });
+    syncThemeToggleButton();
   }
 
   function showSection(id) {
@@ -1859,7 +2214,27 @@
     });
   }
 
+  function isSessionStudent() {
+    if (typeof LabUsers === 'undefined') return false;
+    var s = LabUsers.getSession();
+    return !!(s && s.userId && s.role === 'student');
+  }
+
+  if (typeof LabUsers !== 'undefined') {
+    var _sess = LabUsers.getSession();
+    if (_sess && _sess.role === 'student' && _sess.userId) {
+      LabUsers.migrateLegacyProgressToUser(_sess.userId);
+    }
+  }
+
   var state = loadState();
+  if (!isSessionStudent()) {
+    window.location.replace('login.html');
+    return;
+  }
+
+  document.documentElement.setAttribute('data-lab-auth', '1');
+  wireThemeToggle();
   clampLastTheoryTopic(state);
   syncChallengeBadgesFromRewards(state);
   saveState(state);
@@ -1890,6 +2265,17 @@
     });
   }
 
+  var btnLogout = document.getElementById('btn-logout');
+  if (btnLogout) {
+    btnLogout.addEventListener('click', function () {
+      if (typeof LabUsers !== 'undefined') LabUsers.clearSession();
+      document.documentElement.removeAttribute('data-lab-auth');
+      window.location.href = 'login.html';
+    });
+  }
+
+  showSection('dashboard');
+
   document.querySelectorAll('.nav-btn').forEach(function (btn) {
     btn.addEventListener('click', function () {
       var section = btn.getAttribute('data-section');
@@ -1910,6 +2296,9 @@
       }
       if (section === 'practice') {
         renderChallengePanels(state);
+      }
+      if (section === 'dashboard') {
+        renderDashboardProgress(state);
       }
     });
   });
@@ -1967,6 +2356,4 @@
       }
     });
   }
-
-  showSection('dashboard');
 })();
