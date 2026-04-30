@@ -65,6 +65,61 @@ model-viewer.model-viewer-3d {
   cursor: not-allowed;
 }
 
+.btn-challenge-guide:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.challenge-guide-panel .challenge-guide-list {
+  list-style-position: outside;
+}
+
+.challenge-guide-panel .challenge-guide-list li::marker {
+  color: #22d3ee;
+  font-weight: 600;
+}
+
+.challenge-guide-panel .challenge-guide-step .challenge-guide-code {
+  margin-top: 0.65rem;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(30, 42, 58, 1);
+  background: rgba(11, 15, 20, 0.92);
+  padding: 0.65rem 0.85rem;
+  font-family: ui-monospace, "JetBrains Mono", "Fira Code", Consolas, monospace;
+  font-size: 0.7rem;
+  line-height: 1.45;
+  color: rgba(110, 231, 183, 0.95);
+  white-space: pre;
+}
+
+@media (min-width: 640px) {
+  .challenge-guide-panel .challenge-guide-step .challenge-guide-code {
+    font-size: 0.75rem;
+    padding: 0.75rem 1rem;
+  }
+}
+
+.challenge-guide-panel .challenge-guide-step .challenge-guide-code:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.35);
+}
+
+/* Tabla de operadores aritméticos (teoría 2.1) */
+.lab-arith-table tbody tr:hover {
+  background: rgba(34, 211, 238, 0.04);
+}
+
+.lab-arith-table th,
+.lab-arith-table td {
+  vertical-align: top;
+}
+
+.lab-arith-table code {
+  font-size: 0.8em;
+}
+
 /* Hotspots en <model-viewer> — explican el FlujoLogicoAlgoritmo en 3D/RA */
 .lab-hotspot {
   display: block;

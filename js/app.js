@@ -496,7 +496,11 @@
 
   function validateConditionalSolution(code) {
     if (!code || code.trim().length < 10) {
-      return { ok: false, message: 'Escribe una solución más completa (condicional + mensajes).' };
+      return {
+        ok: false,
+        message:
+          'Aún va un poco corto. Intenta escribir algo como: “si la edad es 18 o más, muestra un mensaje de que sí puede entrar; si no, otro mensaje de que no”. Puedes usar if { } y else { } en JavaScript.',
+      };
     }
 
     var n = normalizeForCheck(code);
@@ -510,7 +514,11 @@
       n.includes(' entonces');
 
     if (!hasBranching) {
-      return { ok: false, message: 'Incluye una estructura condicional (if/si …).' };
+      return {
+        ok: false,
+        message:
+          'Aquí el programa tiene que decidir entre dos situaciones. Busca en la teoría el ejemplo con if ( … ) { … } else { … } o, en español, “si … entonces … si no …”. Copia la idea y cámbiala a edad y 18.',
+      };
     }
 
     var hasAgeCheck =
@@ -518,7 +526,11 @@
       (n.includes('18') || n.includes('>= 18') || n.includes('>=18') || n.includes('> 17') || n.includes('>17'));
 
     if (!hasAgeCheck) {
-      return { ok: false, message: 'Debes comparar edad (o age) con 18 (mayoría de edad).' };
+      return {
+        ok: false,
+        message:
+          'Falta la parte de la edad y el número 18. El enunciado habla de “18 años o más”: en código suele verse como edad >= 18 (o age >= 18). ¿Ya pusiste el nombre de la edad y el 18 en la misma pregunta?',
+      };
     }
 
     var hasElse =
@@ -528,7 +540,11 @@
       /}\s*else\s*{/.test(code.replace(/\s+/g, ' '));
 
     if (!hasElse) {
-      return { ok: false, message: 'Incluye la rama alternativa (else / sino) para acceso denegado.' };
+      return {
+        ok: false,
+        message:
+          'Ya tienes el caso de “sí cumple”; falta el de “no cumple”. Añade la segunda parte con else (en JavaScript) o si no (en pseudocódigo), con el mensaje cuando la persona es menor de 18.',
+      };
     }
 
     var permitido =
@@ -550,118 +566,237 @@
     if (!permitido || !denegado) {
       return {
         ok: false,
-        message: 'Indica explícitamente ambos resultados (p. ej. “Permitido” y “Denegado” o equivalentes).',
+        message:
+          'La lógica va bien encaminada; ahora deja escritos con palabras claras los dos resultados: en un camino algo como “permitido” o “acceso permitido”, y en el otro “denegado”, “no permitido” o “rechazado”. Así se ve que entendiste los dos casos.',
       };
     }
 
-    return { ok: true, message: '¡Correcto! Has aplicado bien las condicionales.' };
+    return {
+      ok: true,
+      message: '¡Muy bien! Separaste bien los dos casos (mayor o menor de edad) y se entiende qué pasa en cada uno.',
+    };
   }
 
   function validateVariablesTotal(code) {
     if (!code || code.trim().length < 12) {
-      return { ok: false, message: 'Escribe código con precio, cantidad y total.' };
+      return {
+        ok: false,
+        message:
+          'Escribe unas líneas más. Recuerda la “compra”: algo como precio = 10, cantidad = 2, y luego el total de multiplicar ambos.',
+      };
     }
     var n = normalizeForCheck(code);
     var hasPrecio = n.includes('precio') || n.includes('price');
     var hasCantidad = n.includes('cantidad') || n.includes('quantity') || n.includes('qty');
     if (!hasPrecio || !hasCantidad) {
-      return { ok: false, message: 'Declara variables como precio y cantidad (o price/quantity).' };
+      return {
+        ok: false,
+        message:
+          'Necesitamos dos cajitas de datos: una para el precio y otra para la cantidad (pueden llamarse precio y cantidad, o price y quantity). Con let precio = 10; vas por buen camino.',
+      };
     }
     if (!n.includes('10') || !n.includes('2')) {
-      return { ok: false, message: 'Usa precio 10 y cantidad 2.' };
+      return {
+        ok: false,
+        message:
+          'El enunciado pide precio 10 y cantidad 2. Revisa que esos números aparezcan en tu código como en el ejemplo de la teoría.',
+      };
     }
     if (!n.includes('total')) {
-      return { ok: false, message: 'Guarda el resultado en una variable total.' };
+      return {
+        ok: false,
+        message:
+          'Falta guardar el resultado con un nombre como total. Idea: primero precio y cantidad, luego algo como let total = precio * cantidad; (el asterisco * es “por” en programación).',
+      };
     }
     if (!n.includes('*') && !n.includes('20')) {
-      return { ok: false, message: 'Obtén el total multiplicando precio × cantidad (20).' };
+      return {
+        ok: false,
+        message:
+          'El total sale de multiplicar precio por cantidad. En JavaScript se escribe con * (no con ×). 10 por 2 = 20.',
+      };
     }
     if (!n.includes('20')) {
-      return { ok: false, message: 'Debe quedar claro que el total es 20 (valor o comprobación).' };
+      return {
+        ok: false,
+        message:
+          'Casi: deja escrito en algún sitio el 20 (el resultado final) o un console.log(total) para que se vea que te da 20.',
+      };
     }
-    return { ok: true, message: '¡Bien! Variables y operación coherentes.' };
+    return {
+      ok: true,
+      message: '¡Genial! Usaste bien las variables y la multiplicación; el total 10 × 2 quedó claro.',
+    };
   }
 
   function validateOperatorsParity(code) {
     if (!code || code.trim().length < 15) {
-      return { ok: false, message: 'Incluye el operador % y condicionales para 8 y 7.' };
+      return {
+        ok: false,
+        message:
+          'Hace falta un poco más de código. Piensa: el número 8 es par, el 7 es impar; en la teoría explican el símbolo % (sirve para ver el “sobrante” al dividir entre 2).',
+      };
     }
     var n = normalizeForCheck(code);
     if (!n.includes('%') || !n.includes('2')) {
-      return { ok: false, message: 'Usa el módulo (%) con 2 para distinguir par/impar.' };
+      return {
+        ok: false,
+        message:
+          'Prueba usar % junto con el número 2. Idea sencilla: si al dividir un número entre 2 el sobrante es 0, suele ser par; si no, impar. En JavaScript eso se escribe algo como n % 2.',
+      };
     }
     var hasBranch = /\bif\b|\bsi\b/.test(n) || n.includes('entonces');
     if (!hasBranch) {
-      return { ok: false, message: 'Usa al menos una condicional (if / si).' };
+      return {
+        ok: false,
+        message:
+          'El programa tiene que elegir según el número. Usa algo como if ( … ) { … } para el 8 y otra rama para el 7, o un if que distinga par e impar.',
+      };
     }
     if (!n.includes('8')) {
-      return { ok: false, message: 'Trata el caso del número 8.' };
+      return {
+        ok: false,
+        message:
+          'No olvides el 8: el reto pide mostrar o decir que es par. ¿Dónde aparece el 8 en tu respuesta?',
+      };
     }
     if (!n.includes('7')) {
-      return { ok: false, message: 'Trata el caso del número 7.' };
+      return {
+        ok: false,
+        message:
+          'Falta el 7: debe quedar claro que es impar. Añade ese caso con un mensaje o comentario.',
+      };
     }
     var hasPar = n.includes('par') || n.includes('even');
     var hasImpar = n.includes('impar') || n.includes('odd');
     if (!hasPar || !hasImpar) {
-      return { ok: false, message: 'Indica explícitamente par e impar (texto o mensaje).' };
+      return {
+        ok: false,
+        message:
+          'Usa las palabras par e impar (o “even” / “odd”) en un mensaje o comentario, para que quede claro qué entendiste de cada número.',
+      };
     }
-    return { ok: true, message: '¡Correcto! Buen uso de % y condicionales.' };
+    return {
+      ok: true,
+      message: '¡Bien hecho! Combinaste la idea de mirar lo que sobra al dividir entre 2 con los dos números del enunciado.',
+    };
   }
 
   function validateLoopSum(code) {
     if (!code || code.trim().length < 15) {
-      return { ok: false, message: 'Usa un bucle y acumula la suma del 1 al 10.' };
+      return {
+        ok: false,
+        message:
+          'Necesitas un poco más de líneas. La idea es repetir sumando: 1, luego 1+2, luego hasta llegar al 10, sin escribir diez sumas a mano. En la teoría verás for o while.',
+      };
     }
     var n = normalizeForCheck(code);
     var hasLoop = /\bfor\b|\bwhile\b|\bmientras\b/.test(n) || /\bpara\b/.test(n);
     if (!hasLoop) {
-      return { ok: false, message: 'Incluye un bucle: for, while o mientras/para en pseudocódigo.' };
+      return {
+        ok: false,
+        message:
+          'Aquí hace falta algo que repita pasos. Busca en el tema de bucles las palabras for o while (o “mientras” en pseudocódigo): son formas de decir “sigue haciendo esto mientras…” hasta completar del 1 al 10.',
+      };
     }
     if (!n.includes('55')) {
-      return { ok: false, message: 'El resultado debe ser 55 (suma 1+2+…+10).' };
+      return {
+        ok: false,
+        message:
+          'La suma 1 + 2 + … + 10 da 55. Si tu código no muestra 55, revisa el límite del contador (¿llega hasta 10?) y que vayas sumando de uno en uno en una variable llamada por ejemplo suma.',
+      };
     }
-    return { ok: true, message: '¡Perfecto! El bucle y la suma encajan.' };
+    return {
+      ok: true,
+      message: '¡Perfecto! Usaste repetición y el resultado 55 encaja con sumar del 1 al 10.',
+    };
   }
 
   function validateArrayAverage(code) {
     if (!code || code.trim().length < 15) {
-      return { ok: false, message: 'Define el arreglo [8,9,10] y calcula el promedio.' };
+      return {
+        ok: false,
+        message:
+          'Escribe un poco más. Necesitas una lista con tres notas (8, 9 y 10) y luego el “valor del medio” que sale de sumar las tres y dividir entre 3.',
+      };
     }
     var n = normalizeForCheck(code);
     if (!n.includes('8') || !n.includes('9') || !n.includes('10')) {
-      return { ok: false, message: 'El arreglo debe contener 8, 9 y 10.' };
+      return {
+        ok: false,
+        message:
+          'La lista debe incluir los tres números 8, 9 y 10 (son las tres notas del ejemplo).',
+      };
     }
     if (!n.includes('[') && !n.includes('arreglo')) {
-      return { ok: false, message: 'Usa notación de arreglo [ ] o indica un arreglo en pseudocódigo.' };
+      return {
+        ok: false,
+        message:
+          'En JavaScript la lista suele ir entre corchetes, por ejemplo [8, 9, 10]. Si escribes en español, puedes decir “arreglo” o “lista”, pero en código ayuda usar [ ].',
+      };
     }
     if (!n.includes('/') && !n.includes('promedio') && !n.includes('average')) {
-      return { ok: false, message: 'Calcula el promedio (división entre 3 o equivalente).' };
+      return {
+        ok: false,
+        message:
+          'El promedio aquí es: sumar 8 + 9 + 10 y partir el resultado en tres partes iguales (dividir entre 3). En código suele verse con el símbolo / o la palabra promedio.',
+      };
     }
     if (!n.includes('9')) {
-      return { ok: false, message: 'El promedio de 8, 9 y 10 es 9; deja ese resultado visible.' };
+      return {
+        ok: false,
+        message:
+          'El resultado correcto del promedio es 9. Déjalo escrito en un console.log, comentario o variable para que se vea.',
+      };
     }
-    return { ok: true, message: '¡Muy bien! Arreglo y promedio correctos.' };
+    return {
+      ok: true,
+      message: '¡Muy bien! Agrupaste las tres notas y el promedio 9 quedó claro.',
+    };
   }
 
   function validateFunctionDouble(code) {
     if (!code || code.trim().length < 15) {
-      return { ok: false, message: 'Define una función con return que devuelva el doble.' };
+      return {
+        ok: false,
+        message:
+          'Hace falta más código. La idea es un trozo de código reutilizable que reciba un número y devuelva el doble (el número multiplicado por 2). En la teoría verás function … { }.',
+      };
     }
     var n = normalizeForCheck(code);
     var hasFn = /\bfunction\b/.test(n) || n.includes('=>');
     if (!hasFn) {
-      return { ok: false, message: 'Define una función (function … o flecha =>).' };
+      return {
+        ok: false,
+        message:
+          'Crea una función: en JavaScript suele empezar con la palabra function, el nombre (por ejemplo doble) y paréntesis con el dato que entra. Otra forma es la “flecha” =>; mira el ejemplo del tema.',
+      };
     }
     if (!n.includes('return')) {
-      return { ok: false, message: 'Usa return para devolver el valor.' };
+      return {
+        ok: false,
+        message:
+          'Dentro de la función hace falta la palabra return: es la línea que devuelve el resultado hacia afuera (por ejemplo return número * 2;). Sin return, el resultado no “sale”.',
+      };
     }
     if (!n.includes('*') && !n.includes('doble') && !n.includes('double')) {
-      return { ok: false, message: 'El valor devuelto debe ser el doble del parámetro (×2).' };
+      return {
+        ok: false,
+        message:
+          'El resultado debe ser el doble del valor que entra: piensa en multiplicar por 2 (en teclado suele ser * 2).',
+      };
     }
     if (!n.includes('3') || !n.includes('6')) {
-      return { ok: false, message: 'Incluye la idea de prueba: doble(3) → 6 (en código o comentario).' };
+      return {
+        ok: false,
+        message:
+          'Añade una prueba sencilla en comentario o código: si entra 3, debe salir 6. Así se ve que entendiste la idea del doble.',
+      };
     }
-    return { ok: true, message: '¡Excelente! Función y return bien planteados.' };
+    return {
+      ok: true,
+      message: '¡Excelente! Tu función devuelve el doble y la prueba 3 → 6 encaja con el reto.',
+    };
   }
 
   var CHALLENGE_DEFS = [
@@ -726,6 +861,100 @@
       validate: validateFunctionDouble,
     },
   ];
+
+  /**
+   * Guías «No recuerdo»: cada paso es texto o { text, code }.
+   * Los bloques code muestran la forma típica en JavaScript (tú completas mensajes o detalles).
+   */
+  var CHALLENGE_STEP_GUIDES = {
+    conditional_age: [
+      {
+        text: 'Hay dos caminos: 18 años o más → un mensaje; menor de 18 → otro. Tu código debe tener las dos ramas.',
+      },
+      {
+        text: 'Primero guarda una edad de prueba en una variable (cambia el número para imaginar cada caso).',
+        code: 'let edad = 20;  // prueba también con 17',
+      },
+      {
+        text: 'La comparación “mayor o igual a 18” va entre paréntesis después de if. Las llaves { } agrupan lo que pasa en cada caso.',
+        code:
+          'if (edad >= 18) {\n  console.log("Acceso permitido");\n} else {\n  console.log("Acceso denegado");\n}',
+      },
+      {
+        text: 'Puedes cambiar los textos, pero conviene que en un lado aparezca algo como “permitido” y en el otro “denegado” (o palabras muy parecidas), como pide el reto.',
+      },
+    ],
+    variables_total: [
+      {
+        text: 'Declara dos variables con los valores del enunciado: precio 10 y cantidad 2. Cada una en su línea, terminando en ;',
+        code: 'let precio = 10;\nlet cantidad = 2;',
+      },
+      {
+        text: 'El total es “precio por cantidad”. En código, “por” es el asterisco * (no la x). Guarda el resultado en una variable total.',
+        code: 'let total = precio * cantidad;',
+      },
+      {
+        text: 'Muestra el resultado (20) para comprobar. El validador busca el número 20 en tu respuesta.',
+        code: 'console.log(total);  // debería mostrar 20',
+      },
+    ],
+    operators_parity: [
+      {
+        text: 'El símbolo % con 2 sirve para ver si “sobra” algo al dividir entre 2. Muchas veces, si el resto es 0, el número es par.',
+        code: '// ejemplo mental: 8 % 2  →  0  (par)\n//               7 % 2  →  1  (impar)',
+      },
+      {
+        text: 'Estructura típica: una decisión if y dentro un console.log que diga si es par o impar. Puedes usar dos bloques (uno para 8 y otro para 7) o combinar lógica.',
+        code:
+          'let n = 8;\nif (n % 2 === 0) {\n  console.log("8 es par");\n}\n\nn = 7;\nif (n % 2 !== 0) {\n  console.log("7 es impar");\n}',
+      },
+      {
+        text: 'Las palabras par e impar deben aparecer en los mensajes (o equivalentes claros). Ajusta el código a tu estilo; la idea es la misma.',
+      },
+    ],
+    loop_sum: [
+      {
+        text: 'Necesitas un acumulador que empiece en 0 y un bucle que vaya del 1 al 10 sumando en cada vuelta.',
+        code: 'let suma = 0;',
+      },
+      {
+        text: 'Un for suele tener tres partes: valor inicial, condición “mientras i sea menor o igual que 10”, y al final i++ (subir de uno en uno).',
+        code:
+          'for (let i = 1; i <= 10; i++) {\n  suma = suma + i;  // o: suma += i;\n}',
+      },
+      {
+        text: 'Al salir del bucle, suma debe valer 55. Compruébalo en consola.',
+        code: 'console.log(suma);  // esperado: 55',
+      },
+    ],
+    array_average: [
+      {
+        text: 'Las tres notas van en una lista entre corchetes, separadas por comas.',
+        code: 'let notas = [8, 9, 10];',
+      },
+      {
+        text: 'Suma los tres elementos (puedes usar notas[0], notas[1], notas[2] o un bucle corto). Luego divide entre 3 para el promedio.',
+        code:
+          'let suma = notas[0] + notas[1] + notas[2];\nlet promedio = suma / 3;\nconsole.log(promedio);  // esperado: 9',
+      },
+      {
+        text: 'El validador busca los números 8, 9 y 10, el uso de lista [ ] y que quede visible el promedio 9.',
+      },
+    ],
+    function_double: [
+      {
+        text: 'Una función tiene nombre, paréntesis con el dato que entra, y llaves con el cuerpo. return devuelve el valor hacia afuera.',
+        code: 'function doble(x) {\n  return x * 2;\n}',
+      },
+      {
+        text: 'Prueba la función con el número 3; el doble debe ser 6. Así el validador ve que entendiste la idea.',
+        code: 'console.log(doble(3));  // debe mostrar 6\n// o un comentario: // doble(3) → 6',
+      },
+      {
+        text: 'Puedes cambiar el nombre de la función o del parámetro, pero mantén return y la multiplicación por 2.',
+      },
+    ],
+  };
 
   var TOPIC_TITLE_FOR_LOCK = {
     algoritmos: '1.1 · Algoritmos y condicionales',
@@ -828,6 +1057,19 @@
       if (btn) {
         btn.disabled = !unlocked || done;
       }
+      var guideBtn = document.querySelector('.btn-challenge-guide[data-challenge="' + c.id + '"]');
+      var guidePanel = document.querySelector('[data-challenge-guide="' + c.id + '"]');
+      if (guideBtn) {
+        guideBtn.disabled = !unlocked;
+        if (!unlocked) {
+          guideBtn.setAttribute('aria-expanded', 'false');
+          guideBtn.textContent = '¿No recuerdo? Ver guía paso a paso';
+        }
+      }
+      if (guidePanel && !unlocked) {
+        guidePanel.classList.add('hidden');
+        guidePanel.innerHTML = '';
+      }
       if (done && msg) {
         msg.textContent = 'Reto superado. +' + c.points + ' pts · insignia guardada.';
         msg.className = 'challenge-validation-msg text-sm text-emerald-400 font-medium';
@@ -880,6 +1122,72 @@
           var first = !state.challengeRewards[def.id];
           awardChallenge(state, def, first);
         }
+      });
+    });
+  }
+
+  function appendChallengeGuideStep(li, step) {
+    if (typeof step === 'string') {
+      li.textContent = step;
+      return;
+    }
+    if (step.text) {
+      var p = document.createElement('p');
+      p.className = 'mb-0 leading-relaxed';
+      p.textContent = step.text;
+      li.appendChild(p);
+    }
+    if (step.code) {
+      var pre = document.createElement('pre');
+      pre.className = 'challenge-guide-code';
+      pre.setAttribute('tabindex', '0');
+      pre.textContent = step.code.replace(/^\n+|\n+$/g, '');
+      li.appendChild(pre);
+    }
+  }
+
+  function wireChallengeGuides() {
+    document.querySelectorAll('.btn-challenge-guide').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var challengeId = btn.getAttribute('data-challenge');
+        if (!challengeId || !isChallengeUnlocked(state, challengeId)) {
+          return;
+        }
+        var steps = CHALLENGE_STEP_GUIDES[challengeId];
+        var panel = document.querySelector('[data-challenge-guide="' + challengeId + '"]');
+        if (!panel || !steps || !steps.length) {
+          return;
+        }
+        var isOpen = btn.getAttribute('aria-expanded') === 'true';
+        if (isOpen) {
+          panel.classList.add('hidden');
+          panel.innerHTML = '';
+          btn.setAttribute('aria-expanded', 'false');
+          btn.textContent = '¿No recuerdo? Ver guía paso a paso';
+          return;
+        }
+        panel.innerHTML = '';
+        var title = document.createElement('p');
+        title.className = 'mb-3 text-xs font-semibold uppercase tracking-wider text-cyan-300/90';
+        title.textContent = 'Cómo plantearlo paso a paso (texto + ejemplos de código)';
+        var ol = document.createElement('ol');
+        ol.className = 'challenge-guide-list list-decimal space-y-4 pl-5 text-sm leading-relaxed text-slate-300';
+        steps.forEach(function (step) {
+          var li = document.createElement('li');
+          li.className = 'challenge-guide-step';
+          appendChallengeGuideStep(li, step);
+          ol.appendChild(li);
+        });
+        var foot = document.createElement('p');
+        foot.className = 'mt-4 text-xs text-slate-500';
+        foot.textContent =
+          'Los recuadros verdes son ejemplos de forma: puedes adaptar mensajes y nombres. Escribe tu propia versión en el cuadro de arriba y pulsa Validar.';
+        panel.appendChild(title);
+        panel.appendChild(ol);
+        panel.appendChild(foot);
+        panel.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Ocultar guía';
       });
     });
   }
@@ -1020,6 +1328,7 @@
   renderAllTopicQuizzes(state);
   renderChallengePanels(state);
   wireChallengeValidators();
+  wireChallengeGuides();
 
   if (allTopicsVisited(state)) {
     maybeAwardCurriculumBadge(state);

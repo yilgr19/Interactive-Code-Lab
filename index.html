@@ -350,8 +350,84 @@ console.log("Total obtenido:", total);</pre>
                 <p class="mt-3 text-xs text-slate-500">Cuando en teoría veas <code class="font-mono text-lab-accent">let</code>, <code class="font-mono text-lab-accent">console.log</code> y el <code class="font-mono text-lab-accent">;</code>, ya sabes qué papel cumple cada uno. Lo siguiente es profundizar en los <strong class="text-slate-400">operadores</strong> dentro de esas expresiones.</p>
               </div>
               <h4 class="text-base font-semibold text-slate-200">Tipos comunes de operadores</h4>
+              <div class="rounded-xl border border-cyan-500/25 bg-gradient-to-b from-lab-bg/80 to-lab-bg/40 p-4 sm:p-5 space-y-4">
+                <div>
+                  <h5 class="text-sm font-semibold text-cyan-200">Operadores aritméticos en JavaScript</h5>
+                  <p class="mt-1 text-xs text-slate-500 sm:text-sm">
+                    Sirven para calcular con números. En código <strong class="text-slate-400">no</strong> se usa la × ni la ÷ del teclado: se escriben <code class="font-mono text-lab-accent">*</code> y <code class="font-mono text-lab-accent">/</code>.
+                    El orden de las operaciones sigue las reglas de matemáticas; usa paréntesis <code class="font-mono text-lab-accent">( )</code> si quieres forzar un orden concreto.
+                  </p>
+                </div>
+                <div class="overflow-x-auto rounded-lg border border-lab-border bg-lab-bg/70">
+                  <table class="lab-arith-table w-full min-w-[32rem] border-collapse text-left text-xs sm:text-sm">
+                    <thead>
+                      <tr class="border-b border-lab-border bg-lab-surface/60 text-[10px] font-semibold uppercase tracking-wider text-slate-500 sm:text-xs">
+                        <th class="px-3 py-2.5 sm:px-4 sm:py-3">Símbolo</th>
+                        <th class="px-3 py-2.5 sm:px-4 sm:py-3">Nombre</th>
+                        <th class="px-3 py-2.5 sm:px-4 sm:py-3">Ejemplo</th>
+                        <th class="px-3 py-2.5 sm:px-4 sm:py-3">Resultado / idea clave</th>
+                      </tr>
+                    </thead>
+                    <tbody class="text-slate-300">
+                      <tr class="border-b border-lab-border/90 align-top">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">+</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Suma</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">7 + 2</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">9</span>. Con <strong class="text-slate-300">dos números</strong>, los suma.</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top bg-white/[0.02]">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">+</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Concatenación</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">&quot;Hola&quot; + &quot; Ana&quot;</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">&quot;Hola Ana&quot;</span>. Si intervienen <strong class="text-slate-300">textos</strong> (strings), <code class="font-mono text-xs">+</code> los <em>une</em>. Mezclar número y texto puede dar resultados raros: <code class="font-mono text-xs">"5" + 3</code> → <code class="font-mono text-xs">"53"</code>.</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">-</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Resta</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">7 - 2</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">5</span>. Resta el segundo valor al primero.</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top bg-white/[0.02]">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">-</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Signo (unario)</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">-(-5)<br />let x = 4; -x</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">5</span> y <span class="text-emerald-400/95">-4</span>. Un <code class="font-mono text-xs">-</code> <em>delante</em> de una expresión invierte el signo.</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">*</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Multiplicación</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">4 * 5</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">20</span>. Equivale a “por” en matemáticas.</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top bg-white/[0.02]">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">/</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">División</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">10 / 4</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">2.5</span>. En JavaScript la división puede dar <strong class="text-slate-300">decimales</strong> (no es solo “parte entera”).</td>
+                      </tr>
+                      <tr class="border-b border-lab-border/90 align-top">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">%</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Módulo (resto)</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">10 % 3<br />7 % 2</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">1</span> y <span class="text-emerald-400/95">1</span>. Es lo que <em>sobra</em> al dividir el primer número entre el segundo (división entera). Muy usado para saber si un número es par: <code class="font-mono text-xs">n % 2 === 0</code>.</td>
+                      </tr>
+                      <tr class="align-top bg-white/[0.02]">
+                        <td class="px-3 py-2.5 font-mono text-lab-accent sm:px-4 sm:py-3">**</td>
+                        <td class="px-3 py-2.5 text-slate-200 sm:px-4 sm:py-3">Potencia</td>
+                        <td class="px-3 py-2.5 font-mono text-emerald-300/90 sm:px-4 sm:py-3">2 ** 3</td>
+                        <td class="px-3 py-2.5 text-slate-400 sm:px-4 sm:py-3"><span class="text-emerald-400/95">8</span> (2³). Base a la izquierda, exponente a la derecha. También verás <code class="font-mono text-xs">Math.pow(2, 3)</code> en ejemplos avanzados.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <p class="rounded-lg border border-slate-600/40 bg-slate-950/40 px-3 py-2 text-[11px] leading-relaxed text-slate-400 sm:text-xs">
+                  <strong class="text-slate-300">Resumen rápido:</strong>
+                  <code class="font-mono text-lab-accent">+ − * /</code> son como en álgebra (con <code class="font-mono text-lab-accent">*</code> y <code class="font-mono text-lab-accent">/</code> en el teclado).
+                  <code class="font-mono text-lab-accent">%</code> no es “por ciento” en código: es el <em>resto</em> de una división.
+                  <code class="font-mono text-lab-accent">**</code> es potencia. Si mezclas tipos (texto y número), JavaScript puede convertirlos de formas sorprendentes: mientras aprendes, trabaja con números puros o usa <code class="font-mono text-lab-accent">console.log</code> para comprobar.
+                </p>
+              </div>
               <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
-                <li><strong class="text-slate-200">Aritméticos:</strong> <code class="font-mono text-xs">+</code> (suma; con cadenas, <em>concatena</em>), <code class="font-mono text-xs">-</code>, <code class="font-mono text-xs">*</code>, <code class="font-mono text-xs">/</code>, <code class="font-mono text-xs">%</code> (módulo = resto de una división entera, ej. <code class="font-mono text-xs">7 % 3 === 1</code>).</li>
                 <li><strong class="text-slate-200">Comparación</strong> (dan un booleano): <code class="font-mono text-xs">===</code> igual estricto (mismo valor y tipo), <code class="font-mono text-xs">!==</code> distinto, <code class="font-mono text-xs">&lt;</code> <code class="font-mono text-xs">&gt;</code> <code class="font-mono text-xs">&lt;=</code> <code class="font-mono text-xs">&gt;=</code>. En JavaScript moderno se prefiere <code class="font-mono text-xs">===</code> frente a <code class="font-mono text-xs">==</code> para evitar conversiones raras.</li>
                 <li><strong class="text-slate-200">Lógicos:</strong> <code class="font-mono text-xs">&amp;&amp;</code> (Y: ambas partes verdaderas), <code class="font-mono text-xs">||</code> (O: al menos una verdadera), <code class="font-mono text-xs">!</code> (NO: invierte true/false).</li>
                 <li><strong class="text-slate-200">Asignación:</strong> <code class="font-mono text-xs">=</code> guarda un valor en una variable. No confundir con <code class="font-mono text-xs">===</code>, que <em>compara</em>.</li>
@@ -415,33 +491,110 @@ fin si</pre>
             <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8 space-y-5 text-sm leading-relaxed text-slate-400">
               <h3 class="text-lg font-semibold text-white">Nivel 2 · 2.2 — Estructuras repetitivas (bucles)</h3>
               <p>
-                A veces no quieres escribir la misma instrucción 100 veces. Un <strong class="text-slate-200">bucle</strong> (o <em>loop</em>) indica: “repite este bloque mientras se cumpla una regla” o “repite exactamente N veces”.
-                Cada repetición se llama <strong class="text-slate-200">iteración</strong>. En el modelo 3D, el <strong class="text-slate-200">centro apilado</strong> es el <em>cuerpo del bucle</em> (las instrucciones que se repiten); el <strong class="text-slate-200">anillo grueso</strong> es el camino que “vuelve” al inicio; las <strong class="text-emerald-300">flechas verdes</strong> en círculo indican el <strong>sentido de las vueltas</strong> (una tras otra, en orden).
+                A veces no quieres escribir la misma instrucción 100 veces. Un <strong class="text-slate-200">bucle</strong> (o <em>loop</em>) le dice a la computadora: “vuelve a hacer este trozo de código” según una regla.
+                Cada vuelta se llama <strong class="text-slate-200">iteración</strong>. En el modelo 3D, el <strong class="text-slate-200">centro apilado</strong> es el <em>cuerpo del bucle</em> (lo que se repite); el <strong class="text-slate-200">anillo</strong> es volver al inicio; las <strong class="text-emerald-300">flechas</strong> son “otra vuelta más”, en orden.
               </p>
-              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">while</code> — “mientras…”</h4>
-              <p>
-                Antes de cada vuelta se evalúa la condición. Si es verdadera, se ejecuta el bloque y se vuelve al inicio del <code class="font-mono text-xs">while</code>. Si es falsa, se sale y continúa el programa <em>después</em> del bucle.
-                Ojo: si la condición nunca se vuelve falsa, el bucle no termina (<strong class="text-amber-300">bucle infinito</strong>) — error lógico muy común al principio.
+              <p class="rounded-lg border border-cyan-500/25 bg-cyan-950/15 px-4 py-3 text-xs text-slate-300 sm:text-sm">
+                Los ejemplos están en <strong class="text-slate-100">JavaScript</strong>. Para probarlos, abre la <strong class="text-slate-100">consola</strong> del navegador (<kbd class="rounded border border-lab-border bg-lab-bg px-1.5 py-0.5 font-mono text-[10px] text-slate-400">F12</kbd> → pestaña Consola), pega un bloque y mira lo que imprime <code class="font-mono text-lab-accent">console.log</code>. Cada instrucción puede terminar en <code class="font-mono text-lab-accent">;</code> para que sea más fácil de leer.
               </p>
-              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">for</code> — contador clásico</h4>
+              <h4 class="text-base font-semibold text-slate-200">Por qué los bucles suelen costar al principio</h4>
               <p>
-                Suele usarse cuando sabes cuántas vueltas quieres o quieres recorrer un rango numérico: inicialización (ej. <code class="font-mono text-xs">i = 0</code>), condición de seguir (<code class="font-mono text-xs">i &lt; n</code>), y actualización al final de cada vuelta (<code class="font-mono text-xs">i = i + 1</code> o <code class="font-mono text-xs">i++</code>).
+                Con un <code class="font-mono text-xs text-lab-accent">if</code> el programa mira una vez y elige un camino. Con un bucle, la misma zona del código se <strong class="text-slate-200">ejecuta varias veces</strong> y hay que imaginar “el tiempo pasando”: el valor de un contador cambia, la suma crece, etc.
+                Eso exige un hábito nuevo: <strong class="text-slate-200">seguir el código con el dedo</strong> o en una libreta, vuelta por vuelta, hasta que encaje la idea.
+              </p>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li><strong class="text-slate-200">¿Qué se repite?</strong> Lo que va entre llaves <code class="font-mono text-xs">{ }</code> del bucle (el cuerpo).</li>
+                <li><strong class="text-slate-200">¿Cuándo paro?</strong> Cuando la condición deja de cumplirse (en <code class="font-mono text-xs">while</code>) o cuando el contador llega al tope (en <code class="font-mono text-xs">for</code>).</li>
+                <li><strong class="text-slate-200">¿Qué cambia en cada vuelta?</strong> Casi siempre un número (<code class="font-mono text-xs">n</code>, <code class="font-mono text-xs">i</code>, <code class="font-mono text-xs">k</code>) o un acumulador (<code class="font-mono text-xs">suma</code>). Si nada cambia hacia la salida, el bucle puede no terminar nunca.</li>
+              </ul>
+              <h4 class="text-base font-semibold text-slate-200">Analogía rápida</h4>
+              <p>
+                Piensa en <strong class="text-slate-200">subir escaleras</strong>: en cada peldaño repites “subir un paso” hasta que la condición “aún no llegué al piso” sea falsa.
+                O en dar vueltas a la manzana contando: “vuelta 1, vuelta 2, vuelta 3… hasta 10”. El bucle es la regla; el contador es el número de vuelta.
+              </p>
+              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">while</code> — “mientras se cumpla esto, sigue”</h4>
+              <p>
+                Antes de <strong class="text-slate-200">cada</strong> vuelta se mira la condición entre paréntesis. Si es verdadera, se entra en las llaves, se hace el trabajo, y al llegar al cierre <code class="font-mono text-xs">}</code> se <strong class="text-slate-200">vuelve arriba</strong> a preguntar otra vez por el <code class="font-mono text-xs">while</code>.
+                Si la condición es falsa, <strong class="text-slate-200">no</strong> se entra (o se sale) y el programa sigue <em>después</em> del bloque.
+              </p>
+              <p>
+                Regla de oro con <code class="font-mono text-xs">while</code>: dentro del cuerpo debe pasar algo que <strong class="text-slate-200">acerca</strong> el estado a que la condición falle (por ejemplo subir <code class="font-mono text-xs">n</code> de uno en uno). Si no, la condición sigue siempre verdadera y el navegador se queda dando vueltas (<strong class="text-amber-300">bucle infinito</strong>) — no es un mensaje rojo siempre; a veces solo “se congela” o tarda mucho.
               </p>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">JavaScript: <code class="font-mono text-lab-accent">while</code> y <code class="font-mono text-lab-accent">for</code></p>
-                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Contar del 1 al 3 con while
-let n = 1;
-while (n &lt;= 3) {
-  console.log("Vuelta número:", n);
-  n = n + 1;   // imprescindible: acercamos n a que falle la condición
-}
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Estructura de un <code class="font-mono text-lab-accent">while</code> (léelo de arriba abajo)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// Objetivo: mostrar en consola los números 1, 2 y 3
 
-// Mismo recorrido con for
+let n = 1;                    // ① Empezamos en 1 (estado inicial)
+
+while (n &lt;= 3) {              // ② ¿Seguimos? Solo si n es menor o igual que 3
+  console.log("Vuelta:", n);  // ③ Trabajo de esta vuelta: mostrar n
+  n = n + 1;                  // ④ Acercamos n al “no cumplir” (1→2→3→4)
+}                             // ⑤ Al salir del while, n ya vale 4; no se imprime 4
+
+// Cuando n pasa a 4, la condición n &lt;= 3 es falsa y el programa sigue debajo del while</pre>
+                <p class="mt-3 text-xs text-slate-500">La línea <code class="font-mono text-lab-accent">n = n + 1;</code> es la que hace que el bucle <em>no</em> dure para siempre. También puedes escribir <code class="font-mono text-lab-accent">n++;</code> (significa lo mismo en este contexto).</p>
+              </div>
+              <h4 class="text-base font-semibold text-slate-200"><code class="font-mono text-lab-accent">for</code> — las tres piezas en la primera línea</h4>
+              <p>
+                El <code class="font-mono text-xs">for</code> agrupa en un solo sitio lo que en un <code class="font-mono text-xs">while</code> repartes: <strong class="text-slate-200">cómo empiezas</strong>, <strong class="text-slate-200">cuándo paras</strong> y <strong class="text-slate-200">qué haces al terminar cada vuelta</strong>.
+              </p>
+              <div class="rounded-lg border border-slate-600/50 bg-lab-bg/50 px-4 py-3 text-xs text-slate-400 sm:text-sm">
+                <p class="font-mono text-lab-accent/95">for ( A ; B ; C ) { … }</p>
+                <ul class="mt-2 list-disc space-y-1 pl-5 marker:text-cyan-500">
+                  <li><strong class="text-slate-300">A</strong> — se hace <em>una sola vez</em> al inicio (crear el contador, ej. <code class="font-mono text-xs">let i = 1</code>).</li>
+                  <li><strong class="text-slate-300">B</strong> — pregunta antes de cada vuelta: si es falsa, se sale del for (ej. <code class="font-mono text-xs">i &lt;= 3</code>).</li>
+                  <li><strong class="text-slate-300">C</strong> — se hace al <em>final</em> de cada vuelta, antes de volver a mirar B (ej. <code class="font-mono text-xs">i++</code> para pasar al siguiente número).</li>
+                </ul>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Mismo recorrido 1…3 con <code class="font-mono text-lab-accent">for</code></p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// let i = 1  → empiezo en 1
+// i &lt;= 3     → sigo mientras i no pase de 3
+// i++        → al final de cada vuelta, subo i en 1
+
 for (let i = 1; i &lt;= 3; i++) {
   console.log("i vale", i);
 }
 
-// Sumar los números del 1 al 100
+// Salida en consola: 1, luego 2, luego 3</pre>
+              </div>
+              <h4 class="text-base font-semibold text-slate-200">Patrón muy usado: acumular una suma</h4>
+              <p>
+                Muchos ejercicios piden “sumar del 1 al 10” o “del 1 al 100”. La idea es siempre la misma: una variable <code class="font-mono text-xs">suma</code> que <strong class="text-slate-200">empieza en 0</strong> y, en cada vuelta, <strong class="text-slate-200">le sumas</strong> el número de turno (<code class="font-mono text-xs">suma = suma + k</code> o abreviado <code class="font-mono text-xs">suma += k</code>).
+              </p>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Sumar del 1 al 100 con <code class="font-mono text-lab-accent">for</code></p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let suma = 0;                       // todavía no hemos sumado nada
+
+for (let k = 1; k &lt;= 100; k++) {
+  suma = suma + k;                  // en esta vuelta sumamos k (1, luego 2, … 100)
+}
+
+console.log("Suma del 1 al 100:", suma);   // debe salir 5050</pre>
+                <p class="mt-3 text-xs text-slate-500">Si tu reto pide solo hasta 10, cambia <code class="font-mono text-xs">100</code> por <code class="font-mono text-xs">10</code> y el resultado esperado será <strong class="text-slate-400">55</strong>.</p>
+              </div>
+              <h4 class="text-base font-semibold text-slate-200">Errores habituales (y cómo detectarlos)</h4>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-amber-400">
+                <li><strong class="text-slate-200">Olvidar subir el contador</strong> en un <code class="font-mono text-xs">while</code> → la condición nunca cambia → bucle infinito.</li>
+                <li><strong class="text-slate-200">Condición mal escrita</strong> (ej. <code class="font-mono text-xs">i &lt; 3</code> cuando querías incluir el 3) → faltan o sobran vueltas. Relee el enunciado: ¿“hasta 10” incluye el 10? Entonces suele hacer falta <code class="font-mono text-xs">&lt;= 10</code>.</li>
+                <li><strong class="text-slate-200">Mezclar el primer valor del contador</strong>: si empiezas en 0 o en 1 cambia cuántas vueltas hay; no está mal usar 0, pero entonces la condición debe coincidir con lo que pide el ejercicio.</li>
+                <li><strong class="text-slate-200">No inicializar la suma en 0</strong> antes del bucle → el primer <code class="font-mono text-xs">suma + k</code> parte de un valor basura.</li>
+              </ul>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Resumen en un solo bloque (while + for + suma)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// --- while: del 1 al 3 ---
+let n = 1;
+while (n &lt;= 3) {
+  console.log("Vuelta número:", n);
+  n = n + 1;
+}
+
+// --- for: mismo recorrido ---
+for (let i = 1; i &lt;= 3; i++) {
+  console.log("i vale", i);
+}
+
+// --- suma 1 + … + 100 ---
 let suma = 0;
 for (let k = 1; k &lt;= 100; k++) {
   suma = suma + k;
@@ -449,7 +602,7 @@ for (let k = 1; k &lt;= 100; k++) {
 console.log("Suma total:", suma);</pre>
               </div>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
-                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo</p>
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo (misma idea en español)</p>
                 <pre class="mt-3 overflow-x-auto text-xs text-lab-accent/90 sm:text-sm">entero n
 n &lt;- 1
 mientras n &lt;= 3 hacer
@@ -636,6 +789,7 @@ escribir total</pre>
             <p class="mt-4 max-w-2xl text-slate-400">
               Cada reto se <strong class="text-slate-200">desbloquea</strong> cuando completas el <strong class="text-lab-accent">cuestionario</strong> del tema indicado en Teoría + RA.
               Al validar bien tu código ganas <strong class="text-slate-200">puntos</strong> y una <strong class="text-slate-200">insignia de reto</strong> (tarjeta en la barra lateral, debajo de puntos).
+              Si te bloqueas, usa <strong class="text-slate-200">¿No recuerdo? Ver guía paso a paso</strong>: te ordena las ideas sin pegar la solución completa.
             </p>
           </div>
 
@@ -651,10 +805,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-conditional_age">Tu solución</label>
               <textarea id="code-input-conditional_age" data-challenge-input="conditional_age" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="if (edad >= 18) { ... } else { ... }" spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-lab-surface" data-challenge="conditional_age">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="conditional_age" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-lab-surface" data-challenge="conditional_age">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="conditional_age" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="conditional_age" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="conditional_age" role="region" aria-label="Guía paso a paso para acceso por edad"></div>
             </div>
           </article>
 
@@ -669,10 +827,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-variables_total">Tu solución</label>
               <textarea id="code-input-variables_total" data-challenge-input="variables_total" class="challenge-textarea mt-2 h-36 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let precio = 10; ..." spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="variables_total">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="variables_total" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="variables_total">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="variables_total" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="variables_total" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="variables_total" role="region" aria-label="Guía paso a paso precio por cantidad"></div>
             </div>
           </article>
 
@@ -687,10 +849,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-operators_parity">Tu solución</label>
               <textarea id="code-input-operators_parity" data-challenge-input="operators_parity" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let n = 8; if (n % 2 === 0) ..." spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="operators_parity">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="operators_parity" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="operators_parity">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="operators_parity" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="operators_parity" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="operators_parity" role="region" aria-label="Guía paso a paso par e impar"></div>
             </div>
           </article>
 
@@ -705,10 +871,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-loop_sum">Tu solución</label>
               <textarea id="code-input-loop_sum" data-challenge-input="loop_sum" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let suma = 0; for (let i = 1; i <= 10; i++) ..." spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="loop_sum">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="loop_sum" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="loop_sum">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="loop_sum" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="loop_sum" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="loop_sum" role="region" aria-label="Guía paso a paso suma del 1 al 10"></div>
             </div>
           </article>
 
@@ -723,10 +893,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-array_average">Tu solución</label>
               <textarea id="code-input-array_average" data-challenge-input="array_average" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let notas = [8, 9, 10]; ..." spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="array_average">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="array_average" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="array_average">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="array_average" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="array_average" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="array_average" role="region" aria-label="Guía paso a paso promedio de notas"></div>
             </div>
           </article>
 
@@ -741,10 +915,14 @@ escribir total</pre>
               </p>
               <label class="block text-sm font-medium text-slate-300" for="code-input-function_double">Tu solución</label>
               <textarea id="code-input-function_double" data-challenge-input="function_double" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="function doble(x) { return x * 2; }" spellcheck="false"></textarea>
-              <div class="flex flex-wrap items-center gap-3">
-                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="function_double">Validar</button>
-                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="function_double" role="status"></p>
+              <div class="flex flex-col gap-3">
+                <div class="flex flex-wrap items-center gap-3">
+                  <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="function_double">Validar</button>
+                  <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="function_double" role="status"></p>
+                </div>
+                <button type="button" class="btn-challenge-guide self-start rounded-xl border border-cyan-500/35 bg-cyan-950/25 px-4 py-2.5 text-left text-sm font-medium text-cyan-200 transition hover:border-cyan-400/50 hover:bg-cyan-900/30 focus:outline-none focus:ring-2 focus:ring-cyan-500/40" data-challenge="function_double" aria-expanded="false">¿No recuerdo? Ver guía paso a paso</button>
               </div>
+              <div class="challenge-guide-panel mt-4 hidden rounded-xl border border-cyan-500/20 bg-cyan-950/10 p-4 sm:p-5" data-challenge-guide="function_double" role="region" aria-label="Guía paso a paso función doble"></div>
             </div>
           </article>
         </section>
