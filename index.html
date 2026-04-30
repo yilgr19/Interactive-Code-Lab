@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive Code Lab — Aprendizaje de lógica de programación con RA y gamificación" />
+  <title>Interactive Code Lab</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            lab: {
+              bg: '#0b0f14',
+              surface: '#121a24',
+              border: '#1e2a3a',
+              accent: '#22d3ee',
+              accentDim: '#0891b2',
+              success: '#34d399',
+              warning: '#fbbf24',
+            }
+          },
+          fontFamily: {
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace'],
+            sans: ['Inter', 'system-ui', 'sans-serif'],
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body class="min-h-screen bg-lab-bg text-slate-200 font-sans antialiased">
+  <div class="flex min-h-screen flex-col lg:flex-row">
+    <!-- Sidebar -->
+    <aside class="w-full shrink-0 border-b border-lab-border bg-lab-surface/80 backdrop-blur lg:w-72 lg:border-b-0 lg:border-r">
+      <div class="flex flex-col gap-6 p-4 lg:sticky lg:top-0 lg:max-h-screen lg:overflow-y-auto">
+        <div class="flex items-center gap-3 border-b border-lab-border pb-4">
+          <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-500/20 to-cyan-600/5 ring-1 ring-cyan-500/30">
+            <svg class="h-6 w-6 text-lab-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="text-xs font-medium uppercase tracking-wider text-slate-500">Perfil</p>
+            <label class="sr-only" for="student-name-input">Nombre del estudiante</label>
+            <input
+              id="student-name-input"
+              type="text"
+              maxlength="48"
+              class="mt-1 w-full truncate rounded-lg border border-lab-border bg-lab-bg px-2 py-1.5 text-sm font-semibold text-white placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent"
+              placeholder="Tu nombre"
+              autocomplete="name"
+            />
+          </div>
+        </div>
+
+        <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+          <p class="text-xs uppercase tracking-wider text-slate-500">Puntos acumulados</p>
+          <p class="mt-1 font-mono text-3xl font-bold text-lab-accent" id="points-display">0</p>
+        </div>
+
+        <div>
+          <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Insignias ganadas</h2>
+          <ul id="badges-list" class="flex flex-col gap-2">
+            <!-- badges injected by JS -->
+          </ul>
+        </div>
+
+        <p class="text-xs text-slate-500 lg:mt-auto">
+          Progreso guardado en este dispositivo (localStorage). BYOD: accede desde cualquier navegador.
+        </p>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <div class="flex min-w-0 flex-1 flex-col">
+      <header class="sticky top-0 z-40 border-b border-lab-border bg-lab-bg/90 backdrop-blur-md">
+        <nav class="flex flex-wrap items-center justify-between gap-3 px-4 py-3 sm:px-6">
+          <h1 class="font-mono text-lg font-semibold tracking-tight text-white sm:text-xl">
+            <span class="text-lab-accent">Interactive</span> Code Lab
+          </h1>
+          <div class="flex flex-wrap gap-1 sm:gap-2" role="tablist" aria-label="Secciones">
+            <button type="button" data-section="dashboard" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent" aria-current="true">
+              Inicio
+            </button>
+            <button type="button" data-section="theory" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent">
+              Algoritmos + RA
+            </button>
+            <button type="button" data-section="practice" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent">
+              Reto condicionales
+            </button>
+          </div>
+        </nav>
+      </header>
+
+      <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+        <!-- Dashboard -->
+        <section id="section-dashboard" class="section-panel max-w-4xl space-y-6">
+          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
+            <p class="font-mono text-sm text-lab-accent">Unidad 0 · Bienvenida</p>
+            <h2 class="mt-2 text-2xl font-bold text-white sm:text-3xl">Laboratorio interactivo de lógica</h2>
+            <p class="mt-4 max-w-2xl text-slate-400">
+              Este prototipo apoya el aprendizaje de <strong class="text-slate-300">Lógica de Programación</strong> en primer semestre:
+              reduce la barrera de abstracción con visualización 3D/RA, refuerza la motivación con puntos e insignias, y funciona en tu propio dispositivo sin software adicional.
+            </p>
+            <ul class="mt-6 grid gap-3 sm:grid-cols-2">
+              <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
+                <span class="text-lab-accent">①</span>
+                <span class="text-sm text-slate-300">Teoría breve sobre algoritmos y flujo lógico en 3D.</span>
+              </li>
+              <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
+                <span class="text-lab-accent">②</span>
+                <span class="text-sm text-slate-300">Reto práctico de condicionales con validación automática.</span>
+              </li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- Theory + AR -->
+        <section id="section-theory" class="section-panel hidden max-w-4xl space-y-6">
+          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
+            <p class="font-mono text-sm text-lab-accent">Módulo teórico · Ligado a Unidad 2 (condicionales)</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">¿Qué es un algoritmo?</h2>
+            <p class="mt-4 text-slate-400">
+              Un <strong class="text-slate-200">algoritmo</strong> es una secuencia finita de pasos bien definidos que resuelve un problema.
+              En programación, traducimos ese flujo en instrucciones (entrada, <strong class="text-slate-200">decisiones</strong>, repetición, salida). Las <strong class="text-slate-200">estructuras condicionales</strong> son el punto donde el flujo se bifurca según una condición (como en el reto de validación por edad).
+            </p>
+            <p class="mt-3 text-slate-400">
+              Abajo tienes el archivo <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">FlujoLogicoAlgoritmo.glb</code>: no es una figura “vacía”, sino un <strong class="text-slate-200">diagrama de flujo en 3D</strong> donde <em>cada forma y color tiene un significado fijo</em> (como en papel, pero rotable y en RA). Regenerable con <code class="rounded bg-lab-bg px-1 font-mono text-xs text-lab-accent">scripts/generar_modelo_flujo_logico.py</code>.
+            </p>
+            <p class="mt-2 text-xs text-slate-500">
+              <strong class="text-slate-400">Sobre la RA:</strong> carga primero el 3D; en móvil, “Escanear en mi espacio” abre la escena en tu entorno (<strong class="text-slate-300">Chrome en Android</strong>, <strong class="text-slate-300">Safari en iOS</strong>). Los <strong class="text-slate-300">puntos interactivos</strong> sobre el modelo repiten la explicación al pulsarlos.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
+            <h3 class="text-lg font-semibold text-white">Cómo leer el FlujoLogicoAlgoritmo</h3>
+            <p class="mt-2 text-sm text-slate-400">
+              Sigue el flujo <strong class="text-slate-200">de arriba hacia abajo</strong>, como al leer un algoritmo línea a línea. Luego mira las <strong class="text-slate-200">dos salidas</strong> del rombo: una es el camino cuando la condición se cumple, la otra cuando no.
+            </p>
+            <ol class="mt-4 list-decimal space-y-3 pl-5 text-sm text-slate-300 marker:text-lab-accent">
+              <li>
+                <strong class="text-cyan-300">Disco cyan (arriba)</strong> — <em>Inicio del proceso.</em> Aquí “entra” el dato que vas a evaluar (en el reto: la edad de la persona).
+              </li>
+              <li>
+                <strong class="text-slate-300">Formas grises</strong> — Conectores y flecha: el control <strong class="text-slate-200">baja</strong> hacia la decisión (orden de ejecución).
+              </li>
+              <li>
+                <strong class="text-amber-300">Rombo ámbar (centro)</strong> — <em>Condición / pregunta lógica.</em> En código es el <code class="rounded bg-lab-bg px-1 font-mono text-xs">if (…)</code>. En el reto, la pregunta es: <strong class="text-white">¿edad ≥ 18?</strong>
+              </li>
+              <li>
+                <strong class="text-emerald-300">Rectángulo verde (izquierda)</strong> — Rama <em>verdadera</em> (la condición se cumple): <strong class="text-emerald-400">acceso permitido</strong> → equivale a la rama del <code class="rounded bg-lab-bg px-1 font-mono text-xs">if</code>.
+              </li>
+              <li>
+                <strong class="text-red-300">Rectángulo rojo (derecha)</strong> — Rama <em>falsa</em> (no se cumple): <strong class="text-red-400">acceso denegado</strong> → equivale a la rama del <code class="rounded bg-lab-bg px-1 font-mono text-xs">else</code>.
+              </li>
+              <li>
+                <strong class="text-slate-400">Base oscura (abajo)</strong> — Suelo del diagrama; indica que ambos caminos ya <strong class="text-slate-200">terminaron</strong> esa validación (en un programa podría seguir otro bloque después).
+              </li>
+            </ol>
+            <div class="mt-6 grid gap-3 sm:grid-cols-2">
+              <div class="rounded-xl border border-lab-border bg-lab-bg/50 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Equivalencia rápida</p>
+                <p class="mt-2 font-mono text-xs leading-relaxed text-lab-accent">
+                  if (edad &gt;= 18) → bloque <span class="text-emerald-400">verde</span><br />
+                  else → bloque <span class="text-red-400">rojo</span>
+                </p>
+              </div>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/50 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Leyenda de colores (igual que en el 3D)</p>
+                <ul class="mt-2 space-y-2 text-xs text-slate-400">
+                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-cyan-400" aria-hidden="true"></span> Inicio / entrada de datos</li>
+                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rotate-45 border-2 border-amber-400 bg-amber-400/40" aria-hidden="true"></span> Decisión (rombo)</li>
+                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-emerald-400" aria-hidden="true"></span> Condición verdadera</li>
+                  <li class="flex items-center gap-2"><span class="h-3 w-3 shrink-0 rounded-sm bg-red-400" aria-hidden="true"></span> Condición falsa</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="overflow-hidden rounded-2xl border border-lab-border bg-lab-bg">
+            <p id="mv-status" class="border-b border-lab-border bg-lab-surface/40 px-4 py-2 text-center text-xs text-slate-400" role="status">Cargando modelo 3D…</p>
+            <p class="border-b border-lab-border bg-lab-bg/80 px-4 py-2 text-center text-xs text-slate-500">
+              <strong class="text-slate-400">Tip:</strong> pulsa o mantén cada <span class="text-lab-accent">punto</span> sobre el modelo para ver la etiqueta. En RA, acerca el teléfono y toca el mismo punto sobre la figura.
+            </p>
+            <model-viewer
+              id="flow-model-viewer"
+              class="model-viewer-3d"
+              src="assets/FlujoLogicoAlgoritmo.glb"
+              alt="Diagrama de flujo 3D: inicio, decisión y ramas de resultado (algoritmo y condicionales)"
+              shadow-intensity="1"
+              camera-controls
+              touch-action="pan-y"
+              exposure="1"
+              camera-orbit="0deg 65deg 2.8m"
+              field-of-view="40deg"
+              ar
+              ar-modes="webxr scene-viewer quick-look"
+            >
+              <button type="button" class="lab-hotspot" slot="hotspot-inicio" data-position="0 0.98 0.12" data-normal="0 1 0" aria-label="Inicio: aquí entra la edad u otros datos">
+                <span class="lab-hotspot-dot lab-hotspot-dot--cyan"></span>
+                <span class="lab-hotspot-label">Inicio · entrada (ej. edad)</span>
+              </button>
+              <button type="button" class="lab-hotspot" slot="hotspot-flujo" data-position="0 0.66 0.08" data-normal="0 0 1" aria-label="El flujo avanza en orden hacia la decisión">
+                <span class="lab-hotspot-dot lab-hotspot-dot--slate"></span>
+                <span class="lab-hotspot-label">Flujo en secuencia</span>
+              </button>
+              <button type="button" class="lab-hotspot" slot="hotspot-decision" data-position="0 0.34 0.12" data-normal="0 1 0" aria-label="Decisión: ¿se cumple la condición?">
+                <span class="lab-hotspot-dot lab-hotspot-dot--amber"></span>
+                <span class="lab-hotspot-label">Decisión · ¿edad ≥ 18?</span>
+              </button>
+              <button type="button" class="lab-hotspot" slot="hotspot-permitido" data-position="-0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Rama verdadera: acceso permitido">
+                <span class="lab-hotspot-dot lab-hotspot-dot--green"></span>
+                <span class="lab-hotspot-label">Sí · permitido (if)</span>
+              </button>
+              <button type="button" class="lab-hotspot" slot="hotspot-denegado" data-position="0.62 -0.12 0.14" data-normal="0 1 0" aria-label="Rama falsa: acceso denegado">
+                <span class="lab-hotspot-dot lab-hotspot-dot--red"></span>
+                <span class="lab-hotspot-label">No · denegado (else)</span>
+              </button>
+            </model-viewer>
+            <div class="flex flex-col gap-3 border-t border-lab-border p-4 sm:flex-row sm:items-center sm:justify-between">
+              <p class="text-sm text-slate-500">En móvil compatible: usa el botón para abrir RA (Scene Viewer / Quick Look).</p>
+              <button type="button" id="btn-ar-scan" class="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-cyan-600 to-cyan-500 px-5 py-3 font-semibold text-lab-bg shadow-lg shadow-cyan-500/20 transition hover:from-cyan-500 hover:to-cyan-400 focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:ring-offset-2 focus:ring-offset-lab-bg">
+                <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                Escanear en mi espacio
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Practice -->
+        <section id="section-practice" class="section-panel hidden max-w-4xl space-y-6">
+          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
+            <p class="font-mono text-sm text-lab-accent">Unidad 2 · Estructuras condicionales</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">Sistema de validación de acceso por edad</h2>
+            <p class="mt-4 text-slate-400">
+              Implementa la lógica: si la persona tiene <strong class="text-white">18 años o más</strong>, el acceso es <strong class="text-emerald-400">permitido</strong>; si no, <strong class="text-amber-400">denegado</strong>.
+              Es el mismo patrón que el <strong class="text-slate-200">rombo de decisión</strong> del modelo 3D en <em>Algoritmos + RA</em>.
+              Puedes escribir en <strong class="text-slate-200">JavaScript</strong> o pseudocódigo (español) con <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si</code> / <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si no</code>.
+            </p>
+            <div class="mt-4 rounded-xl border border-lab-border bg-lab-bg/60 p-4 font-mono text-sm text-slate-300">
+              <p class="text-slate-500">Ejemplo válido (una de varias formas):</p>
+              <pre class="mt-2 overflow-x-auto text-lab-accent/90">if (edad &gt;= 18) {
+  console.log("Permitido");
+} else {
+  console.log("Denegado");
+}</pre>
+            </div>
+          </div>
+
+          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6">
+            <label for="code-input" class="block text-sm font-medium text-slate-300">Tu solución</label>
+            <textarea
+              id="code-input"
+              class="mt-2 h-48 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent"
+              placeholder="Escribe aquí tu if/else o si/sino..."
+              spellcheck="false"
+            ></textarea>
+            <div class="mt-4 flex flex-wrap items-center gap-3">
+              <button type="button" id="btn-validate" class="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-lab-surface">
+                Validar
+              </button>
+              <p id="validation-message" class="text-sm text-slate-500" role="status"></p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer class="border-t border-lab-border px-4 py-4 text-center text-xs text-slate-600 sm:px-6">
+        Interactive Code Lab · Prototipo educativo · HTML5 + Tailwind + model-viewer
+      </footer>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>

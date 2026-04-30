@@ -1,0 +1,117 @@
+/* Interactive Code Lab — complementos mínimos a Tailwind */
+
+model-viewer.model-viewer-3d {
+  display: block;
+  width: 100%;
+  height: min(55vh, 420px);
+  background: linear-gradient(180deg, #0f172a 0%, #0b0f14 100%);
+}
+
+@media (min-width: 1024px) {
+  model-viewer.model-viewer-3d {
+    height: min(50vh, 480px);
+  }
+}
+
+#badges-list .badge-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(30, 42, 58, 1);
+  background: rgba(11, 15, 20, 0.5);
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+}
+
+#badges-list .badge-item.locked {
+  opacity: 0.45;
+}
+
+#badges-list .badge-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+/* Hotspots en <model-viewer> — explican el FlujoLogicoAlgoritmo en 3D/RA */
+.lab-hotspot {
+  display: block;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+}
+
+.lab-hotspot:focus {
+  outline: none;
+}
+
+.lab-hotspot:focus-visible .lab-hotspot-dot {
+  box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.7);
+}
+
+.lab-hotspot-dot {
+  display: block;
+  width: 14px;
+  height: 14px;
+  border-radius: 9999px;
+  border: 2px solid #f8fafc;
+  box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.85);
+}
+
+.lab-hotspot-dot--cyan {
+  background: #22d3ee;
+}
+
+.lab-hotspot-dot--slate {
+  background: #94a3b8;
+}
+
+.lab-hotspot-dot--amber {
+  background: #fbbf24;
+}
+
+.lab-hotspot-dot--green {
+  background: #34d399;
+}
+
+.lab-hotspot-dot--red {
+  background: #f87171;
+}
+
+.lab-hotspot-label {
+  position: absolute;
+  left: 50%;
+  top: 100%;
+  z-index: 2;
+  margin-top: 6px;
+  transform: translateX(-50%);
+  max-width: 11rem;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: 1px solid rgba(51, 65, 85, 0.9);
+  background: rgba(15, 23, 42, 0.95);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: #e2e8f0;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.lab-hotspot:hover .lab-hotspot-label,
+.lab-hotspot:focus .lab-hotspot-label {
+  opacity: 1;
+}
+
+/* Táctil: las etiquetas se ven sin depender del hover */
+@media (hover: none) and (pointer: coarse) {
+  .lab-hotspot-label {
+    opacity: 0.92;
+    font-size: 10px;
+    max-width: 9rem;
+  }
+}
