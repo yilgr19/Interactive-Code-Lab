@@ -67,6 +67,12 @@
           <p class="mt-1 font-mono text-3xl font-bold text-lab-accent" id="points-display">0</p>
         </div>
 
+        <div id="challenge-badges-card" class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+          <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Insignias de retos</p>
+          <p class="mt-1 text-[11px] leading-snug text-slate-500">Se desbloquean al completar cada reto del laboratorio (según tu avance en teoría).</p>
+          <ul id="challenge-badges-list" class="mt-3 flex flex-col gap-2" aria-label="Insignias por retos completados"></ul>
+        </div>
+
         <div>
           <h2 class="mb-3 text-xs font-semibold uppercase tracking-wider text-slate-500">Insignias ganadas</h2>
           <ul id="badges-list" class="flex flex-col gap-2">
@@ -95,7 +101,7 @@
               Teoría + RA
             </button>
             <button type="button" data-section="practice" class="nav-btn rounded-lg px-3 py-2 text-sm font-medium text-slate-400 transition hover:bg-white/5 hover:text-white aria-[current=true]:bg-cyan-500/15 aria-[current=true]:text-lab-accent">
-              Reto condicionales
+              Retos
             </button>
           </div>
         </nav>
@@ -118,7 +124,7 @@
               </li>
               <li class="flex gap-3 rounded-xl border border-lab-border bg-lab-bg/40 p-4">
                 <span class="text-lab-accent">②</span>
-                <span class="text-sm text-slate-300"><strong class="text-slate-200">Reto</strong> de condicionales con puntos e insignias.</span>
+                <span class="text-sm text-slate-300"><strong class="text-slate-200">Seis retos de código</strong> alineados con cada tema (desbloqueo por cuestionario), con insignias en la barra lateral.</span>
               </li>
             </ul>
           </div>
@@ -296,6 +302,53 @@ escribir nombre, edad, activo</pre>
                 Una <strong class="text-slate-200">expresión</strong> es una “frase matemática o lógica” en código: combina <strong class="text-slate-200">valores</strong> (números fijos, variables, textos) con <strong class="text-slate-200">operadores</strong> (símbolos que dicen qué hacer) y al evaluarse produce un <strong class="text-slate-200">resultado</strong>.
                 El modelo 3D sugiere: <em>valor A → operación → valor B → resultado</em>.
               </p>
+              <p class="rounded-lg border border-cyan-500/25 bg-cyan-950/15 px-4 py-3 text-xs text-slate-300 sm:text-sm">
+                En este curso los ejemplos usan <strong class="text-slate-100">JavaScript</strong> (el lenguaje del navegador). Si casi no has programado, aquí estás aprendiendo <em>sintaxis nueva</em>: no hay <code class="rounded bg-lab-bg px-1 font-mono text-lab-accent">print</code> como en otros lenguajes; lo habitual para “mostrar” algo al probar es <code class="rounded bg-lab-bg px-1 font-mono text-lab-accent">console.log(...)</code> en la <strong class="text-slate-200">consola del navegador</strong> (tecla <kbd class="rounded border border-lab-border bg-lab-bg px-1.5 py-0.5 font-mono text-[10px] text-slate-400">F12</kbd> → pestaña <strong class="text-slate-200">Consola</strong> en Chrome o Edge).
+              </p>
+              <h4 class="text-base font-semibold text-slate-200">Lo mínimo de JavaScript antes de los operadores</h4>
+              <p class="text-slate-400">
+                Piensa en una <strong class="text-slate-200">instrucción</strong> como una orden que el intérprete ejecuta de arriba abajo. Para escribir código que tenga sentido necesitas estas piezas:
+              </p>
+              <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
+                <li>
+                  <strong class="text-slate-200">Declarar una variable</strong> (reservar un nombre y, a la vez, darle un valor inicial): en JavaScript moderno suele usarse
+                  <code class="font-mono text-xs text-lab-accent">let nombre = valor;</code> cuando el valor puede cambiar después, o
+                  <code class="font-mono text-xs text-lab-accent">const nombre = valor;</code> cuando no vas a reasignar ese nombre a otra cosa.
+                  El símbolo <code class="font-mono text-xs">=</code> aquí <em>no</em> es “igual en matemáticas”: es <strong class="text-slate-200">asignación</strong> (“guarda esto en esta variable”).
+                </li>
+                <li>
+                  <strong class="text-slate-200">Punto y coma (<code class="font-mono text-xs">;</code>)</strong>: en JavaScript <em>muchas veces es opcional</em> al final de una línea, pero es buena costumbre ponerlo para separar instrucciones con claridad (sobre todo si vienes de otro lenguaje donde es obligatorio). Si lo omites, el motor intenta “cerrar” la instrucción solo; hasta que cojas práctica, <strong class="text-slate-200">puedes terminar cada instrucción con <code class="font-mono text-xs">;</code></strong>.
+                </li>
+                <li>
+                  <strong class="text-slate-200">“Imprimir” o ver un resultado</strong>: en el navegador no escribes <code class="font-mono text-xs">print</code>. Usas
+                  <code class="font-mono text-xs text-lab-accent">console.log(expresión);</code>
+                  — lo que pongas entre paréntesis se calcula y aparece en la consola. Puedes mostrar texto entre comillas:
+                  <code class="font-mono text-xs">console.log("Hola");</code>
+                  o el valor de variables y expresiones:
+                  <code class="font-mono text-xs">console.log(a + b);</code>
+                </li>
+                <li>
+                  <strong class="text-slate-200">Comentarios</strong> (el ordenador los ignora): línea con <code class="font-mono text-xs">//</code> o bloque <code class="font-mono text-xs">/* ... */</code>. En los ejemplos de abajo, los <code class="font-mono text-xs">//</code> explican qué hace cada línea.
+                </li>
+              </ul>
+              <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Tu primer mini-programa en JavaScript (consola)</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">// 1) Declaro una variable y le asigno un número
+let puntos = 10;
+
+// 2) Otra variable
+let bonus = 5;
+
+// 3) Una expresión: suma (aquí aún no usamos todos los operadores del tema)
+let total = puntos + bonus;
+
+// 4) Muestro el resultado en la consola del navegador (F12 → Consola)
+console.log(total);   // verás: 15
+
+// 5) También puedes mezclar texto y valores:
+console.log("Total obtenido:", total);</pre>
+                <p class="mt-3 text-xs text-slate-500">Cuando en teoría veas <code class="font-mono text-lab-accent">let</code>, <code class="font-mono text-lab-accent">console.log</code> y el <code class="font-mono text-lab-accent">;</code>, ya sabes qué papel cumple cada uno. Lo siguiente es profundizar en los <strong class="text-slate-400">operadores</strong> dentro de esas expresiones.</p>
+              </div>
               <h4 class="text-base font-semibold text-slate-200">Tipos comunes de operadores</h4>
               <ul class="list-disc space-y-2 pl-5 text-slate-300 marker:text-lab-accent">
                 <li><strong class="text-slate-200">Aritméticos:</strong> <code class="font-mono text-xs">+</code> (suma; con cadenas, <em>concatena</em>), <code class="font-mono text-xs">-</code>, <code class="font-mono text-xs">*</code>, <code class="font-mono text-xs">/</code>, <code class="font-mono text-xs">%</code> (módulo = resto de una división entera, ej. <code class="font-mono text-xs">7 % 3 === 1</code>).</li>
@@ -308,24 +361,29 @@ escribir nombre, edad, activo</pre>
               </p>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Ejemplos en JavaScript (variables + operadores)</p>
-                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let a = 10;
-let b = 3;
+                <p class="mt-2 text-xs text-slate-500">Cada línea termina con <code class="font-mono text-lab-accent">;</code>. Las variables se declaran con <code class="font-mono text-lab-accent">let</code>. Para ver resultados al practicar, envuelve cualquier expresión en <code class="font-mono text-lab-accent">console.log(...)</code> en la consola.</p>
+                <pre class="mt-3 overflow-x-auto text-xs text-emerald-300/95 sm:text-sm">let a = 10;                 // declaro a y le asigno 10
+let b = 3;                  // declaro b
 
-let suma = a + b;           // 13
-let resto = a % b;          // 1  (sobra de dividir 10 entre 3)
+let suma = a + b;           // expresión aritmética → 13
+let resto = a % b;          // módulo → 1 (resto de 10 ÷ 3)
 
-let mayor = a &gt; b;          // true
-let igualEstricto = (a === 10);  // true
+console.log(suma, resto);   // opcional: 13 y 1 en la consola
+
+let mayor = a &gt; b;          // comparación → true
+let igualEstricto = (a === 10);  // true (mismo valor y tipo)
 
 let precio = 100;
 let descuento = 0.15;
-let total = precio * (1 - descuento);  // 85 — paréntesis primero
+let total = precio * (1 - descuento);  // 85 — lo entre ( ) se hace antes
 
-let nombre = "Hola, " + "Lucía";       // concatenación: "Hola, Lucía"
+let nombre = "Hola, " + "Lucía";       // + junta textos → "Hola, Lucía"
 
 let edad = 20;
 let tieneEntrada = true;
-let puedeEntrar = (edad &gt;= 18) &amp;&amp; (tieneEntrada === true);  // true si ambas condiciones se cumplen</pre>
+let puedeEntrar = (edad &gt;= 18) &amp;&amp; (tieneEntrada === true);  // true si ambas son ciertas
+
+console.log("¿Puede entrar?", puedeEntrar);</pre>
               </div>
               <div class="rounded-xl border border-lab-border bg-lab-bg/60 p-4">
                 <p class="text-xs font-semibold uppercase tracking-wider text-slate-500">Pseudocódigo</p>
@@ -570,41 +628,125 @@ escribir total</pre>
           </div>
         </section>
 
-        <!-- Practice -->
+        <!-- Practice: retos por nivel (desbloqueo según cuestionarios de teoría) -->
         <section id="section-practice" class="section-panel hidden max-w-4xl space-y-6">
           <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8">
-            <p class="font-mono text-sm text-lab-accent">Unidad 2 · Estructuras condicionales</p>
-            <h2 class="mt-2 text-2xl font-bold text-white">Sistema de validación de acceso por edad</h2>
-            <p class="mt-4 text-slate-400">
-              Implementa la lógica: si la persona tiene <strong class="text-white">18 años o más</strong>, el acceso es <strong class="text-emerald-400">permitido</strong>; si no, <strong class="text-amber-400">denegado</strong>.
-              Es el mismo patrón que el <strong class="text-slate-200">rombo de decisión</strong> del tema <em>Diagramas y condicionales</em> en <strong class="text-slate-200">Teoría + RA</strong>.
-              Puedes escribir en <strong class="text-slate-200">JavaScript</strong> o pseudocódigo (español) con <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si</code> / <code class="rounded bg-lab-bg px-1 font-mono text-sm text-lab-accent">si no</code>.
+            <p class="font-mono text-sm text-lab-accent">Laboratorio de retos · Progresión</p>
+            <h2 class="mt-2 text-2xl font-bold text-white">Retos al ritmo de tu aprendizaje</h2>
+            <p class="mt-4 max-w-2xl text-slate-400">
+              Cada reto se <strong class="text-slate-200">desbloquea</strong> cuando completas el <strong class="text-lab-accent">cuestionario</strong> del tema indicado en Teoría + RA.
+              Al validar bien tu código ganas <strong class="text-slate-200">puntos</strong> y una <strong class="text-slate-200">insignia de reto</strong> (tarjeta en la barra lateral, debajo de puntos).
             </p>
-            <div class="mt-4 rounded-xl border border-lab-border bg-lab-bg/60 p-4 font-mono text-sm text-slate-300">
-              <p class="text-slate-500">Ejemplo válido (una de varias formas):</p>
-              <pre class="mt-2 overflow-x-auto text-lab-accent/90">if (edad &gt;= 18) {
-  console.log("Permitido");
-} else {
-  console.log("Denegado");
-}</pre>
-            </div>
           </div>
 
-          <div class="rounded-2xl border border-lab-border bg-lab-surface/50 p-6">
-            <label for="code-input" class="block text-sm font-medium text-slate-300">Tu solución</label>
-            <textarea
-              id="code-input"
-              class="mt-2 h-48 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent"
-              placeholder="Escribe aquí tu if/else o si/sino..."
-              spellcheck="false"
-            ></textarea>
-            <div class="mt-4 flex flex-wrap items-center gap-3">
-              <button type="button" id="btn-validate" class="rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-lab-surface">
-                Validar
-              </button>
-              <p id="validation-message" class="text-sm text-slate-500" role="status"></p>
+          <!-- Reto N1: condicionales (tras cuestionario algoritmos) -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="conditional_age">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="conditional_age" role="status"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="conditional_age">
+              <p class="font-mono text-xs text-lab-accent">Reto 1 · Tras tema 1.1 (algoritmos y condicionales)</p>
+              <h3 class="text-lg font-semibold text-white">Acceso por edad</h3>
+              <p class="text-sm text-slate-400">
+                Si la persona tiene <strong class="text-white">18 años o más</strong>, el acceso es <strong class="text-emerald-400">permitido</strong>; si no, <strong class="text-amber-400">denegado</strong>.
+                JavaScript o pseudocódigo (<code class="font-mono text-lab-accent">si</code> / <code class="font-mono text-lab-accent">si no</code>).
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-conditional_age">Tu solución</label>
+              <textarea id="code-input-conditional_age" data-challenge-input="conditional_age" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="if (edad >= 18) { ... } else { ... }" spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400 focus:ring-offset-2 focus:ring-offset-lab-surface" data-challenge="conditional_age">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="conditional_age" role="status"></p>
+              </div>
             </div>
-          </div>
+          </article>
+
+          <!-- Reto N1: variables -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="variables_total">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="variables_total"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="variables_total">
+              <p class="font-mono text-xs text-lab-accent">Reto 2 · Tras tema 1.2 (variables)</p>
+              <h3 class="text-lg font-semibold text-white">Precio × cantidad</h3>
+              <p class="text-sm text-slate-400">
+                Declara <strong class="text-slate-200">precio = 10</strong> y <strong class="text-slate-200">cantidad = 2</strong>, calcula <strong class="text-slate-200">total</strong> como la multiplicación y deja claro el resultado <strong class="text-lab-accent">20</strong> (por ejemplo en <code class="font-mono text-xs">console.log</code> o comentario).
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-variables_total">Tu solución</label>
+              <textarea id="code-input-variables_total" data-challenge-input="variables_total" class="challenge-textarea mt-2 h-36 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let precio = 10; ..." spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="variables_total">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="variables_total" role="status"></p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Reto N2: operadores -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="operators_parity">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="operators_parity"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="operators_parity">
+              <p class="font-mono text-xs text-lab-accent">Reto 3 · Tras tema 2.1 (operadores)</p>
+              <h3 class="text-lg font-semibold text-white">Par o impar con <code class="font-mono text-cyan-300">%</code></h3>
+              <p class="text-sm text-slate-400">
+                Usa el operador <strong class="text-slate-200">módulo</strong> (<code class="font-mono">%</code>) y una condicional: para <strong class="text-white">8</strong> indica que es <strong class="text-emerald-400">par</strong>; para <strong class="text-white">7</strong> que es <strong class="text-amber-400">impar</strong> (puede ser dos <code class="font-mono">if</code> o una sola lógica).
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-operators_parity">Tu solución</label>
+              <textarea id="code-input-operators_parity" data-challenge-input="operators_parity" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let n = 8; if (n % 2 === 0) ..." spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="operators_parity">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="operators_parity" role="status"></p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Reto N2: bucles -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="loop_sum">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="loop_sum"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="loop_sum">
+              <p class="font-mono text-xs text-lab-accent">Reto 4 · Tras tema 2.2 (bucles)</p>
+              <h3 class="text-lg font-semibold text-white">Suma del 1 al 10</h3>
+              <p class="text-sm text-slate-400">
+                Con un <strong class="text-slate-200">bucle</strong> (<code class="font-mono">for</code>, <code class="font-mono">while</code> o <em>mientras</em> en pseudocódigo), acumula la suma de los enteros del <strong class="text-white">1</strong> al <strong class="text-white">10</strong>. El resultado correcto es <strong class="text-lab-accent">55</strong>.
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-loop_sum">Tu solución</label>
+              <textarea id="code-input-loop_sum" data-challenge-input="loop_sum" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let suma = 0; for (let i = 1; i <= 10; i++) ..." spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="loop_sum">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="loop_sum" role="status"></p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Reto N3: arreglos -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="array_average">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="array_average"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="array_average">
+              <p class="font-mono text-xs text-lab-accent">Reto 5 · Tras tema 3.1 (arreglos)</p>
+              <h3 class="text-lg font-semibold text-white">Promedio de tres notas</h3>
+              <p class="text-sm text-slate-400">
+                Crea un arreglo con <strong class="text-white">8</strong>, <strong class="text-white">9</strong> y <strong class="text-white">10</strong>, calcula el <strong class="text-slate-200">promedio</strong> (suma dividida entre 3) y muestra o comenta el valor <strong class="text-lab-accent">9</strong>.
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-array_average">Tu solución</label>
+              <textarea id="code-input-array_average" data-challenge-input="array_average" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="let notas = [8, 9, 10]; ..." spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="array_average">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="array_average" role="status"></p>
+              </div>
+            </div>
+          </article>
+
+          <!-- Reto N3: funciones -->
+          <article class="challenge-panel rounded-2xl border border-lab-border bg-lab-surface/50 p-6 sm:p-8" data-challenge-panel="function_double">
+            <p class="challenge-lock-banner mb-4 hidden rounded-lg border border-amber-500/35 bg-amber-950/20 px-3 py-2 text-xs text-amber-200" data-challenge-lock="function_double"></p>
+            <div class="challenge-panel-active space-y-4" data-challenge-body="function_double">
+              <p class="font-mono text-xs text-lab-accent">Reto 6 · Tras tema 3.2 (funciones)</p>
+              <h3 class="text-lg font-semibold text-white">Función “doble”</h3>
+              <p class="text-sm text-slate-400">
+                Define una función (por ejemplo <code class="font-mono">doble</code>) que reciba un número y <strong class="text-slate-200">devuelva</strong> el doble usando <code class="font-mono">return</code>. Incluye una prueba mental o en código: <strong class="text-white">doble(3)</strong> debe ser <strong class="text-lab-accent">6</strong>.
+              </p>
+              <label class="block text-sm font-medium text-slate-300" for="code-input-function_double">Tu solución</label>
+              <textarea id="code-input-function_double" data-challenge-input="function_double" class="challenge-textarea mt-2 h-40 w-full resize-y rounded-xl border border-lab-border bg-lab-bg px-4 py-3 font-mono text-sm text-slate-200 placeholder-slate-600 focus:border-lab-accent focus:outline-none focus:ring-1 focus:ring-lab-accent" placeholder="function doble(x) { return x * 2; }" spellcheck="false"></textarea>
+              <div class="flex flex-wrap items-center gap-3">
+                <button type="button" class="btn-challenge-validate rounded-xl bg-emerald-600 px-6 py-3 font-semibold text-white transition hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-emerald-400" data-challenge="function_double">Validar</button>
+                <p class="challenge-validation-msg text-sm text-slate-500" data-challenge-msg="function_double" role="status"></p>
+              </div>
+            </div>
+          </article>
         </section>
       </main>
 

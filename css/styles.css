@@ -33,6 +33,38 @@ model-viewer.model-viewer-3d {
   line-height: 1;
 }
 
+/* Insignias de retos (sidebar, bajo puntos) */
+.challenge-badge-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(30, 42, 58, 1);
+  background: rgba(11, 15, 20, 0.45);
+  padding: 0.5rem 0.6rem;
+}
+
+.challenge-badge-row--earned {
+  border-color: rgba(52, 211, 153, 0.35);
+  background: rgba(52, 211, 153, 0.06);
+}
+
+.challenge-badge-icon {
+  font-size: 1.1rem;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.challenge-panel-body--disabled {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.challenge-panel-body--disabled .challenge-textarea,
+.challenge-panel-body--disabled .btn-challenge-validate {
+  cursor: not-allowed;
+}
+
 /* Hotspots en <model-viewer> — explican el FlujoLogicoAlgoritmo en 3D/RA */
 .lab-hotspot {
   display: block;

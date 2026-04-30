@@ -8,15 +8,35 @@
   /* Orden pedagógico por niveles: N1 fund. → N2 expresión/rep. → N3 datos/módulos */
   var THEORY_IDS = ['algoritmos', 'variables', 'operadores', 'bucles', 'arreglos', 'funciones'];
 
-  var BADGE_DEFS = [
+  /** Insignias de progreso general (no son retos de código). */
+  var PROGRESS_BADGE_DEFS = [
     { id: 'explorer', label: 'Explorador', desc: 'Abriste el módulo Teoría + RA', icon: '🔭' },
     { id: 'curriculum_ra', label: 'Recorrido RA', desc: 'Completaste los 6 temas (3 niveles) con su modelo 3D', icon: '📚' },
     { id: 'quiz_master', label: 'Comprensión', desc: 'Acertaste los cuestionarios de los 6 temas', icon: '📝' },
-    { id: 'conditional_master', label: 'Lógica condicional', desc: 'Completaste el reto de acceso por edad', icon: '🎯' },
   ];
 
-  var POINTS_CHALLENGE = 100;
   var POINTS_QUIZ_TOPIC = 20;
+
+  function defaultChallengeRewards() {
+    return {
+      conditional_age: false,
+      variables_total: false,
+      operators_parity: false,
+      loop_sum: false,
+      array_average: false,
+      function_double: false,
+    };
+  }
+
+  /** Sincroniza retos completados si ya existía la insignia en datos antiguos. */
+  var CHALLENGE_BADGE_TO_REWARD_KEY = {
+    conditional_master: 'conditional_age',
+    reto_variables: 'variables_total',
+    reto_operadores: 'operators_parity',
+    reto_bucle: 'loop_sum',
+    reto_arreglos: 'array_average',
+    reto_funciones: 'function_double',
+  };
 
   /** Dos preguntas por tema; tres opciones; una correcta (clave k). */
   var QUIZZES = {
@@ -165,6 +185,26 @@
     return o;
   }
 
+  function migrateChallengeRewards(data) {
+    var o = defaultChallengeRewards();
+    if (data.challengeRewards && typeof data.challengeRewards === 'object') {
+      Object.keys(o).forEach(function (k) {
+        if (data.challengeRewards[k]) o[k] = true;
+      });
+    }
+    if (data.challengeCompleted) {
+      o.conditional_age = true;
+    }
+    if (Array.isArray(data.badges)) {
+      Object.keys(CHALLENGE_BADGE_TO_REWARD_KEY).forEach(function (badgeId) {
+        if (data.badges.indexOf(badgeId) !== -1) {
+          o[CHALLENGE_BADGE_TO_REWARD_KEY[badgeId]] = true;
+        }
+      });
+    }
+    return o;
+  }
+
   function loadState() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
@@ -173,7 +213,6 @@
       return {
         points: typeof data.points === 'number' ? data.points : 0,
         badges: Array.isArray(data.badges) ? data.badges : [],
-        challengeCompleted: !!data.challengeCompleted,
         theoryVisited: !!data.theoryVisited,
         topicsVisited: migrateTopicsVisited(data),
         lastTheoryTopic:
@@ -185,6 +224,7 @@
             ? data.studentName.trim()
             : 'Estudiante',
         quizRewards: migrateQuizRewards(data),
+        challengeRewards: migrateChallengeRewards(data),
       };
     } catch (e) {
       return defaultState();
@@ -201,12 +241,12 @@
     return {
       points: 0,
       badges: [],
-      challengeCompleted: false,
       theoryVisited: false,
       topicsVisited: tv,
       lastTheoryTopic: 'algoritmos',
       studentName: 'Estudiante',
       quizRewards: qr,
+      challengeRewards: defaultChallengeRewards(),
     };
   }
 
@@ -433,6 +473,7 @@
       mount.appendChild(box);
     });
     renderTopicTabsLockState(currentState);
+    renderChallengePanels(currentState);
   }
 
   function markTopicVisited(state, topicId) {
@@ -516,6 +557,333 @@
     return { ok: true, message: '¡Correcto! Has aplicado bien las condicionales.' };
   }
 
+  function validateVariablesTotal(code) {
+    if (!code || code.trim().length < 12) {
+      return { ok: false, message: 'Escribe código con precio, cantidad y total.' };
+    }
+    var n = normalizeForCheck(code);
+    var hasPrecio = n.includes('precio') || n.includes('price');
+    var hasCantidad = n.includes('cantidad') || n.includes('quantity') || n.includes('qty');
+    if (!hasPrecio || !hasCantidad) {
+      return { ok: false, message: 'Declara variables como precio y cantidad (o price/quantity).' };
+    }
+    if (!n.includes('10') || !n.includes('2')) {
+      return { ok: false, message: 'Usa precio 10 y cantidad 2.' };
+    }
+    if (!n.includes('total')) {
+      return { ok: false, message: 'Guarda el resultado en una variable total.' };
+    }
+    if (!n.includes('*') && !n.includes('20')) {
+      return { ok: false, message: 'Obtén el total multiplicando precio × cantidad (20).' };
+    }
+    if (!n.includes('20')) {
+      return { ok: false, message: 'Debe quedar claro que el total es 20 (valor o comprobación).' };
+    }
+    return { ok: true, message: '¡Bien! Variables y operación coherentes.' };
+  }
+
+  function validateOperatorsParity(code) {
+    if (!code || code.trim().length < 15) {
+      return { ok: false, message: 'Incluye el operador % y condicionales para 8 y 7.' };
+    }
+    var n = normalizeForCheck(code);
+    if (!n.includes('%') || !n.includes('2')) {
+      return { ok: false, message: 'Usa el módulo (%) con 2 para distinguir par/impar.' };
+    }
+    var hasBranch = /\bif\b|\bsi\b/.test(n) || n.includes('entonces');
+    if (!hasBranch) {
+      return { ok: false, message: 'Usa al menos una condicional (if / si).' };
+    }
+    if (!n.includes('8')) {
+      return { ok: false, message: 'Trata el caso del número 8.' };
+    }
+    if (!n.includes('7')) {
+      return { ok: false, message: 'Trata el caso del número 7.' };
+    }
+    var hasPar = n.includes('par') || n.includes('even');
+    var hasImpar = n.includes('impar') || n.includes('odd');
+    if (!hasPar || !hasImpar) {
+      return { ok: false, message: 'Indica explícitamente par e impar (texto o mensaje).' };
+    }
+    return { ok: true, message: '¡Correcto! Buen uso de % y condicionales.' };
+  }
+
+  function validateLoopSum(code) {
+    if (!code || code.trim().length < 15) {
+      return { ok: false, message: 'Usa un bucle y acumula la suma del 1 al 10.' };
+    }
+    var n = normalizeForCheck(code);
+    var hasLoop = /\bfor\b|\bwhile\b|\bmientras\b/.test(n) || /\bpara\b/.test(n);
+    if (!hasLoop) {
+      return { ok: false, message: 'Incluye un bucle: for, while o mientras/para en pseudocódigo.' };
+    }
+    if (!n.includes('55')) {
+      return { ok: false, message: 'El resultado debe ser 55 (suma 1+2+…+10).' };
+    }
+    return { ok: true, message: '¡Perfecto! El bucle y la suma encajan.' };
+  }
+
+  function validateArrayAverage(code) {
+    if (!code || code.trim().length < 15) {
+      return { ok: false, message: 'Define el arreglo [8,9,10] y calcula el promedio.' };
+    }
+    var n = normalizeForCheck(code);
+    if (!n.includes('8') || !n.includes('9') || !n.includes('10')) {
+      return { ok: false, message: 'El arreglo debe contener 8, 9 y 10.' };
+    }
+    if (!n.includes('[') && !n.includes('arreglo')) {
+      return { ok: false, message: 'Usa notación de arreglo [ ] o indica un arreglo en pseudocódigo.' };
+    }
+    if (!n.includes('/') && !n.includes('promedio') && !n.includes('average')) {
+      return { ok: false, message: 'Calcula el promedio (división entre 3 o equivalente).' };
+    }
+    if (!n.includes('9')) {
+      return { ok: false, message: 'El promedio de 8, 9 y 10 es 9; deja ese resultado visible.' };
+    }
+    return { ok: true, message: '¡Muy bien! Arreglo y promedio correctos.' };
+  }
+
+  function validateFunctionDouble(code) {
+    if (!code || code.trim().length < 15) {
+      return { ok: false, message: 'Define una función con return que devuelva el doble.' };
+    }
+    var n = normalizeForCheck(code);
+    var hasFn = /\bfunction\b/.test(n) || n.includes('=>');
+    if (!hasFn) {
+      return { ok: false, message: 'Define una función (function … o flecha =>).' };
+    }
+    if (!n.includes('return')) {
+      return { ok: false, message: 'Usa return para devolver el valor.' };
+    }
+    if (!n.includes('*') && !n.includes('doble') && !n.includes('double')) {
+      return { ok: false, message: 'El valor devuelto debe ser el doble del parámetro (×2).' };
+    }
+    if (!n.includes('3') || !n.includes('6')) {
+      return { ok: false, message: 'Incluye la idea de prueba: doble(3) → 6 (en código o comentario).' };
+    }
+    return { ok: true, message: '¡Excelente! Función y return bien planteados.' };
+  }
+
+  var CHALLENGE_DEFS = [
+    {
+      id: 'conditional_age',
+      badgeId: 'conditional_master',
+      label: 'Condicionales',
+      desc: 'Reto: acceso por edad',
+      icon: '🔷',
+      requiresQuizTopic: 'algoritmos',
+      points: 100,
+      validate: validateConditionalSolution,
+    },
+    {
+      id: 'variables_total',
+      badgeId: 'reto_variables',
+      label: 'Variables',
+      desc: 'Reto: precio × cantidad',
+      icon: '🏷️',
+      requiresQuizTopic: 'variables',
+      points: 85,
+      validate: validateVariablesTotal,
+    },
+    {
+      id: 'operators_parity',
+      badgeId: 'reto_operadores',
+      label: 'Operadores',
+      desc: 'Reto: par/impar con %',
+      icon: '🧮',
+      requiresQuizTopic: 'operadores',
+      points: 85,
+      validate: validateOperatorsParity,
+    },
+    {
+      id: 'loop_sum',
+      badgeId: 'reto_bucle',
+      label: 'Bucles',
+      desc: 'Reto: suma 1…10',
+      icon: '🔄',
+      requiresQuizTopic: 'bucles',
+      points: 90,
+      validate: validateLoopSum,
+    },
+    {
+      id: 'array_average',
+      badgeId: 'reto_arreglos',
+      label: 'Arreglos',
+      desc: 'Reto: promedio',
+      icon: '📋',
+      requiresQuizTopic: 'arreglos',
+      points: 90,
+      validate: validateArrayAverage,
+    },
+    {
+      id: 'function_double',
+      badgeId: 'reto_funciones',
+      label: 'Funciones',
+      desc: 'Reto: función doble',
+      icon: '🔧',
+      requiresQuizTopic: 'funciones',
+      points: 95,
+      validate: validateFunctionDouble,
+    },
+  ];
+
+  var TOPIC_TITLE_FOR_LOCK = {
+    algoritmos: '1.1 · Algoritmos y condicionales',
+    variables: '1.2 · Variables y tipos',
+    operadores: '2.1 · Operadores',
+    bucles: '2.2 · Bucles',
+    arreglos: '3.1 · Arreglos',
+    funciones: '3.2 · Funciones',
+  };
+
+  function getChallengeDef(challengeId) {
+    for (var i = 0; i < CHALLENGE_DEFS.length; i++) {
+      if (CHALLENGE_DEFS[i].id === challengeId) return CHALLENGE_DEFS[i];
+    }
+    return null;
+  }
+
+  function isChallengeUnlocked(st, challengeId) {
+    var def = getChallengeDef(challengeId);
+    if (!def) return false;
+    return !!st.quizRewards[def.requiresQuizTopic];
+  }
+
+  function syncChallengeBadgesFromRewards(st) {
+    CHALLENGE_DEFS.forEach(function (c) {
+      if (st.challengeRewards[c.id] && st.badges.indexOf(c.badgeId) === -1) {
+        st.badges.push(c.badgeId);
+      }
+    });
+  }
+
+  function renderChallengeBadgesCard(st) {
+    var list = document.getElementById('challenge-badges-list');
+    if (!list) return;
+    list.innerHTML = '';
+
+    CHALLENGE_DEFS.forEach(function (c) {
+      var earned = !!st.challengeRewards[c.id];
+      var unlocked = isChallengeUnlocked(st, c.id);
+      var li = document.createElement('li');
+      li.className = 'challenge-badge-row' + (earned ? ' challenge-badge-row--earned' : ' challenge-badge-row--pending');
+
+      var icon = document.createElement('span');
+      icon.className = 'challenge-badge-icon';
+      icon.setAttribute('aria-hidden', 'true');
+      icon.textContent = earned ? c.icon : unlocked ? '○' : '🔒';
+
+      var text = document.createElement('div');
+      text.className = 'challenge-badge-text min-w-0';
+      var title = document.createElement('div');
+      title.className = 'text-xs font-medium text-slate-200';
+      title.textContent = c.label;
+      var sub = document.createElement('div');
+      sub.className = 'text-[11px] text-slate-500 leading-snug';
+      if (earned) {
+        sub.textContent = c.desc + ' · +' + c.points + ' pts';
+      } else if (unlocked) {
+        sub.textContent = 'Disponible en Retos · ' + c.desc;
+      } else {
+        sub.textContent =
+          'Bloqueado: completa el cuestionario de ' + (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic);
+      }
+      text.appendChild(title);
+      text.appendChild(sub);
+      li.appendChild(icon);
+      li.appendChild(text);
+      list.appendChild(li);
+    });
+  }
+
+  function renderChallengePanels(st) {
+    CHALLENGE_DEFS.forEach(function (c) {
+      var unlocked = isChallengeUnlocked(st, c.id);
+      var done = !!st.challengeRewards[c.id];
+      var banner = document.querySelector('[data-challenge-lock="' + c.id + '"]');
+      var body = document.querySelector('[data-challenge-body="' + c.id + '"]');
+      var ta = document.querySelector('[data-challenge-input="' + c.id + '"]');
+      var btn = document.querySelector('.btn-challenge-validate[data-challenge="' + c.id + '"]');
+      var msg = document.querySelector('[data-challenge-msg="' + c.id + '"]');
+
+      if (banner) {
+        if (unlocked) {
+          banner.classList.add('hidden');
+          banner.textContent = '';
+        } else {
+          banner.classList.remove('hidden');
+          banner.textContent =
+            'Bloqueado: responde bien el cuestionario de «' +
+            (TOPIC_TITLE_FOR_LOCK[c.requiresQuizTopic] || c.requiresQuizTopic) +
+            '» en Teoría + RA.';
+        }
+      }
+
+      if (body) {
+        body.classList.toggle('challenge-panel-body--disabled', !unlocked);
+      }
+      if (ta) {
+        ta.disabled = !unlocked || done;
+      }
+      if (btn) {
+        btn.disabled = !unlocked || done;
+      }
+      if (done && msg) {
+        msg.textContent = 'Reto superado. +' + c.points + ' pts · insignia guardada.';
+        msg.className = 'challenge-validation-msg text-sm text-emerald-400 font-medium';
+      } else if (!unlocked && msg) {
+        msg.textContent = '';
+        msg.className = 'challenge-validation-msg text-sm text-slate-500';
+      }
+    });
+  }
+
+  function awardChallenge(st, def, isFirstTime) {
+    if (isFirstTime) {
+      st.challengeRewards[def.id] = true;
+      st.points += def.points;
+      if (st.badges.indexOf(def.badgeId) === -1) {
+        st.badges.push(def.badgeId);
+      }
+      saveState(st);
+      updatePointsDisplay(st);
+      renderChallengeBadgesCard(st);
+      renderBadges(st);
+      triggerConfetti();
+    } else {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 40, spread: 54, origin: { y: 0.72 }, zIndex: 9999 });
+      }
+    }
+    renderChallengePanels(st);
+  }
+
+  function wireChallengeValidators() {
+    document.querySelectorAll('.btn-challenge-validate').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var challengeId = btn.getAttribute('data-challenge');
+        var def = getChallengeDef(challengeId);
+        if (!def) return;
+        if (!isChallengeUnlocked(state, challengeId)) {
+          return;
+        }
+        var ta = document.querySelector('[data-challenge-input="' + challengeId + '"]');
+        var msg = document.querySelector('[data-challenge-msg="' + challengeId + '"]');
+        var code = ta ? ta.value : '';
+        var result = def.validate(code);
+        if (msg) {
+          msg.textContent = result.message;
+          msg.className =
+            'challenge-validation-msg text-sm ' + (result.ok ? 'text-emerald-400 font-medium' : 'text-amber-400');
+        }
+        if (result.ok) {
+          var first = !state.challengeRewards[def.id];
+          awardChallenge(state, def, first);
+        }
+      });
+    });
+  }
+
   function triggerConfetti() {
     if (typeof confetti !== 'function') return;
     var count = 120;
@@ -541,7 +909,7 @@
     if (!list) return;
     list.innerHTML = '';
 
-    BADGE_DEFS.forEach(function (def) {
+    PROGRESS_BADGE_DEFS.forEach(function (def) {
       var earned = state.badges.indexOf(def.id) !== -1;
       var li = document.createElement('li');
       li.className = 'badge-item' + (earned ? '' : ' locked');
@@ -642,11 +1010,16 @@
 
   var state = loadState();
   clampLastTheoryTopic(state);
+  syncChallengeBadgesFromRewards(state);
+  saveState(state);
   updatePointsDisplay(state);
   renderBadges(state);
+  renderChallengeBadgesCard(state);
   applyStudentNameToUI();
   renderTopicTabsLockState(state);
   renderAllTopicQuizzes(state);
+  renderChallengePanels(state);
+  wireChallengeValidators();
 
   if (allTopicsVisited(state)) {
     maybeAwardCurriculumBadge(state);
@@ -682,6 +1055,9 @@
         }
         showTheoryTopic(state.lastTheoryTopic || 'algoritmos');
         renderAllTopicQuizzes(state);
+      }
+      if (section === 'practice') {
+        renderChallengePanels(state);
       }
     });
   });
@@ -736,40 +1112,6 @@
         }
       } catch (err) {
         alert('No se pudo iniciar la RA en este dispositivo.');
-      }
-    });
-  }
-
-  var btnValidate = document.getElementById('btn-validate');
-  var codeInput = document.getElementById('code-input');
-  var validationMsg = document.getElementById('validation-message');
-
-  if (btnValidate && codeInput) {
-    btnValidate.addEventListener('click', function () {
-      var result = validateConditionalSolution(codeInput.value);
-      if (validationMsg) {
-        validationMsg.textContent = result.message;
-        validationMsg.className =
-          'text-sm ' + (result.ok ? 'text-emerald-400 font-medium' : 'text-amber-400');
-      }
-
-      if (result.ok) {
-        var firstTime = !state.challengeCompleted;
-        if (firstTime) {
-          state.challengeCompleted = true;
-          state.points += POINTS_CHALLENGE;
-          if (state.badges.indexOf('conditional_master') === -1) {
-            state.badges.push('conditional_master');
-          }
-          saveState(state);
-          updatePointsDisplay(state);
-          renderBadges(state);
-          triggerConfetti();
-        } else {
-          if (typeof confetti === 'function') {
-            confetti({ particleCount: 35, spread: 54, origin: { y: 0.72 }, zIndex: 9999 });
-          }
-        }
       }
     });
   }
